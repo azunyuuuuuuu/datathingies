@@ -1,0 +1,29 @@
+﻿@page "/covid19"
+
+@using datathingies.Data
+@inject Covid19DataService _covid
+
+<div class="markdown">
+
+
+    <h1>Covid19 Data</h1>
+
+    @if (rawdata == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        @rawdata.Count()
+    }
+
+</div>
+
+@code {
+    private Covid19DataEntry[] rawdata;
+
+    protected override async Task OnInitializedAsync()
+    {
+        rawdata = await _covid.GetAllDataAsync();
+    }
+}
