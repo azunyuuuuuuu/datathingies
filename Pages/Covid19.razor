@@ -18,13 +18,15 @@
         @rawdata.Where(x=>x.Location == "World").OrderByDescending(x=>x.Date).First().TotalCases
 
         <h2> Overall Data </h2>
-        <table class="w-full">
-            <thead class="stricky font-semibold">
-                <td>Continent</td>
-                <td>Country</td>
-                <td>Total Cases</td>
-                <td>Total Deaths</td>
-                <td>Total Vaccinations</td>
+        <table class="w-full table-auto">
+            <thead class="sticky font-semibold">
+                <tr>
+                    <th>Continent</th>
+                    <th>Country</th>
+                    <th>Total Cases</th>
+                    <th>Total Deaths</th>
+                    <th>Total Vaccinations</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (var entry in rawdata.GroupBy(x => x.Location).Select(x => x.OrderByDescending(x =>
