@@ -14,7 +14,23 @@
     }
     else
     {
-        @rawdata.Count()
+        <p>
+            Worldwide Cases: @rawdata.Where(x=>x.Location == "World").OrderByDescending(x=>x.Date).First().TotalCases
+        </p>
+
+        <p>
+            Recorded countries:
+        <ul>
+            @foreach (var entry in rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent)).GroupBy(x => x.Location))
+                {
+                    <li>@entry.Key</li>
+                }
+        </ul>
+        </p>
+
+        <p>
+            Data entries: @rawdata.Count()
+        </p>
     }
 
 </div>
