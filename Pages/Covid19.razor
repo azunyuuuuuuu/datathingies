@@ -14,19 +14,32 @@
     }
     else
     {
-        <p>
-            Worldwide Cases: @rawdata.Where(x=>x.Location == "World").OrderByDescending(x=>x.Date).First().TotalCases
-        </p>
+        <h2> Worldwide Cases </h2>
+        @rawdata.Where(x=>x.Location == "World").OrderByDescending(x=>x.Date).First().TotalCases
 
-        <p>
-            Recorded countries:
-        <ul>
-            @foreach (var entry in rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent)).GroupBy(x => x.Location))
+        <h2> Overall Data </h2>
+        <table class="w-full">
+            <thead class="stricky font-semibold">
+                <td>Continent</td>
+                <td>Country</td>
+                <td>Total Cases</td>
+                <td>Total Deaths</td>
+                <td>Total Vaccinations</td>
+            </thead>
+            <tbody>
+                @foreach (var entry in rawdata.GroupBy(x => x.Location).Select(x => x.OrderByDescending(x =>
+            x.Date).First()))
                 {
-                    <li>@entry.Key</li>
+                    <tr>
+                        <td>@entry.Continent</td>
+                        <td>@entry.Location</td>
+                        <td>@entry.TotalCases</td>
+                        <td>@entry.TotalDeaths</td>
+                        <td>@entry.TotalVaccinations</td>
+                    </tr>
                 }
-        </ul>
-        </p>
+            </tbody>
+        </table>
 
         <p>
             Data entries: @rawdata.Count()
