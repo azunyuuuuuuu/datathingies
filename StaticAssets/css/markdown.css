@@ -172,20 +172,6 @@ body.showEditorSelection li.code-line:hover:before {
   border-collapse: collapse;
 }
 
-.markdown th {
-  text-align: left;
-  @apply border-b;
-}
-
-.markdown th,
-.markdown td {
-  padding: 5px 10px;
-}
-
-.markdown table > tbody > tr + tr > td {
-  @apply border-t
-}
-
 .markdown blockquote {
   margin: 0 7px 0 5px;
   padding: 0 16px 0 10px;
@@ -244,32 +230,16 @@ body.showEditorSelection li.code-line:hover:before {
   border-color: rgb(0, 0, 0);
 } */
 
-/* .vscode-light th {
-  border-color: rgba(0, 0, 0, 0.69);
+.markdown table > thead {
+  @apply border-b border-black dark:border-white border-opacity-100;
+  @apply text-left;
 }
 
-.vscode-dark th {
-  border-color: rgba(255, 255, 255, 0.69);
-} */
-
-.markdown th {
-  @apply border-opacity-70;
+.markdown table > tbody {
+  @apply divide-y divide-black dark:divide-white divide-opacity-20;
 }
 
-/* .vscode-light h1,
-.vscode-light hr,
-.vscode-light td {
-  border-color: rgba(0, 0, 0, 0.18);
-}
-
-.vscode-dark h1,
-.vscode-dark hr,
-.vscode-dark td {
-  border-color: rgba(255, 255, 255, 0.18);
-} */
-
-.markdown h1,
-.markdown hr,
-.markdown td {
-  @apply border-opacity-20;
+.markdown table th,
+.markdown table td {
+  @apply px-2 py-1;
 }
