@@ -1,6 +1,7 @@
 ﻿@page "/covid19"
 
 @using datathingies.Data
+@using Humanizer
 @inject Covid19DataService _covid
 
 <div class="markdown">
@@ -36,9 +37,9 @@
                             {
                                 <tr>
                                     <td>@entry.Location</td>
-                                    <td>@entry.TotalCases</td>
-                                    <td>@entry.TotalDeaths</td>
-                                    <td>@entry.TotalVaccinations</td>
+                                    <td>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
+                                    <td>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
                                 </tr>
                             }
                         </tbody>
@@ -59,9 +60,9 @@
                             {
                                 <tr>
                                     <td>@entry.Location</td>
-                                    <td>@entry.TotalCases</td>
-                                    <td>@entry.TotalDeaths</td>
-                                    <td>@entry.TotalVaccinations</td>
+                                    <td>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
+                                    <td>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
                                 </tr>
                             }
                         </tbody>
@@ -82,9 +83,9 @@
                             {
                                 <tr>
                                     <td>@entry.Location</td>
-                                    <td>@entry.TotalCases</td>
-                                    <td>@entry.TotalDeaths</td>
-                                    <td>@entry.TotalVaccinations</td>
+                                    <td>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
+                                    <td>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
                                 </tr>
                             }
                         </tbody>
