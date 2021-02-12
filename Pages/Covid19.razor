@@ -25,21 +25,21 @@
 
                 <div>
                     <h3>Cases</h3>
-                    <table class="table-auto w-full">
+                    <table class="table-fixed w-full">
                         <thead>
-                            <th></th>
-                            <th>Cases</th>
-                            <th>Deaths</th>
-                            <th>Vaccinations</th>
+                            <th class="w-2/5"></th>
+                            <th class="w-1/5">📌</th>
+                            <th class="w-1/5">❌</th>
+                            <th class="w-1/5">💉</th>
                         </thead>
                         <tbody>
                             @foreach (var entry in top25cases)
                             {
                                 <tr>
-                                    <td>@entry.Location</td>
-                                    <td>@entry.TotalCases?.ToMetric(decimals: 1)</td>
-                                    <td>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
-                                    <td>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
+                                    <td class="truncate" title=@entry.Location>@entry.Location</td>
+                                    <td title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
+                                    <td title=@entry.TotalVaccinations>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
                                 </tr>
                             }
                         </tbody>
@@ -48,21 +48,21 @@
 
                 <div>
                     <h3>Deaths</h3>
-                    <table class="table-auto w-full">
+                    <table class="table-fixed w-full">
                         <thead>
-                            <th></th>
-                            <th>Cases</th>
-                            <th>Deaths</th>
-                            <th>Vaccinations</th>
+                            <th class="w-2/5"></th>
+                            <th class="w-1/5">📌</th>
+                            <th class="w-1/5">❌</th>
+                            <th class="w-1/5">💉</th>
                         </thead>
                         <tbody>
                             @foreach (var entry in top25deaths)
                             {
                                 <tr>
-                                    <td>@entry.Location</td>
-                                    <td>@entry.TotalCases?.ToMetric(decimals: 1)</td>
-                                    <td>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
-                                    <td>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
+                                    <td class="truncate" title=@entry.Location>@entry.Location</td>
+                                    <td title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
+                                    <td title=@entry.TotalVaccinations>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
                                 </tr>
                             }
                         </tbody>
@@ -71,21 +71,21 @@
 
                 <div>
                     <h3>Vaccinations</h3>
-                    <table class="table-auto w-full">
+                    <table class="table-fixed w-full">
                         <thead>
-                            <th></th>
-                            <th>Cases</th>
-                            <th>Deaths</th>
-                            <th>Vaccinations</th>
+                            <th class="w-2/5"></th>
+                            <th class="w-1/5">📌</th>
+                            <th class="w-1/5">❌</th>
+                            <th class="w-1/5">💉</th>
                         </thead>
                         <tbody>
                             @foreach (var entry in top25vaccinations)
                             {
                                 <tr>
-                                    <td>@entry.Location</td>
-                                    <td>@entry.TotalCases?.ToMetric(decimals: 1)</td>
-                                    <td>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
-                                    <td>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
+                                    <td class="truncate" title=@entry.Location>@entry.Location</td>
+                                    <td title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)</td>
+                                    <td title=@entry.TotalVaccinations>@entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
                                 </tr>
                             }
                         </tbody>
