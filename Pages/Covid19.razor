@@ -32,24 +32,15 @@
                             <th>Vaccinations</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
+                            @foreach (var entry in top25cases)
+                            {
+                                <tr>
+                                    <td>@entry.Location</td>
+                                    <td>@entry.TotalCases</td>
+                                    <td>@entry.TotalDeaths</td>
+                                    <td>@entry.TotalVaccinations</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -64,24 +55,15 @@
                             <th>Vaccinations</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
+                            @foreach (var entry in top25deaths)
+                            {
+                                <tr>
+                                    <td>@entry.Location</td>
+                                    <td>@entry.TotalCases</td>
+                                    <td>@entry.TotalDeaths</td>
+                                    <td>@entry.TotalVaccinations</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -96,24 +78,15 @@
                             <th>Vaccinations</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>test</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                            </tr>
+                            @foreach (var entry in top25vaccinations)
+                            {
+                                <tr>
+                                    <td>@entry.Location</td>
+                                    <td>@entry.TotalCases</td>
+                                    <td>@entry.TotalDeaths</td>
+                                    <td>@entry.TotalVaccinations</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -122,30 +95,30 @@
         </div>
 
         @* <h2> Overall Data </h2>
-        <table class="w-full table-auto">
+            <table class="w-full table-auto">
             <thead class="sticky font-semibold">
-                <tr>
-                    <th>Continent</th>
-                    <th>Country</th>
-                    <th>Total Cases</th>
-                    <th>Total Deaths</th>
-                    <th>Total Vaccinations</th>
-                </tr>
+            <tr>
+            <th>Continent</th>
+            <th>Country</th>
+            <th>Total Cases</th>
+            <th>Total Deaths</th>
+            <th>Total Vaccinations</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var entry in rawdata.GroupBy(x => x.Location).Select(x => x.OrderByDescending(x =>
+            @foreach (var entry in rawdata.GroupBy(x => x.Location).Select(x => x.OrderByDescending(x =>
             x.Date).First()))
-                {
-                    <tr>
-                        <td>@entry.Continent</td>
-                        <td>@entry.Location</td>
-                        <td>@entry.TotalCases</td>
-                        <td>@entry.TotalDeaths</td>
-                        <td>@entry.TotalVaccinations</td>
-                    </tr>
-                }
+            {
+            <tr>
+            <td>@entry.Continent</td>
+            <td>@entry.Location</td>
+            <td>@entry.TotalCases</td>
+            <td>@entry.TotalDeaths</td>
+            <td>@entry.TotalVaccinations</td>
+            </tr>
+            }
             </tbody>
-        </table> *@
+            </table> *@
 
         <p>
             Data entries: @rawdata.Count()
@@ -156,6 +129,27 @@
 
 @code {
     private Covid19DataEntry[] rawdata;
+
+    private IEnumerable<Covid19DataEntry> top25cases =>
+        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+        .GroupBy(x => x.Location)
+        .Select(x => x.OrderByDescending(y => y.TotalCases).First())
+        .OrderByDescending(x => x.TotalCases)
+        .Take(25);
+
+    private IEnumerable<Covid19DataEntry> top25deaths =>
+        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+        .GroupBy(x => x.Location)
+        .Select(x => x.OrderByDescending(y => y.TotalDeaths).First())
+        .OrderByDescending(x => x.TotalDeaths)
+        .Take(25);
+
+    private IEnumerable<Covid19DataEntry> top25vaccinations =>
+        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+        .GroupBy(x => x.Location)
+        .Select(x => x.OrderByDescending(y => y.TotalVaccinations).First())
+        .OrderByDescending(x => x.TotalVaccinations)
+        .Take(25);
 
     protected override async Task OnInitializedAsync()
     {
