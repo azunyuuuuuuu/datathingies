@@ -62,7 +62,7 @@ namespace datathingies.Data
                 .Select(x => new Covid19WeeklyData
                 {
                     Week = x.Key,
-                    Month = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Monday).Date.ToString("MMMM"),
+                    Month = x.FirstOrDefault().Date.ToString("MMMM"),
                     Monday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Monday),
                     Tuesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Tuesday),
                     Wednesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Wednesday),
