@@ -1,0 +1,135 @@
+﻿@page "/covid19heatmap/{country?}"
+
+@using datathingies.Data
+@using Humanizer
+@inject Covid19DataService _covid
+
+<div class="markdown">
+
+
+    <h1>Covid19 Data</h1>
+
+    @if (rawdata == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <p>
+            <label>
+                Country: @Country
+                <select @bind="Country">
+                    <option value="">Select a country ...</option>
+                    @foreach (var item in countries)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </label>
+        </p>
+
+        @if (heatmapcases == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+
+        <h2> Heatmap </h2>
+
+        <div class="container">
+            <div class="lg:grid lg:grid-flow-col lg:space-x-8 w-full">
+
+                <div>
+                    <h3>Cases</h3>
+                    <table class="table-fixed w-full">
+                        <thead>
+                            <th class="">Week</th>
+                            <th class=""></th>
+                            <th class="text-right w-1/8">Mo</th>
+                            <th class="text-right w-1/8">Tu</th>
+                            <th class="text-right w-1/8">We</th>
+                            <th class="text-right w-1/8">Th</th>
+                            <th class="text-right w-1/8">Fr</th>
+                            <th class="text-right w-1/8">Sa</th>
+                            <th class="text-right w-1/8">Su</th>
+                            <th class="text-right w-1/8">sum</th>
+                        </thead>
+                        <tbody>
+                            @foreach (var entry in heatmapcases)
+                            {
+                                <tr>
+                                    <td>@entry.Week</td>
+                                    <td>@entry.Month</td>
+                                    <td class="text-right" title="@entry.Monday?.Date">@entry.Monday?.NewCases?.ToString("#,##0")</td>
+                                    <td class="text-right" title="@entry.Tuesday?.Date">@entry.Tuesday?.NewCases?.ToString("#,##0")</td>
+                                    <td class="text-right" title="@entry.Wednesday?.Date">@entry.Wednesday?.NewCases?.ToString("#,##0")</td>
+                                    <td class="text-right" title="@entry.Thursday?.Date">@entry.Thursday?.NewCases?.ToString("#,##0")</td>
+                                    <td class="text-right" title="@entry.Friday?.Date">@entry.Friday?.NewCases?.ToString("#,##0")</td>
+                                    <td class="text-right" title="@entry.Saturday?.Date">@entry.Saturday?.NewCases?.ToString("#,##0")</td>
+                                    <td class="text-right" title="@entry.Sunday?.Date">@entry.Sunday?.NewCases?.ToString("#,##0")</td>
+                                    <td>-</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+        }
+    }
+
+</div>
+
+@code {
+    private Covid19DataEntry[] rawdata;
+    private string[] countries;
+
+    [Parameter]
+    public string Country { get; set; } = string.Empty;
+
+    private IEnumerable<WeekData> heatmapcases;
+
+    private IEnumerable<Covid19DataEntry> top25cases =>
+        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+        .GroupBy(x => x.Location)
+        .Select(x => x.OrderByDescending(y => y.TotalCases).First())
+        .OrderByDescending(x => x.TotalCases)
+        .Take(25);
+
+    private IEnumerable<Covid19DataEntry> top25deaths =>
+        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+        .GroupBy(x => x.Location)
+        .Select(x => x.OrderByDescending(y => y.TotalDeaths).First())
+        .OrderByDescending(x => x.TotalDeaths)
+        .Take(25);
+
+    private IEnumerable<Covid19DataEntry> top25vaccinations =>
+        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+        .GroupBy(x => x.Location)
+        .Select(x => x.OrderByDescending(y => y.TotalVaccinations).First())
+        .OrderByDescending(x => x.TotalVaccinations)
+        .Take(25);
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        rawdata = await _covid.GetAllDataAsync();
+        countries = rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+            .GroupBy(x => x.Location)
+            .Select(x => x.Key)
+            .ToArray();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
+        {
+             heatmapcases = _covid.GetHeatmapDataForCountry(Country);
+        }
+    }
+
+
+}

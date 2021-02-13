@@ -28,6 +28,23 @@ namespace datathingies.Data
             return rawdata.ToArray();
         }
 
+        public IEnumerable<WeekData> GetHeatmapDataForCountry(string country)
+            => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
+                .GroupBy(x => x.Date.WeekYear())
+                .Select(x => new WeekData
+                {
+                    Week = x.Key,
+                    Month = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Monday).Date.ToString("MMMM"),
+                    Monday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Monday),
+                    Tuesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Tuesday),
+                    Wednesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Wednesday),
+                    Thursday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Thursday),
+                    Friday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Friday),
+                    Saturday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Saturday),
+                    Sunday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Sunday),
+                })
+                .OrderByDescending(x => x.Week);
+
         private async Task EnsureCsvFileIsLoaded()
         {
             if (rawdata == null)
@@ -75,5 +92,18 @@ namespace datathingies.Data
         [Name("people_vaccinated_per_hundred")] public double? PeopleVaccinatedPerHundred { get; init; }
         [Name("people_fully_vaccinated_per_hundred")] public double? PeopleFullyVaccinatedPerHundred { get; init; }
         [Name("new_vaccinations_smoothed_per_million")] public double? NewVaccinationsSmoothedPerMillion { get; init; }
+    }
+
+    public record WeekData
+    {
+        public string Week { get; init; }
+        public string Month { get; init; }
+        public Covid19DataEntry Monday { get; init; }
+        public Covid19DataEntry Tuesday { get; init; }
+        public Covid19DataEntry Wednesday { get; init; }
+        public Covid19DataEntry Thursday { get; init; }
+        public Covid19DataEntry Friday { get; init; }
+        public Covid19DataEntry Saturday { get; init; }
+        public Covid19DataEntry Sunday { get; init; }
     }
 }
