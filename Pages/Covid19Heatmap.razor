@@ -9,7 +9,7 @@
 
     <h1>Covid19 Data</h1>
 
-    @if (rawdata == null)
+    @if (countries == null)
     {
         <p><em>Loading...</em></p>
     }
@@ -27,14 +27,14 @@
                 </select>
             </label>
         </p>
+    }
 
-        @if (heatmapcases == null)
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-
+    @if (heatmapcases == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
         <h2> Heatmap </h2>
 
         <div class="container">
@@ -60,14 +60,29 @@
                             {
                                 <tr>
                                     <td>@entry.Week</td>
+
                                     <td>@entry.Month</td>
-                                    <td class="text-right" title="@entry.Monday?.Date">@entry.Monday?.NewCases?.ToString("#,##0")</td>
-                                    <td class="text-right" title="@entry.Tuesday?.Date">@entry.Tuesday?.NewCases?.ToString("#,##0")</td>
-                                    <td class="text-right" title="@entry.Wednesday?.Date">@entry.Wednesday?.NewCases?.ToString("#,##0")</td>
-                                    <td class="text-right" title="@entry.Thursday?.Date">@entry.Thursday?.NewCases?.ToString("#,##0")</td>
-                                    <td class="text-right" title="@entry.Friday?.Date">@entry.Friday?.NewCases?.ToString("#,##0")</td>
-                                    <td class="text-right" title="@entry.Saturday?.Date">@entry.Saturday?.NewCases?.ToString("#,##0")</td>
-                                    <td class="text-right" title="@entry.Sunday?.Date">@entry.Sunday?.NewCases?.ToString("#,##0")</td>
+
+                                    <td class="text-right" title="@entry.Monday?.Date" data-color="">
+                                        @entry.Monday?.NewCases?.ToString("#,##0")</td>
+
+                                    <td class="text-right" title="@entry.Tuesday?.Date" data-color="">
+                                        @entry.Tuesday?.NewCases?.ToString("#,##0")</td>
+
+                                    <td class="text-right" title="@entry.Wednesday?.Date" data-color="">
+                                        @entry.Wednesday?.NewCases?.ToString("#,##0")</td>
+
+                                    <td class="text-right" title="@entry.Thursday?.Date" data-color="">
+                                        @entry.Thursday?.NewCases?.ToString("#,##0")</td>
+
+                                    <td class="text-right" title="@entry.Friday?.Date" data-color="">
+                                        @entry.Friday?.NewCases?.ToString("#,##0")</td>
+
+                                    <td class="text-right" title="@entry.Saturday?.Date" data-color="">
+                                        @entry.Saturday?.NewCases?.ToString("#,##0")</td>
+
+                                    <td class="text-right" title="@entry.Sunday?.Date" data-color="">
+                                        @entry.Sunday?.NewCases?.ToString("#,##0")</td>
                                     <td>-</td>
                                 </tr>
                             }
@@ -78,56 +93,30 @@
 
             </div>
         </div>
-        }
     }
+
 
 </div>
 
 @code {
-    private Covid19DataEntry[] rawdata;
-    private string[] countries;
+    private IEnumerable<string> countries;
 
     [Parameter]
     public string Country { get; set; } = string.Empty;
 
-    private IEnumerable<WeekData> heatmapcases;
-
-    private IEnumerable<Covid19DataEntry> top25cases =>
-        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-        .GroupBy(x => x.Location)
-        .Select(x => x.OrderByDescending(y => y.TotalCases).First())
-        .OrderByDescending(x => x.TotalCases)
-        .Take(25);
-
-    private IEnumerable<Covid19DataEntry> top25deaths =>
-        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-        .GroupBy(x => x.Location)
-        .Select(x => x.OrderByDescending(y => y.TotalDeaths).First())
-        .OrderByDescending(x => x.TotalDeaths)
-        .Take(25);
-
-    private IEnumerable<Covid19DataEntry> top25vaccinations =>
-        rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-        .GroupBy(x => x.Location)
-        .Select(x => x.OrderByDescending(y => y.TotalVaccinations).First())
-        .OrderByDescending(x => x.TotalVaccinations)
-        .Take(25);
-
+    private IEnumerable<Covid19WeeklyData> heatmapcases;
 
     protected override async Task OnInitializedAsync()
     {
-        rawdata = await _covid.GetAllDataAsync();
-        countries = rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-            .GroupBy(x => x.Location)
-            .Select(x => x.Key)
-            .ToArray();
+        await _covid.InitializeData();
+        countries = _covid.GetCountries();
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        if (countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
+        if (!string.IsNullOrWhiteSpace(Country) && countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
         {
-             heatmapcases = _covid.GetHeatmapDataForCountry(Country);
+            heatmapcases = _covid.GetHeatmapDataForCountry(Country.ToLower());
         }
     }
 

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CsvHelper;
-using CsvHelper.Configuration.Attributes;
 
 namespace datathingies.Data
 {
@@ -21,17 +20,46 @@ namespace datathingies.Data
             _http = http;
         }
 
-        public async Task<Covid19DataEntry[]> GetAllDataAsync()
+        public async Task InitializeData()
         {
             await EnsureCsvFileIsFresh();
             await EnsureCsvFileIsLoaded();
-            return rawdata.ToArray();
         }
 
-        public IEnumerable<WeekData> GetHeatmapDataForCountry(string country)
+        public IEnumerable<Covid19DataEntry> GetAllDataAsync()
+            => rawdata;
+
+        public IEnumerable<string> GetCountries()
+            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+                .GroupBy(x => x.Location)
+                .Select(x => x.Key)
+                .OrderBy(x => x);
+
+        public IEnumerable<Covid19DataEntry> GetTop25CountriesByCases()
+            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+                .GroupBy(x => x.Location)
+                .Select(x => x.OrderByDescending(y => y.TotalCases).First())
+                .OrderByDescending(x => x.TotalCases)
+                .Take(25);
+
+        public IEnumerable<Covid19DataEntry> GetTop25CountriesByDeaths()
+            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+                .GroupBy(x => x.Location)
+                .Select(x => x.OrderByDescending(y => y.TotalDeaths).First())
+                .OrderByDescending(x => x.TotalDeaths)
+                .Take(25);
+
+        public IEnumerable<Covid19DataEntry> GetTop25CountriesByVaccinations()
+            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+                .GroupBy(x => x.Location)
+                .Select(x => x.OrderByDescending(y => y.TotalVaccinations).First())
+                .OrderByDescending(x => x.TotalVaccinations)
+                .Take(25);
+
+        public IEnumerable<Covid19WeeklyData> GetHeatmapDataForCountry(string country)
             => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
                 .GroupBy(x => x.Date.WeekYear())
-                .Select(x => new WeekData
+                .Select(x => new Covid19WeeklyData
                 {
                     Week = x.Key,
                     Month = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Monday).Date.ToString("MMMM"),
@@ -69,41 +97,5 @@ namespace datathingies.Data
             var contents = await client.GetStringAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
             await File.WriteAllTextAsync(_datafile, contents);
         }
-    }
-
-    public record Covid19DataEntry
-    {
-        [Name("iso_code")] public string IsoCode { get; init; }
-        [Name("continent")] public string Continent { get; init; }
-        [Name("location")] public string Location { get; init; }
-        [Name("date")] public DateTime Date { get; init; }
-        [Name("total_cases")] public double? TotalCases { get; init; }
-        [Name("new_cases")] public double? NewCases { get; init; }
-        [Name("new_cases_smoothed")] public double? NewCasesSmoothed { get; init; }
-        [Name("total_deaths")] public double? TotalDeaths { get; init; }
-        [Name("new_deaths")] public double? NewDeaths { get; init; }
-        [Name("new_deaths_smoothed")] public double? NewDeathsSmoothed { get; init; }
-        [Name("total_vaccinations")] public double? TotalVaccinations { get; init; }
-        [Name("people_vaccinated")] public double? PeopleVaccinated { get; init; }
-        [Name("people_fully_vaccinated")] public double? PeopleFullyVaccinated { get; init; }
-        [Name("new_vaccinations")] public double? NewVaccinations { get; init; }
-        [Name("new_vaccinations_smoothed")] public double? NewVaccinationsSmoothed { get; init; }
-        [Name("total_vaccinations_per_hundred")] public double? TotalVaccinationsPerHundred { get; init; }
-        [Name("people_vaccinated_per_hundred")] public double? PeopleVaccinatedPerHundred { get; init; }
-        [Name("people_fully_vaccinated_per_hundred")] public double? PeopleFullyVaccinatedPerHundred { get; init; }
-        [Name("new_vaccinations_smoothed_per_million")] public double? NewVaccinationsSmoothedPerMillion { get; init; }
-    }
-
-    public record WeekData
-    {
-        public string Week { get; init; }
-        public string Month { get; init; }
-        public Covid19DataEntry Monday { get; init; }
-        public Covid19DataEntry Tuesday { get; init; }
-        public Covid19DataEntry Wednesday { get; init; }
-        public Covid19DataEntry Thursday { get; init; }
-        public Covid19DataEntry Friday { get; init; }
-        public Covid19DataEntry Saturday { get; init; }
-        public Covid19DataEntry Sunday { get; init; }
     }
 }
