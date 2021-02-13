@@ -1,7 +1,7 @@
 <Project>
 
   <ItemGroup>
-    <StaticAssets Include="$(MSBuildThisFileDirectory)**" Exclude="$(MSBuildThisFileDirectory)node_modules\**" />
+    <StaticAssets Include="$(MSBuildThisFileDirectory)**" Exclude="$(MSBuildThisFileDirectory)node_modules\**;$(MSBuildThisFileDirectory)StaticAssets.targets" />
     <UpToDateCheckInput Include="@(StaticAssets)" />
   </ItemGroup>
 
@@ -26,7 +26,9 @@
           BeforeTargets="CoreBuild"
           Inputs="@(StaticAssets)"
           Outputs="$(MSBuildThisFileDirectory)..\wwwroot\$(StaticCSSPath)">
+      <Message Importance="high" Text="Building static assets..." />
       <Exec Command="npm run build:$(Configuration)" WorkingDirectory="$(MSBuildThisFileDirectory)" />
+      <Touch Files="$(MSBuildThisFileDirectory)..\wwwroot\$(StaticCSSPath)" />
   </Target>
 
 </Project>
