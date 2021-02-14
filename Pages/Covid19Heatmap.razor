@@ -1,4 +1,4 @@
-﻿@page "/covid19heatmap/{country?}"
+﻿@page "/covid19/heatmap/{country?}"
 
 @using Microsoft.AspNetCore.Http.Extensions
 @using datathingies.Data
@@ -130,6 +130,6 @@
 
     private void CountrySelectionChanged(ChangeEventArgs e)
     {
-        _nav.NavigateTo($"/covid19heatmap/{((string)e.Value).ToLower()}");
+        _nav.NavigateTo($"/covid19/heatmap/{((string)e.Value).ToLower()}");
     }
 }
