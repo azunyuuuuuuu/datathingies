@@ -16,5 +16,7 @@ WORKDIR /app
 
 COPY --from=build /output ./
 
+VOLUME [ "/app/_data" ]
+
 EXPOSE "80"
 ENTRYPOINT ["dotnet", "datathingies.dll"]

@@ -12,7 +12,7 @@ namespace datathingies.Data
     public class Covid19DataService
     {
         private readonly IHttpClientFactory _http;
-        private static readonly string _datafile = "covid19.csv";
+        private static readonly string _datafile = Path.Combine("_data", "covid19.csv");
         private List<Covid19DataEntry> rawdata;
 
         public Covid19DataService(IHttpClientFactory http)
