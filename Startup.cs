@@ -28,7 +28,6 @@ namespace datathingies
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             
             services.AddHttpClient();
             services.AddTransient<Covid19DataService>();
