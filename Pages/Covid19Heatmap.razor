@@ -1,18 +1,20 @@
-﻿@page "/covid19heatmap/{country?}"
+﻿@page "/covid19/heatmap/{country?}"
 
+@using Microsoft.AspNetCore.Http.Extensions
 @using datathingies.Data
 @using Humanizer
 @inject Covid19DataService _covid
+@inject NavigationManager _nav
 
 <div class="markdown">
 
-    @* 
-    Cell Colors     Hue Sat Lum
-    Green:  #63BE7B  96 105 145
-    Yellow: #FFEB84  35 355 194
-    Red:    #F8696B 254 232 177 
+    @*
+        Cell Colors Hue Sat Lum
+        Green: #63BE7B 96 105 145
+        Yellow: #FFEB84 35 355 194
+        Red: #F8696B 254 232 177
     *@
-    
+
     <h1>Covid19 Data</h1>
 
     @if (countries == null)
@@ -28,7 +30,7 @@
                     <option value="">Select a country ...</option>
                     @foreach (var item in countries)
                     {
-                        <option value="@item">@item</option>
+                        <option value="@item.ToLower()">@item</option>
                     }
                 </select>
             </label>
@@ -147,11 +149,8 @@
         }
     }
 
-    private async Task CountrySelectionChanged(ChangeEventArgs e)
+    private void CountrySelectionChanged(ChangeEventArgs e)
     {
-        Country = (string)e.Value;
-        await OnParametersSetAsync();
+        _nav.NavigateTo($"/covid19/heatmap/{((string)e.Value).ToLower()}");
     }
-
-
 }
