@@ -1,4 +1,6 @@
-﻿@page "/covid19/heatmap/{country?}"
+﻿@page "/covid19/heatmap"
+@page "/covid19/heatmap/{country}"
+@page "/covid19/heatmap/{country}/{datamode}"
 
 @using Microsoft.AspNetCore.Http.Extensions
 @using datathingies.Data
@@ -25,10 +27,19 @@
     {
         <p>
             <label>
-                Country: @Country
+                Country:
                 <select value="@Country" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
                     <option value="">Select a country ...</option>
                     @foreach (var item in countries)
+                    {
+                        <option value="@item.ToLower()">@item</option>
+                    }
+                </select>
+            </label>
+            <label>
+                Data Mode:
+                <select value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
+                    @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataModes)))
                     {
                         <option value="@item.ToLower()">@item</option>
                     }
@@ -71,48 +82,30 @@
 
                                     <td>@entry.Month</td>
 
-                                    <td class="text-right"
-                                        title="@entry.Monday?.Date"
-                                        data-bg-color="">
-                                        @entry.Monday?.NewCases?.ToString("#,##0")
-                                    </td>
+                                    <td class="text-right" data-color="">
+                                        @entry.Monday?.ToString("#,##0")</td>
 
-                                    <td class="text-right"
-                                        title="@entry.Tuesday?.Date"
-                                        data-bg-color="">
-                                        @entry.Tuesday?.NewCases?.ToString("#,##0")
-                                    </td>
+                                    <td class="text-right" data-color="">
+                                        @entry.Tuesday?.ToString("#,##0")</td>
 
-                                    <td class="text-right"
-                                        title="@entry.Wednesday?.Date"
-                                        data-bg-color="">
-                                        @entry.Wednesday?.NewCases?.ToString("#,##0")
-                                    </td>
+                                    <td class="text-right" data-color="">
+                                        @entry.Wednesday?.ToString("#,##0")</td>
 
-                                    <td class="text-right"
-                                        title="@entry.Thursday?.Date"
-                                        data-bg-color="">
-                                        @entry.Thursday?.NewCases?.ToString("#,##0")
-                                    </td>
+                                    <td class="text-right" data-color="">
+                                        @entry.Thursday?.ToString("#,##0")</td>
 
-                                    <td class="text-right"
-                                        title="@entry.Friday?.Date"
-                                        data-bg-color="">
-                                        @entry.Friday?.NewCases?.ToString("#,##0")
-                                    </td>
+                                    <td class="text-right" data-color="">
+                                        @entry.Friday?.ToString("#,##0")</td>
 
-                                    <td class="text-right"
-                                        title="@entry.Saturday?.Date"
-                                        data-bg-color="">
-                                        @entry.Saturday?.NewCases?.ToString("#,##0")
-                                    </td>
+                                    <td class="text-right" data-color="">
+                                        @entry.Saturday?.ToString("#,##0")</td>
 
-                                    <td class="text-right"
-                                        title="@entry.Sunday?.Date"
-                                        data-bg-color="">
-                                        @entry.Sunday?.NewCases?.ToString("#,##0")
+                                    <td class="text-right" data-color="">
+                                        @entry.Sunday?.ToString("#,##0")</td>
+                                    
+                                    <td class="text-right" data-color="">
+                                        @entry.Weekly?.ToString("#,##0")
                                     </td>
-                                    <td>-</td>
                                 </tr>
                             }
                         </tbody>
@@ -132,6 +125,8 @@
 
     [Parameter]
     public string Country { get; set; } = string.Empty;
+    [Parameter]
+    public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
 
     private IEnumerable<Covid19WeeklyData> heatmapcases;
 
@@ -145,7 +140,8 @@
     {
         if (!string.IsNullOrWhiteSpace(Country) && countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
         {
-            heatmapcases = _covid.GetHeatmapDataForCountry(Country.ToLower());
+            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode??Covid19DataService.DataModes.Cases.ToString(), true);
+            heatmapcases = _covid.GetHeatmapForCountryMode(Country, datamode);
         }
     }
 
@@ -153,4 +149,9 @@
     {
         _nav.NavigateTo($"/covid19/heatmap/{((string)e.Value).ToLower()}");
     }
+    private void DataModeSelectionChanged(ChangeEventArgs e)
+    {
+        _nav.NavigateTo($"/covid19/heatmap/{Country.ToLower()}/{(string)e.Value}");
+    }
+
 }

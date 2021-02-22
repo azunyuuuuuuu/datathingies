@@ -4,12 +4,13 @@ namespace datathingies.Data
     {
         public string Week { get; init; }
         public string Month { get; init; }
-        public Covid19DataEntry Monday { get; init; }
-        public Covid19DataEntry Tuesday { get; init; }
-        public Covid19DataEntry Wednesday { get; init; }
-        public Covid19DataEntry Thursday { get; init; }
-        public Covid19DataEntry Friday { get; init; }
-        public Covid19DataEntry Saturday { get; init; }
-        public Covid19DataEntry Sunday { get; init; }
+        public double? Monday { get; init; }
+        public double? Tuesday { get; init; }
+        public double? Wednesday { get; init; }
+        public double? Thursday { get; init; }
+        public double? Friday { get; init; }
+        public double? Saturday { get; init; }
+        public double? Sunday { get; init; }
+        public double? Weekly { get; init; }
     }
 }
