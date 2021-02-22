@@ -37,9 +37,9 @@
                 </select>
             </label>
             <label>
-                Country:
+                Data Mode:
                 <select value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
-                    @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataTypes)))
+                    @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataModes)))
                     {
                         <option value="@item.ToLower()">@item</option>
                     }
@@ -126,7 +126,7 @@
     [Parameter]
     public string Country { get; set; } = string.Empty;
     [Parameter]
-    public string DataMode { get; set; } = Covid19DataService.DataTypes.Cases.ToString();
+    public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
 
     private IEnumerable<Covid19WeeklyData> heatmapcases;
 
@@ -140,7 +140,7 @@
     {
         if (!string.IsNullOrWhiteSpace(Country) && countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
         {
-            var datamode = Enum.Parse<Covid19DataService.DataTypes>(DataMode??Covid19DataService.DataTypes.Cases.ToString(), true);
+            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode??Covid19DataService.DataModes.Cases.ToString(), true);
             heatmapcases = _covid.GetHeatmapForCountryMode(Country, datamode);
         }
     }
