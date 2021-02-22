@@ -35,6 +35,38 @@ namespace datathingies.Data
                 .Select(x => x.Key)
                 .OrderBy(x => x);
 
+        public IEnumerable<Covid19DataEntry> GetDataForCountry(string country)
+            => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
+                .OrderByDescending(x => x.Date);
+
+        public IEnumerable<Covid19WeeklyData> GetHeatmapForCountryMode(string country, DataModes mode)
+            => GetDataForCountry(country)
+                .Select(x => mode switch
+                {
+                    DataModes.Cases => new TableData(x.Date, x.NewCases ?? 0),
+                    DataModes.Deaths => new TableData(x.Date, x.NewDeaths ?? 0),
+                    DataModes.CasesSmoothed => new TableData(x.Date, x.NewCasesSmoothed ?? 0),
+                    DataModes.DeathsSmoothed => new TableData(x.Date, x.NewDeathsSmoothed ?? 0),
+                    DataModes.Vaccinations => new TableData(x.Date, x.NewVaccinations ?? 0),
+                    DataModes.VaccinationsSmoothed => new TableData(x.Date, x.NewVaccinationsSmoothed ?? 0),
+                    _ => new TableData(x.Date, 0)
+                })
+                .GroupBy(x => x.date.WeekYear())
+                .Select(x => new Covid19WeeklyData
+                {
+                    Week = x.Key,
+                    Month = x.FirstOrDefault().date.ToString("MMMM"),
+                    Monday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Monday)?.value,
+                    Tuesday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Tuesday)?.value,
+                    Wednesday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Wednesday)?.value,
+                    Thursday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Thursday)?.value,
+                    Friday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Friday)?.value,
+                    Saturday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Saturday)?.value,
+                    Sunday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Sunday)?.value,
+                    Weekly = x.Sum(x => x.value),
+                })
+                .OrderByDescending(x => x.Week);
+
         public IEnumerable<Covid19DataEntry> GetTop25CountriesByCases()
             => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
                 .GroupBy(x => x.Location)
@@ -55,23 +87,6 @@ namespace datathingies.Data
                 .Select(x => x.OrderByDescending(y => y.TotalVaccinations).First())
                 .OrderByDescending(x => x.TotalVaccinations)
                 .Take(25);
-
-        public IEnumerable<Covid19WeeklyData> GetHeatmapDataForCountry(string country)
-            => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
-                .GroupBy(x => x.Date.WeekYear())
-                .Select(x => new Covid19WeeklyData
-                {
-                    Week = x.Key,
-                    Month = x.FirstOrDefault().Date.ToString("MMMM"),
-                    Monday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Monday),
-                    Tuesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Tuesday),
-                    Wednesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Wednesday),
-                    Thursday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Thursday),
-                    Friday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Friday),
-                    Saturday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Saturday),
-                    Sunday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Sunday),
-                })
-                .OrderByDescending(x => x.Week);
 
         private async Task EnsureCsvFileIsLoaded()
         {
@@ -96,6 +111,18 @@ namespace datathingies.Data
             using var client = _http.CreateClient();
             var contents = await client.GetStringAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
             await File.WriteAllTextAsync(_datafile, contents);
+        }
+
+        public record TableData(DateTime date, double value = 0);
+
+        public enum DataModes
+        {
+            Cases,
+            CasesSmoothed,
+            Deaths,
+            DeathsSmoothed,
+            Vaccinations,
+            VaccinationsSmoothed,
         }
     }
 }
