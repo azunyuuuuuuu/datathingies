@@ -35,6 +35,10 @@ namespace datathingies.Data
                 .Select(x => x.Key)
                 .OrderBy(x => x);
 
+        public IEnumerable<Covid19DataEntry> GetDataForCountry(string country)
+            => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
+                .OrderByDescending(x => x.Date);
+
         public IEnumerable<Covid19DataEntry> GetTop25CountriesByCases()
             => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
                 .GroupBy(x => x.Location)
@@ -55,23 +59,6 @@ namespace datathingies.Data
                 .Select(x => x.OrderByDescending(y => y.TotalVaccinations).First())
                 .OrderByDescending(x => x.TotalVaccinations)
                 .Take(25);
-
-        public IEnumerable<Covid19WeeklyData> GetHeatmapDataForCountry(string country)
-            => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
-                .GroupBy(x => x.Date.WeekYear())
-                .Select(x => new Covid19WeeklyData
-                {
-                    Week = x.Key,
-                    Month = x.FirstOrDefault().Date.ToString("MMMM"),
-                    Monday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Monday),
-                    Tuesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Tuesday),
-                    Wednesday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Wednesday),
-                    Thursday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Thursday),
-                    Friday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Friday),
-                    Saturday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Saturday),
-                    Sunday = x.FirstOrDefault(x => x.Date.DayOfWeek == DayOfWeek.Sunday),
-                })
-                .OrderByDescending(x => x.Week);
 
         private async Task EnsureCsvFileIsLoaded()
         {
