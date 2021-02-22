@@ -39,7 +39,7 @@
             <label>
                 Country:
                 <select value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
-                    @foreach (var item in Enum.GetNames(typeof(DataTypes)))
+                    @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataTypes)))
                     {
                         <option value="@item.ToLower()">@item</option>
                     }
@@ -126,7 +126,7 @@
     [Parameter]
     public string Country { get; set; } = string.Empty;
     [Parameter]
-    public string DataMode { get; set; } = DataTypes.Cases.ToString();
+    public string DataMode { get; set; } = Covid19DataService.DataTypes.Cases.ToString();
 
     private IEnumerable<Covid19WeeklyData> heatmapcases;
 
@@ -140,33 +140,8 @@
     {
         if (!string.IsNullOrWhiteSpace(Country) && countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
         {
-            var temp = _covid.GetDataForCountry(Country)
-                .Select(x => Enum.Parse<DataTypes>(DataMode??DataTypes.Cases.ToString(), true) switch
-                {
-                    DataTypes.Cases=>  new DataMiddle (x.Date,x.NewCases??0),
-                    DataTypes.Deaths=>  new DataMiddle (x.Date,x.NewDeaths??0),
-                    DataTypes.CasesSmoothed=>  new DataMiddle (x.Date,x.NewCasesSmoothed??0),
-                    DataTypes.DeathsSmoothed=>  new DataMiddle (x.Date,x.NewDeathsSmoothed??0),
-                    DataTypes.Vaccinations=>  new DataMiddle (x.Date,x.NewVaccinations??0),
-                    DataTypes.VaccinationsSmoothed=>  new DataMiddle (x.Date,x.NewVaccinationsSmoothed??0),
-                    _ => new DataMiddle(x.Date, 0)
-                })                ;
-
-            heatmapcases = temp.GroupBy(x => x.date.WeekYear())
-                .Select(x => new Covid19WeeklyData
-            {
-                Week = x.Key,
-                Month = x.FirstOrDefault().date.ToString("MMMM"),
-                Monday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Monday)?.value,
-                Tuesday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Tuesday)?.value,
-                Wednesday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Wednesday)?.value,
-                Thursday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Thursday)?.value,
-                Friday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Friday)?.value,
-                Saturday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Saturday)?.value,
-                Sunday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Sunday)?.value,
-                Weekly= x.Sum(x=>x.value),
-            })
-                .OrderByDescending(x => x.Week);
+            var datamode = Enum.Parse<Covid19DataService.DataTypes>(DataMode??Covid19DataService.DataTypes.Cases.ToString(), true);
+            heatmapcases = _covid.GetHeatmapForCountryMode(Country, datamode);
         }
     }
 
@@ -179,15 +154,4 @@
         _nav.NavigateTo($"/covid19/heatmap/{Country.ToLower()}/{(string)e.Value}");
     }
 
-    public record DataMiddle(DateTime date, double value=0);
-
-    public enum DataTypes
-    {
-        Cases,
-        CasesSmoothed,
-        Deaths,
-        DeathsSmoothed,
-        Vaccinations,
-        VaccinationsSmoothed,
-    }
 }

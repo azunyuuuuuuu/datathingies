@@ -39,6 +39,37 @@ namespace datathingies.Data
             => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
                 .OrderByDescending(x => x.Date);
 
+        public IEnumerable<Covid19WeeklyData> GetHeatmapForCountryMode(string country, DataTypes mode)
+        {
+            var temp = GetDataForCountry(country)
+                .Select(x => mode switch
+                {
+                    DataTypes.Cases => new DataMiddle(x.Date, x.NewCases ?? 0),
+                    DataTypes.Deaths => new DataMiddle(x.Date, x.NewDeaths ?? 0),
+                    DataTypes.CasesSmoothed => new DataMiddle(x.Date, x.NewCasesSmoothed ?? 0),
+                    DataTypes.DeathsSmoothed => new DataMiddle(x.Date, x.NewDeathsSmoothed ?? 0),
+                    DataTypes.Vaccinations => new DataMiddle(x.Date, x.NewVaccinations ?? 0),
+                    DataTypes.VaccinationsSmoothed => new DataMiddle(x.Date, x.NewVaccinationsSmoothed ?? 0),
+                    _ => new DataMiddle(x.Date, 0)
+                });
+
+            return temp.GroupBy(x => x.date.WeekYear())
+                .Select(x => new Covid19WeeklyData
+                {
+                    Week = x.Key,
+                    Month = x.FirstOrDefault().date.ToString("MMMM"),
+                    Monday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Monday)?.value,
+                    Tuesday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Tuesday)?.value,
+                    Wednesday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Wednesday)?.value,
+                    Thursday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Thursday)?.value,
+                    Friday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Friday)?.value,
+                    Saturday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Saturday)?.value,
+                    Sunday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Sunday)?.value,
+                    Weekly = x.Sum(x => x.value),
+                })
+                .OrderByDescending(x => x.Week);
+        }
+
         public IEnumerable<Covid19DataEntry> GetTop25CountriesByCases()
             => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
                 .GroupBy(x => x.Location)
@@ -83,6 +114,18 @@ namespace datathingies.Data
             using var client = _http.CreateClient();
             var contents = await client.GetStringAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
             await File.WriteAllTextAsync(_datafile, contents);
+        }
+
+        public record DataMiddle(DateTime date, double value = 0);
+
+        public enum DataTypes
+        {
+            Cases,
+            CasesSmoothed,
+            Deaths,
+            DeathsSmoothed,
+            Vaccinations,
+            VaccinationsSmoothed,
         }
     }
 }
