@@ -40,8 +40,7 @@ namespace datathingies.Data
                 .OrderByDescending(x => x.Date);
 
         public IEnumerable<Covid19WeeklyData> GetHeatmapForCountryMode(string country, DataModes mode)
-        {
-            var temp = GetDataForCountry(country)
+            => GetDataForCountry(country)
                 .Select(x => mode switch
                 {
                     DataModes.Cases => new TableData(x.Date, x.NewCases ?? 0),
@@ -51,9 +50,8 @@ namespace datathingies.Data
                     DataModes.Vaccinations => new TableData(x.Date, x.NewVaccinations ?? 0),
                     DataModes.VaccinationsSmoothed => new TableData(x.Date, x.NewVaccinationsSmoothed ?? 0),
                     _ => new TableData(x.Date, 0)
-                });
-
-            return temp.GroupBy(x => x.date.WeekYear())
+                })
+                .GroupBy(x => x.date.WeekYear())
                 .Select(x => new Covid19WeeklyData
                 {
                     Week = x.Key,
@@ -68,7 +66,6 @@ namespace datathingies.Data
                     Weekly = x.Sum(x => x.value),
                 })
                 .OrderByDescending(x => x.Week);
-        }
 
         public IEnumerable<Covid19DataEntry> GetTop25CountriesByCases()
             => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
