@@ -51,5 +51,12 @@ namespace datathingies
             var b = (color.blue * 255).ToString("X2");
             return $"#{r}{g}{b}";
         }
+
+        public static Color LerpWith(this double value, double max = 100)
+            => Color.Lerp(
+                start: @"#63BE7B".ToColor(),
+                middle: @"#FFEB84".ToColor(),
+                end: @"#F8696B".ToColor(),
+                amount: (float)(value / max));
     }
 }
