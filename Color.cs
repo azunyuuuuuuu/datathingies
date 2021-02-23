@@ -12,7 +12,6 @@ namespace datathingies
         public static Color Lerp(Color start, Color end, float amount)
             => new Color
             {
-
                 Red = Lerp(start.Red, end.Red, amount),
                 Green = Lerp(start.Green, end.Green, amount),
                 Blue = Lerp(start.Blue, end.Blue, amount)
@@ -21,7 +20,6 @@ namespace datathingies
         public static Color Lerp(Color start, Color middle, Color end, float amount)
             => new Color
             {
-
                 Red = Lerp(start.Red, middle.Red, end.Red, amount),
                 Green = Lerp(start.Green, middle.Green, end.Green, amount),
                 Blue = Lerp(start.Blue, middle.Blue, end.Blue, amount)
@@ -31,7 +29,7 @@ namespace datathingies
             => (1f - amount) * start + amount * end;
 
         public static float Lerp(float start, float middle, float end, float amount)
-            => amount <= 0.5f ? Lerp(start, middle, amount * 2f) : Lerp(middle, end, (amount + .5f) * 2f);
+            => amount <= 0.5f ? Lerp(start, middle, amount * 2f) : Lerp(middle, end, (amount - .5f) * 2f);
     }
 
     public static class ColorExtensionMethods
