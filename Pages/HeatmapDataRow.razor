@@ -1,0 +1,38 @@
+﻿@using Data
+<tr>
+    <td>@Data?.Week</td>
+
+    <td>@Data?.Month</td>
+
+    <td class="text-right" data-color="@Data?.ColorMonday">
+        @Data?.Monday?.ToString("#,##0")</td>
+
+    <td class="text-right" data-color="@Data?.ColorTuesday">
+        @Data?.Tuesday?.ToString("#,##0")</td>
+
+    <td class="text-right" data-color="@Data?.ColorWednesday">
+        @Data?.Wednesday?.ToString("#,##0")</td>
+
+    <td class="text-right" data-color="@Data?.ColorThursday">
+        @Data?.Thursday?.ToString("#,##0")</td>
+
+    <td class="text-right" data-color="@Data?.ColorFriday">
+        @Data?.Friday?.ToString("#,##0")</td>
+
+    <td class="text-right" data-color="@Data?.ColorSaturday">
+        @Data?.Saturday?.ToString("#,##0")</td>
+
+    <td class="text-right" data-color="@Data?.ColorSunday">
+        @Data?.Sunday?.ToString("#,##0")</td>
+
+    <td class="text-right" data-color="">
+        @Data?.Weekly?.ToString("#,##0")
+    </td>
+</tr>
+
+@code {
+    private IEnumerable<string> countries;
+
+    [Parameter]
+    public Covid19WeeklyData Data { get; set; }
+}
