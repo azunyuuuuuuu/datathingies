@@ -3,24 +3,29 @@ using System.Text.RegularExpressions;
 
 namespace datathingies
 {
-    public record Color(float red, float green, float blue)
+    public record Color
     {
-        public Color White { get { return new Color(1, 1, 1); } }
-        public Color Black { get { return new Color(0, 0, 0); } }
+        public float Red { get; init; }
+        public float Green { get; init; }
+        public float Blue { get; init; }
 
         public static Color Lerp(Color start, Color end, float amount)
-            => new Color(
-                red: Lerp(start.red, end.red, amount),
-                green: Lerp(start.green, end.green, amount),
-                blue: Lerp(start.blue, end.blue, amount)
-                );
+            => new Color
+            {
+
+                Red = Lerp(start.Red, end.Red, amount),
+                Green = Lerp(start.Green, end.Green, amount),
+                Blue = Lerp(start.Blue, end.Blue, amount)
+            };
 
         public static Color Lerp(Color start, Color middle, Color end, float amount)
-            => new Color(
-                red: Lerp(start.red, middle.red, end.red, amount),
-                green: Lerp(start.green, middle.green, end.green, amount),
-                blue: Lerp(start.blue, middle.blue, end.blue, amount)
-                );
+            => new Color
+            {
+
+                Red = Lerp(start.Red, middle.Red, end.Red, amount),
+                Green = Lerp(start.Green, middle.Green, end.Green, amount),
+                Blue = Lerp(start.Blue, middle.Blue, end.Blue, amount)
+            };
 
         public static float Lerp(float start, float end, float amount)
             => (1f - amount) * start + amount * end;
@@ -41,14 +46,14 @@ namespace datathingies
             var g = (float)int.Parse(temp.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
             var b = (float)int.Parse(temp.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
-            return new Color(r / 255, g / 255, b / 255);
+            return new Color { Red = r / 255, Green = g / 255, Blue = b / 255 };
         }
 
         public static string ToHexString(this Color color)
         {
-            var r = (color.red * 255).ToString("X2");
-            var g = (color.green * 255).ToString("X2");
-            var b = (color.blue * 255).ToString("X2");
+            var r = ((int)(color.Red * 255)).ToString("X2");
+            var g = ((int)(color.Green * 255)).ToString("X2");
+            var b = ((int)(color.Blue * 255)).ToString("X2");
             return $"#{r}{g}{b}";
         }
 
