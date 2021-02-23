@@ -40,18 +40,23 @@ namespace datathingies.Data
                 .OrderByDescending(x => x.Date);
 
         public IEnumerable<Covid19WeeklyData> GetHeatmapForCountryMode(string country, DataModes mode)
-            => GetDataForCountry(country)
-                .Select(x => mode switch
-                {
-                    DataModes.Cases => new TableData(x.Date, x.NewCases ?? 0),
-                    DataModes.Deaths => new TableData(x.Date, x.NewDeaths ?? 0),
-                    DataModes.CasesSmoothed => new TableData(x.Date, x.NewCasesSmoothed ?? 0),
-                    DataModes.DeathsSmoothed => new TableData(x.Date, x.NewDeathsSmoothed ?? 0),
-                    DataModes.Vaccinations => new TableData(x.Date, x.NewVaccinations ?? 0),
-                    DataModes.VaccinationsSmoothed => new TableData(x.Date, x.NewVaccinationsSmoothed ?? 0),
-                    _ => new TableData(x.Date, 0)
-                })
-                .GroupBy(x => x.date.WeekYear())
+        {
+            var data = GetDataForCountry(country)
+               .Select(x => mode switch
+               {
+                   DataModes.Cases => new TableData(x.Date, x.NewCases ?? 0),
+                   DataModes.Deaths => new TableData(x.Date, x.NewDeaths ?? 0),
+                   DataModes.CasesSmoothed => new TableData(x.Date, x.NewCasesSmoothed ?? 0),
+                   DataModes.DeathsSmoothed => new TableData(x.Date, x.NewDeathsSmoothed ?? 0),
+                   DataModes.Vaccinations => new TableData(x.Date, x.NewVaccinations ?? 0),
+                   DataModes.VaccinationsSmoothed => new TableData(x.Date, x.NewVaccinationsSmoothed ?? 0),
+                   _ => new TableData(x.Date, 0)
+               })
+               .ToList();
+
+            var highest = data.Max(x => x.value);
+
+            var grouped = data.GroupBy(x => x.date.WeekYear())
                 .Select(x => new Covid19WeeklyData
                 {
                     Week = x.Key,
@@ -65,7 +70,23 @@ namespace datathingies.Data
                     Sunday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Sunday)?.value,
                     Weekly = x.Sum(x => x.value),
                 })
-                .OrderByDescending(x => x.Week);
+                .ToList();
+
+            var colored = grouped
+                .Select(x => x with
+                {
+                    ColorMonday = x.Monday?.LerpWith(highest).ToHexString(),
+                    ColorTuesday = x.Tuesday?.LerpWith(highest).ToHexString(),
+                    ColorWednesday = x.Wednesday?.LerpWith(highest).ToHexString(),
+                    ColorThursday = x.Thursday?.LerpWith(highest).ToHexString(),
+                    ColorFriday = x.Friday?.LerpWith(highest).ToHexString(),
+                    ColorSaturday = x.Saturday?.LerpWith(highest).ToHexString(),
+                    ColorSunday = x.Sunday?.LerpWith(highest).ToHexString(),
+                })
+                .ToList();
+
+            return colored.OrderByDescending(x => x.Week);
+        }
 
         public IEnumerable<Covid19DataEntry> GetTop25CountriesByCases()
             => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))

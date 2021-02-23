@@ -2,6 +2,7 @@
 @page "/covid19/heatmap/{country}"
 @page "/covid19/heatmap/{country}/{datamode}"
 
+@using System.Collections.ObjectModel
 @using Microsoft.AspNetCore.Http.Extensions
 @using datathingies.Data
 @using Humanizer
@@ -75,39 +76,9 @@
                             <th class="text-right w-1/8">sum</th>
                         </thead>
                         <tbody>
-                            @foreach (var entry in heatmapcases)
-                            {
-                                <tr>
-                                    <td>@entry.Week</td>
-
-                                    <td>@entry.Month</td>
-
-                                    <td class="text-right" data-color="">
-                                        @entry.Monday?.ToString("#,##0")</td>
-
-                                    <td class="text-right" data-color="">
-                                        @entry.Tuesday?.ToString("#,##0")</td>
-
-                                    <td class="text-right" data-color="">
-                                        @entry.Wednesday?.ToString("#,##0")</td>
-
-                                    <td class="text-right" data-color="">
-                                        @entry.Thursday?.ToString("#,##0")</td>
-
-                                    <td class="text-right" data-color="">
-                                        @entry.Friday?.ToString("#,##0")</td>
-
-                                    <td class="text-right" data-color="">
-                                        @entry.Saturday?.ToString("#,##0")</td>
-
-                                    <td class="text-right" data-color="">
-                                        @entry.Sunday?.ToString("#,##0")</td>
-                                    
-                                    <td class="text-right" data-color="">
-                                        @entry.Weekly?.ToString("#,##0")
-                                    </td>
-                                </tr>
-                            }
+                            <Virtualize Items="@heatmapcases" Context="entry" TItem="Covid19WeeklyData">
+                                <HeatmapDataRow Data="@entry" />
+                            </Virtualize>
                         </tbody>
                     </table>
                 </div>
@@ -128,7 +99,7 @@
     [Parameter]
     public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
 
-    private IEnumerable<Covid19WeeklyData> heatmapcases;
+    private ICollection<Covid19WeeklyData> heatmapcases;
 
     protected override async Task OnInitializedAsync()
     {
@@ -140,8 +111,8 @@
     {
         if (!string.IsNullOrWhiteSpace(Country) && countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
         {
-            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode??Covid19DataService.DataModes.Cases.ToString(), true);
-            heatmapcases = _covid.GetHeatmapForCountryMode(Country, datamode);
+            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true);
+            heatmapcases = new Collection<Covid19WeeklyData>(_covid.GetHeatmapForCountryMode(Country, datamode).ToList());
         }
     }
 
