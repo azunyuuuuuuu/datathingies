@@ -7,6 +7,26 @@ namespace datathingies
     {
         public Color White { get { return new Color(1, 1, 1); } }
         public Color Black { get { return new Color(0, 0, 0); } }
+
+        public static Color Lerp(Color start, Color end, float amount)
+            => new Color(
+                red: Lerp(start.red, end.red, amount),
+                green: Lerp(start.green, end.green, amount),
+                blue: Lerp(start.blue, end.blue, amount)
+                );
+
+        public static Color Lerp(Color start, Color middle, Color end, float amount)
+            => new Color(
+                red: Lerp(start.red, middle.red, end.red, amount),
+                green: Lerp(start.green, middle.green, end.green, amount),
+                blue: Lerp(start.blue, middle.blue, end.blue, amount)
+                );
+
+        public static float Lerp(float start, float end, float amount)
+            => (1f - amount) * start + amount * end;
+
+        public static float Lerp(float start, float middle, float end, float amount)
+            => amount <= 0.5f ? Lerp(start, middle, amount * 2f) : Lerp(middle, end, (amount + .5f) * 2f);
     }
 
     public static class ColorExtensionMethods
