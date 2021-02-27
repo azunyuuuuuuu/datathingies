@@ -48,8 +48,7 @@ namespace datathingies.Data
                    DataModes.Vaccinations => new TableData(x.Date, x.NewVaccinations ?? 0),
                    DataModes.VaccinationsSmoothed => new TableData(x.Date, x.NewVaccinationsSmoothed ?? 0),
                    _ => new TableData(x.Date, 0)
-               })
-               .ToList();
+               });
 
             var highest = data.Max(x => x.value);
 
@@ -67,8 +66,7 @@ namespace datathingies.Data
                     Saturday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Saturday)?.value,
                     Sunday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Sunday)?.value,
                     Weekly = x.Sum(x => x.value),
-                })
-                .ToList();
+                });
 
             var colored = grouped
                 .Select(x => x with
@@ -80,8 +78,7 @@ namespace datathingies.Data
                     ColorFriday = x.Friday?.LerpWith(highest).ToHexString(),
                     ColorSaturday = x.Saturday?.LerpWith(highest).ToHexString(),
                     ColorSunday = x.Sunday?.LerpWith(highest).ToHexString(),
-                })
-                .ToList();
+                });
 
             return colored.OrderByDescending(x => x.Week);
         }
@@ -109,17 +106,18 @@ namespace datathingies.Data
 
         private async Task EnsureCsvFileIsLoaded()
         {
-            if (rawdata == null)
-            {
-                rawdata = new List<Covid19DataEntry>();
+            if (rawdata != null)
+                return;
 
-                var contents = await _http.GetByteArrayAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
-                using var stream = new MemoryStream(contents);
-                using var reader = new StreamReader(stream);
-                using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            rawdata = new List<Covid19DataEntry>();
 
-                rawdata.AddRange(csv.GetRecords<Covid19DataEntry>());
-            }
+            var contents = await _http.GetByteArrayAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
+            using var stream = new MemoryStream(contents);
+            using var reader = new StreamReader(stream);
+            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+            await foreach (var item in csv.GetRecordsAsync<Covid19DataEntry>())
+                rawdata.Add(item);
         }
 
         public record TableData(DateTime date, double value = 0);
