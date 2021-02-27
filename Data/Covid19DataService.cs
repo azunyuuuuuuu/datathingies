@@ -11,20 +11,17 @@ namespace datathingies.Data
 {
     public class Covid19DataService
     {
-        private readonly IHttpClientFactory _http;
+        private readonly HttpClient _http;
         private static readonly string _datafile = Path.Combine("_data", "covid19.csv");
         private List<Covid19DataEntry> rawdata;
 
-        public Covid19DataService(IHttpClientFactory http)
+        public Covid19DataService(HttpClient http)
         {
             _http = http;
         }
 
         public async Task InitializeData()
-        {
-            await EnsureCsvFileIsFresh();
-            await EnsureCsvFileIsLoaded();
-        }
+            => await EnsureCsvFileIsLoaded();
 
         public IEnumerable<Covid19DataEntry> GetAllDataAsync()
             => rawdata;
@@ -116,23 +113,13 @@ namespace datathingies.Data
             {
                 rawdata = new List<Covid19DataEntry>();
 
-                var contents = await File.ReadAllBytesAsync(_datafile);
+                var contents = await _http.GetByteArrayAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
                 using var stream = new MemoryStream(contents);
                 using var reader = new StreamReader(stream);
                 using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
                 rawdata.AddRange(csv.GetRecords<Covid19DataEntry>());
             }
-        }
-
-        private async Task EnsureCsvFileIsFresh()
-        {
-            if (System.IO.File.Exists(_datafile) && System.IO.File.GetLastWriteTimeUtc(_datafile) >= (DateTime.UtcNow - TimeSpan.FromHours(3)))
-                return;
-
-            using var client = _http.CreateClient();
-            var contents = await client.GetStringAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
-            await File.WriteAllTextAsync(_datafile, contents);
         }
 
         public record TableData(DateTime date, double value = 0);

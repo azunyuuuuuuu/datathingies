@@ -4,4 +4,6 @@
 
 @tailwind utilities;
 
+@import "blazor.css";
+
 @import "markdown.css";
