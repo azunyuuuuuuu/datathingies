@@ -1,0 +1,127 @@
+﻿@page "/covid19/heatmap"
+@page "/covid19/heatmap/{country}"
+@page "/covid19/heatmap/{country}/{datamode}"
+
+@using System.Collections.ObjectModel
+@using datathingies.Data
+@using Humanizer
+@inject Covid19DataService _covid
+@inject NavigationManager _nav
+
+<div class="markdown">
+
+    @*
+        Cell Colors Hue Sat Lum
+        Green: #63BE7B 96 105 145
+        Yellow: #FFEB84 35 355 194
+        Red: #F8696B 254 232 177
+    *@
+
+    <h1>Covid19 Data</h1>
+
+    @if (countries == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <p>
+            <label>
+                Country:
+                <select value="@Country" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
+                    <option value="">Select a country ...</option>
+                    @foreach (var item in countries)
+                    {
+                        <option value="@item.ToLower()">@item</option>
+                    }
+                </select>
+            </label>
+            <label>
+                Data Mode:
+                <select value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
+                    @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataModes)))
+                    {
+                        <option value="@item.ToLower()">@item</option>
+                    }
+                </select>
+            </label>
+        </p>
+    }
+
+    @if (heatmapcases == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <h2> Heatmap </h2>
+
+        <div class="container">
+            <div class="lg:grid lg:grid-flow-col lg:space-x-8 w-full">
+
+                <div>
+                    <h3>Cases</h3>
+                    <table class="table-fixed w-full">
+                        <thead>
+                            <th class="">Week</th>
+                            <th class=""></th>
+                            <th class="text-right w-1/8">Mo</th>
+                            <th class="text-right w-1/8">Tu</th>
+                            <th class="text-right w-1/8">We</th>
+                            <th class="text-right w-1/8">Th</th>
+                            <th class="text-right w-1/8">Fr</th>
+                            <th class="text-right w-1/8">Sa</th>
+                            <th class="text-right w-1/8">Su</th>
+                            <th class="text-right w-1/8">sum</th>
+                        </thead>
+                        <tbody>
+                            <Virtualize Items="@heatmapcases" Context="entry" TItem="Covid19WeeklyData">
+                                <HeatmapDataRow Data="@entry" />
+                            </Virtualize>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    }
+
+
+</div>
+
+@code {
+    private IEnumerable<string> countries;
+
+    [Parameter]
+    public string Country { get; set; } = string.Empty;
+    [Parameter]
+    public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
+
+    private ICollection<Covid19WeeklyData> heatmapcases;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _covid.InitializeData();
+        countries = _covid.GetCountries();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Country) && countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
+        {
+            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true);
+            heatmapcases = new Collection<Covid19WeeklyData>(_covid.GetHeatmapForCountryMode(Country, datamode).ToList());
+        }
+    }
+
+    private void CountrySelectionChanged(ChangeEventArgs e)
+    {
+        _nav.NavigateTo($"/covid19/heatmap/{((string)e.Value).ToLower()}");
+    }
+    private void DataModeSelectionChanged(ChangeEventArgs e)
+    {
+        _nav.NavigateTo($"/covid19/heatmap/{Country.ToLower()}/{(string)e.Value}");
+    }
+
+}

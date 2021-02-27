@@ -1,0 +1,123 @@
+﻿@page "/covid19/top25"
+
+@using datathingies.Data
+@using Humanizer
+@inject Covid19DataService _covid
+
+<div class="markdown">
+
+
+    <h1>Covid19 Data</h1>
+
+    @if (top25cases == null && top25deaths == null && top25vaccinations == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <h2> Top 25 </h2>
+
+        <div class="container">
+            <div class="lg:grid lg:grid-flow-col lg:space-x-4 w-full">
+
+                <div>
+                    <h3>Cases</h3>
+                    <table class="table-fixed w-full">
+                        <thead>
+                            <th class="w-8 text-right">#</th>
+                            <th class="w-2/5">Country</th>
+                            <th class="w-1/5 text-right">📌</th>
+                            <th class="w-1/5 text-right">❌</th>
+                            <th class="w-1/5 text-right">💉</th>
+                        </thead>
+                        <tbody>
+                            @foreach (var entry in top25cases)
+                            {
+                                <tr>
+                                    <td class="text-right">@(top25cases.IndexOf(entry) + 1)</td>
+                                    <td class="truncate" title=@entry.Location>@entry.Location</td>
+                                    <td class="text-right" title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td class="text-right" title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)
+                                    </td>
+                                    <td class="text-right" title=@entry.TotalVaccinations>
+                                        @entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h3>Deaths</h3>
+                    <table class="table-fixed w-full">
+                        <thead>
+                            <th class="w-8 text-right">#</th>
+                            <th class="w-2/5">Country</th>
+                            <th class="w-1/5 text-right">📌</th>
+                            <th class="w-1/5 text-right">❌</th>
+                            <th class="w-1/5 text-right">💉</th>
+                        </thead>
+                        <tbody>
+                            @foreach (var entry in top25deaths)
+                            {
+                                <tr>
+                                    <td class="text-right">@(top25deaths.IndexOf(entry) + 1)</td>
+                                    <td class="truncate" title=@entry.Location>@entry.Location</td>
+                                    <td class="text-right" title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td class="text-right" title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)
+                                    </td>
+                                    <td class="text-right" title=@entry.TotalVaccinations>
+                                        @entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <h3>Vaccinations</h3>
+                    <table class="table-fixed w-full">
+                        <thead>
+                            <th class="w-8 text-right">#</th>
+                            <th class="w-2/5">Country</th>
+                            <th class="w-1/5 text-right">📌</th>
+                            <th class="w-1/5 text-right">❌</th>
+                            <th class="w-1/5 text-right">💉</th>
+                        </thead>
+                        <tbody>
+                            @foreach (var entry in top25vaccinations)
+                            {
+                                <tr>
+                                    <td class="text-right">@(top25vaccinations.IndexOf(entry) + 1)</td>
+                                    <td class="truncate" title=@entry.Location>@entry.Location</td>
+                                    <td class="text-right" title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
+                                    <td class="text-right" title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)
+                                    </td>
+                                    <td class="text-right" title=@entry.TotalVaccinations>
+                                        @entry.TotalVaccinations?.ToMetric(decimals: 1)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>
+
+@code {
+    private List<Covid19DataEntry> top25cases;
+    private List<Covid19DataEntry> top25deaths;
+    private List<Covid19DataEntry> top25vaccinations;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _covid.InitializeData();
+
+        top25cases = _covid.GetTop25CountriesByCases().ToList();
+        top25deaths = _covid.GetTop25CountriesByDeaths().ToList();
+        top25vaccinations = _covid.GetTop25CountriesByVaccinations().ToList();
+    }
+}
