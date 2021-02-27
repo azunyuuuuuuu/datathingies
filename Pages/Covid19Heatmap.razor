@@ -1,4 +1,4 @@
-@page "/covid19/heatmap"
+﻿@page "/covid19/heatmap"
 @page "/covid19/heatmap/{country}"
 @page "/covid19/heatmap/{country}/{datamode}"
 
@@ -28,7 +28,7 @@
         <p>
             <label>
                 Country:
-                <select value="@Country" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
+                <select class="dark:bg-gray-800 dark:text-gray-100 px-2 py-1" value="@Country" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
                     <option value="">Select a country ...</option>
                     @foreach (var item in countries)
                     {
@@ -38,7 +38,7 @@
             </label>
             <label>
                 Data Mode:
-                <select value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
+                <select class="dark:bg-gray-800 dark:text-gray-100 px-2 py-1" value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
                     @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataModes)))
                     {
                         <option value="@item.ToLower()">@item</option>
