@@ -34,14 +34,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-          
+
       # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
-        run: dotnet publish strimtaima.csproj -c Release -o release --nologo
+        run: dotnet publish datathingies.csproj -c Release -o release --nologo
       
       # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
-      - name: Change base-tag in index.html from / to strimtaima
-        run: sed -i 's/<base href="\/" \/>/<base href="\/strimtaima\/" \/>/g' release/wwwroot/index.html
+      - name: Change base-tag in index.html from / to datathingies
+        run: sed -i 's/<base href="\/" \/>/<base href="\/datathingies\/" \/>/g' release/wwwroot/index.html
       
       # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
       - name: Add .nojekyll file
