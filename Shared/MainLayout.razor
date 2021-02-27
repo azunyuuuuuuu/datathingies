@@ -1,17 +1,17 @@
 @inherits LayoutComponentBase
 
-<div class="container lg:max-w-screen-lg mx-auto">
-    <header class="py-4 mx-4">
-        <NavLink class="text-dark font-extralight" href="/">dashboardthingy</NavLink>
-        <NavLink class="text-dark font-extralight" href="/covid19/top25">covid19</NavLink>
-        <NavLink class="text-dark font-extralight" href="/covid19/heatmap">covid19heatmap</NavLink>
-    </header>
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
 
-    <article class="mx-4">
-        @Body
-    </article>
+    <div class="main">
+        <div class="top-row px-4">
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>
 
-    <footer class="py-4 mx-4 my-4 text-center text-xs font-thin">
-        &copy; 2021 azunyuuuuuuu - datathingies
-    </footer>
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
 </div>
