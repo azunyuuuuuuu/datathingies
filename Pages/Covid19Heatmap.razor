@@ -1,4 +1,4 @@
-﻿@page "/covid19/heatmap"
+@page "/covid19/heatmap"
 @page "/covid19/heatmap/{country}"
 @page "/covid19/heatmap/{country}/{datamode}"
 
@@ -117,11 +117,16 @@
 
     private void CountrySelectionChanged(ChangeEventArgs e)
     {
-        _nav.NavigateTo($"covid19/heatmap/{((string)e.Value).ToLower()}");
+        var country = ((string)e.Value).ToLower();
+        var mode = (DataMode ?? Covid19DataService.DataModes.Cases.ToString()).ToLower();
+        _nav.NavigateTo($"covid19/heatmap/{country}/{mode}");
     }
+
     private void DataModeSelectionChanged(ChangeEventArgs e)
     {
-        _nav.NavigateTo($"covid19/heatmap/{Country.ToLower()}/{(string)e.Value}");
+        var country = Country.ToLower();
+        var mode = ((string)e.Value).ToLower();
+        _nav.NavigateTo($"covid19/heatmap/{country}/{mode}");
     }
 
 }
