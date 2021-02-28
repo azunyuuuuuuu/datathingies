@@ -111,8 +111,7 @@ namespace datathingies.Data
 
             rawdata = new List<Covid19DataEntry>();
 
-            var contents = await _http.GetByteArrayAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
-            using var stream = new MemoryStream(contents);
+            using var stream = await _http.GetStreamAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
             using var reader = new StreamReader(stream);
             using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
