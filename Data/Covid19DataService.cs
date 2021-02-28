@@ -83,24 +83,29 @@ namespace datathingies.Data
             return colored.OrderByDescending(x => x.Week);
         }
 
-        public IEnumerable<Covid19DataEntry> GetTop25CountriesByCases()
+        internal IEnumerable<Covid19CondensedData> GetCovid19CondensedData()
             => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
                 .GroupBy(x => x.Location)
-                .Select(x => x.OrderByDescending(y => y.TotalCases).First())
+                .Select(x => new Covid19CondensedData
+                {
+                    Location = x.Key,
+                    TotalCases = x.Sum(x => x.NewCases),
+                    TotalDeaths = x.Sum(x => x.NewDeaths),
+                    TotalVaccinations = x.Sum(x => x.NewVaccinations)
+                });
+
+        public IEnumerable<Covid19CondensedData> GetTop25CountriesByCases()
+            => GetCovid19CondensedData()
                 .OrderByDescending(x => x.TotalCases)
                 .Take(25);
 
-        public IEnumerable<Covid19DataEntry> GetTop25CountriesByDeaths()
-            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-                .GroupBy(x => x.Location)
-                .Select(x => x.OrderByDescending(y => y.TotalDeaths).First())
+        public IEnumerable<Covid19CondensedData> GetTop25CountriesByDeaths()
+            => GetCovid19CondensedData()
                 .OrderByDescending(x => x.TotalDeaths)
                 .Take(25);
 
-        public IEnumerable<Covid19DataEntry> GetTop25CountriesByVaccinations()
-            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-                .GroupBy(x => x.Location)
-                .Select(x => x.OrderByDescending(y => y.TotalVaccinations).First())
+        public IEnumerable<Covid19CondensedData> GetTop25CountriesByVaccinations()
+            => GetCovid19CondensedData()
                 .OrderByDescending(x => x.TotalVaccinations)
                 .Take(25);
 
