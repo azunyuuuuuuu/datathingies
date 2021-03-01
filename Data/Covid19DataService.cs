@@ -55,7 +55,7 @@ namespace datathingies.Data
             var grouped = data.GroupBy(x => x.date.WeekYear())
                 .Select(x => new Covid19WeeklyData
                 {
-                    Date = x.FirstOrDefault().date,
+                    Date = x.OrderBy(x => x.date).FirstOrDefault().date,
                     Week = x.Key,
                     Month = x.FirstOrDefault().date.ToString("MMMM"),
                     Monday = x.FirstOrDefault(x => x.date.DayOfWeek == DayOfWeek.Monday)?.value,
