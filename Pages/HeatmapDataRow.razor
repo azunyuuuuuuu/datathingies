@@ -4,25 +4,32 @@
 
     <td>@Data?.Month</td>
 
-    <td class="text-right text-gray-800" style="background-color: @Data?.ColorMonday" title="@(Data?.Date + TimeSpan.FromDays(0))">
+    <td class="text-right text-gray-800" style="background-color: @Data?.ColorMonday" title=@((Data.Date +
+        TimeSpan.FromDays(0)).ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
         @Data?.Monday?.ToString("#,##0")</td>
 
-    <td class="text-right text-gray-800" style="background-color: @Data?.ColorTuesday" title="@(Data?.Date + TimeSpan.FromDays(1))">
+    <td class="text-right text-gray-800" style="background-color: @Data?.ColorTuesday" title=@((Data.Date +
+        TimeSpan.FromDays(1)).ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
         @Data?.Tuesday?.ToString("#,##0")</td>
 
-    <td class="text-right text-gray-800" style="background-color: @Data?.ColorWednesday" title="@(Data?.Date + TimeSpan.FromDays(2))">
+    <td class="text-right text-gray-800" style="background-color: @Data?.ColorWednesday" title=@((Data.Date +
+        TimeSpan.FromDays(2)).ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
         @Data?.Wednesday?.ToString("#,##0")</td>
 
-    <td class="text-right text-gray-800" style="background-color: @Data?.ColorThursday" title="@(Data?.Date + TimeSpan.FromDays(3))">
+    <td class="text-right text-gray-800" style="background-color: @Data?.ColorThursday" title=@((Data.Date +
+        TimeSpan.FromDays(3)).ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
         @Data?.Thursday?.ToString("#,##0")</td>
 
-    <td class="text-right text-gray-800" style="background-color: @Data?.ColorFriday" title="@(Data?.Date + TimeSpan.FromDays(4))">
+    <td class="text-right text-gray-800" style="background-color: @Data?.ColorFriday" title=@((Data.Date +
+        TimeSpan.FromDays(4)).ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
         @Data?.Friday?.ToString("#,##0")</td>
 
-    <td class="text-right text-gray-800" style="background-color: @Data?.ColorSaturday" title="@(Data?.Date + TimeSpan.FromDays(5))">
+    <td class="text-right text-gray-800" style="background-color: @Data?.ColorSaturday" title=@((Data.Date +
+        TimeSpan.FromDays(5)).ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
         @Data?.Saturday?.ToString("#,##0")</td>
 
-    <td class="text-right text-gray-800" style="background-color: @Data?.ColorSunday" title="@(Data?.Date + TimeSpan.FromDays(6))">
+    <td class="text-right text-gray-800" style="background-color: @Data?.ColorSunday" title=@((Data.Date +
+        TimeSpan.FromDays(6)).ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
         @Data?.Sunday?.ToString("#,##0")</td>
 
     <td class="text-right" data-color="">
