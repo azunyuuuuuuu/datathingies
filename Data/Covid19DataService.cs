@@ -94,17 +94,17 @@ namespace datathingies.Data
                     TotalVaccinations = x.Sum(x => x.NewVaccinations)
                 });
 
-        public IEnumerable<Covid19CondensedData> GetTop25CountriesByCases()
+        public IEnumerable<Covid19CondensedData> GetHighest25CountriesByCases()
             => GetCovid19CondensedData()
                 .OrderByDescending(x => x.TotalCases)
                 .Take(25);
 
-        public IEnumerable<Covid19CondensedData> GetTop25CountriesByDeaths()
+        public IEnumerable<Covid19CondensedData> GetHighest25CountriesByDeaths()
             => GetCovid19CondensedData()
                 .OrderByDescending(x => x.TotalDeaths)
                 .Take(25);
 
-        public IEnumerable<Covid19CondensedData> GetTop25CountriesByVaccinations()
+        public IEnumerable<Covid19CondensedData> GetHighest25CountriesByVaccinations()
             => GetCovid19CondensedData()
                 .OrderByDescending(x => x.TotalVaccinations)
                 .Take(25);

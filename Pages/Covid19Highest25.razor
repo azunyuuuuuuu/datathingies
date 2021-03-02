@@ -1,4 +1,4 @@
-﻿@page "/covid19/top25"
+﻿@page "/covid19/highest25"
 
 @using datathingies.Data
 @using Humanizer
@@ -9,7 +9,7 @@
 
     <h1>Covid19 Data</h1>
 
-    @if (top25cases == null && top25deaths == null && top25vaccinations == null)
+    @if (highest25cases == null && highest25deaths == null && highest25vaccinations == null)
     {
         <LoadingSpinner/>
     }
@@ -31,10 +31,10 @@
                             <th class="w-1/5 text-right">💉</th>
                         </thead>
                         <tbody>
-                            @foreach (var entry in top25cases)
+                            @foreach (var entry in highest25cases)
                             {
                                 <tr>
-                                    <td class="text-right">@(top25cases.IndexOf(entry) + 1)</td>
+                                    <td class="text-right">@(highest25cases.IndexOf(entry) + 1)</td>
                                     <td class="truncate" title=@entry.Location>@entry.Location</td>
                                     <td class="text-right" title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
                                     <td class="text-right" title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)
@@ -58,10 +58,10 @@
                             <th class="w-1/5 text-right">💉</th>
                         </thead>
                         <tbody>
-                            @foreach (var entry in top25deaths)
+                            @foreach (var entry in highest25deaths)
                             {
                                 <tr>
-                                    <td class="text-right">@(top25deaths.IndexOf(entry) + 1)</td>
+                                    <td class="text-right">@(highest25deaths.IndexOf(entry) + 1)</td>
                                     <td class="truncate" title=@entry.Location>@entry.Location</td>
                                     <td class="text-right" title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
                                     <td class="text-right" title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)
@@ -85,10 +85,10 @@
                             <th class="w-1/5 text-right">💉</th>
                         </thead>
                         <tbody>
-                            @foreach (var entry in top25vaccinations)
+                            @foreach (var entry in highest25vaccinations)
                             {
                                 <tr>
-                                    <td class="text-right">@(top25vaccinations.IndexOf(entry) + 1)</td>
+                                    <td class="text-right">@(highest25vaccinations.IndexOf(entry) + 1)</td>
                                     <td class="truncate" title=@entry.Location>@entry.Location</td>
                                     <td class="text-right" title=@entry.TotalCases>@entry.TotalCases?.ToMetric(decimals: 1)</td>
                                     <td class="text-right" title=@entry.TotalDeaths>@entry.TotalDeaths?.ToMetric(decimals: 1)
@@ -108,16 +108,16 @@
 </div>
 
 @code {
-    private List<Covid19CondensedData> top25cases;
-    private List<Covid19CondensedData> top25deaths;
-    private List<Covid19CondensedData> top25vaccinations;
+    private List<Covid19CondensedData> highest25cases;
+    private List<Covid19CondensedData> highest25deaths;
+    private List<Covid19CondensedData> highest25vaccinations;
 
     protected override async Task OnInitializedAsync()
     {
         await _covid.InitializeData();
 
-        top25cases = _covid.GetTop25CountriesByCases().ToList();
-        top25deaths = _covid.GetTop25CountriesByDeaths().ToList();
-        top25vaccinations = _covid.GetTop25CountriesByVaccinations().ToList();
+        highest25cases = _covid.GetHighest25CountriesByCases().ToList();
+        highest25deaths = _covid.GetHighest25CountriesByDeaths().ToList();
+        highest25vaccinations = _covid.GetHighest25CountriesByVaccinations().ToList();
     }
 }
