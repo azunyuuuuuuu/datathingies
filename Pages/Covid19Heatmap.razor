@@ -35,7 +35,7 @@
                 <select class="dark:bg-gray-800 dark:text-gray-100 px-2 py-1" value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
                     @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataModes)))
                     {
-                        <option value="@item.ToLower()">@item</option>
+                        <option value="@item.ToLower()">@item.Humanize()</option>
                     }
                 </select>
             </label>
