@@ -43,10 +43,10 @@ namespace datathingies.Data
                {
                    DataModes.Cases => new TableData(x.Date, x.NewCases ?? 0),
                    DataModes.Deaths => new TableData(x.Date, x.NewDeaths ?? 0),
-                   DataModes.CasesSmoothed => new TableData(x.Date, x.NewCasesSmoothed ?? 0),
-                   DataModes.DeathsSmoothed => new TableData(x.Date, x.NewDeathsSmoothed ?? 0),
+                   DataModes.Cases7DayAverage => new TableData(x.Date, x.NewCases7DayAverage ?? 0),
+                   DataModes.Deaths7DayAverage => new TableData(x.Date, x.NewDeaths7DayAverage ?? 0),
                    DataModes.Vaccinations => new TableData(x.Date, x.NewVaccinations ?? 0),
-                   DataModes.VaccinationsSmoothed => new TableData(x.Date, x.NewVaccinationsSmoothed ?? 0),
+                   DataModes.Vaccinations7DayAverage => new TableData(x.Date, x.NewVaccinations7DayAverage ?? 0),
                    _ => new TableData(x.Date, 0)
                });
 
@@ -129,11 +129,11 @@ namespace datathingies.Data
         public enum DataModes
         {
             Cases,
-            CasesSmoothed,
+            Cases7DayAverage,
             Deaths,
-            DeathsSmoothed,
+            Deaths7DayAverage,
             Vaccinations,
-            VaccinationsSmoothed,
+            Vaccinations7DayAverage,
         }
     }
 }
