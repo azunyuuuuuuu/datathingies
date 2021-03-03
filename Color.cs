@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace datathingies
@@ -30,6 +32,33 @@ namespace datathingies
 
         public static float Lerp(float start, float middle, float end, float amount)
             => amount <= 0.5f ? Lerp(start, middle, amount * 2f) : Lerp(middle, end, (amount - .5f) * 2f);
+    }
+
+    public record ColorGradient
+    {
+        public List<Color> Colors { get; init; } = new List<Color>();
+
+        public Color GetColorAt(float value)
+        {
+            if (value < 0 || value > 1)
+                throw new ArgumentOutOfRangeException($"Parameter '{nameof(value)}' needs to be between 0 and 1");
+
+            if (Colors.Count == 0)
+                throw new Exception("Not enough colors specified.");
+
+            if (Colors.Count == 1)
+                return Colors.First();
+
+            var tempvalue = value * (Colors.Count - 1);
+
+            var floor = (int)Math.Floor(tempvalue);
+            var ceiling = (int)Math.Ceiling(tempvalue);
+
+            var colorlower = Colors[floor];
+            var colorhigher = Colors[ceiling];
+
+            return Color.Lerp(colorlower, colorhigher, tempvalue - floor);
+        }
     }
 
     public static class ColorExtensionMethods
