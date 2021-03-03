@@ -68,9 +68,11 @@
                                 <th class="text-right w-1/8">sum</th>
                             </thead>
                             <tbody>
-                                <Virtualize Items="@heatmapcases" Context="entry" TItem="Covid19WeeklyData">
-                                    <HeatmapDataRow Data="@entry" />
-                                </Virtualize>
+                                <CascadingValue Value="heatmapMetadata">
+                                    <Virtualize Items="@heatmapcases" Context="entry" TItem="Covid19WeeklyData">
+                                        <HeatmapDataRow Data="@entry" />
+                                    </Virtualize>
+                                </CascadingValue>
                             </tbody>
                         </table>
                     </div>
@@ -90,6 +92,7 @@
     public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
 
     private ICollection<Covid19WeeklyData> heatmapcases;
+    private HeatmapMetadata heatmapMetadata = new HeatmapMetadata();
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,6 +106,10 @@
         {
             var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true);
             heatmapcases = new Collection<Covid19WeeklyData>(_covid.GetHeatmapForCountryMode(Country, datamode).ToList());
+
+            heatmapMetadata = heatmapMetadata with {
+
+            };
         }
     }
 
