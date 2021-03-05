@@ -98,6 +98,8 @@ namespace datathingies.Data
                 case DataModes.Deaths7DayAverage:
                     output = output with
                     {
+                        MinValue = 0,
+                        MinWeeklyValue = 0,
                         Gradient = new ColorGradient
                         {
                             Colors = new List<Color>{
@@ -113,6 +115,8 @@ namespace datathingies.Data
                 case DataModes.Vaccinations7DayAverage:
                     output = output with
                     {
+                        MinValue = 1,
+                        MinWeeklyValue = 1,
                         Gradient = new ColorGradient
                         {
                             Colors = new List<Color>{
