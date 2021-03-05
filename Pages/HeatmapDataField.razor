@@ -1,15 +1,15 @@
 ﻿@using Data
-<td class="text-right text-gray-800"
+<td class="text-right @(Value > 0 ? "text-gray-800" : "text-gray-600" )"
     style="background-color: @_heatmapmetadata.GetColorAtAsHex(Value)" 
     title=@(Date.ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
 
-    @Value.ToString("#,##0")
+    @Value?.ToString("#,##0")
 
 </td>
 
 @code {
     [Parameter]
-    public double Value { get; set; }
+    public double? Value { get; set; }
     [Parameter]
     public DateTime Date { get; set; }
 

@@ -98,8 +98,6 @@ namespace datathingies.Data
                 case DataModes.Deaths7DayAverage:
                     output = output with
                     {
-                        MinValue = 0,
-                        MinWeeklyValue = 0,
                         Gradient = new ColorGradient
                         {
                             Colors = new List<Color>{
@@ -115,8 +113,6 @@ namespace datathingies.Data
                 case DataModes.Vaccinations7DayAverage:
                     output = output with
                     {
-                        MinValue = 1,
-                        MinWeeklyValue = 1,
                         Gradient = new ColorGradient
                         {
                             Colors = new List<Color>{
@@ -135,8 +131,8 @@ namespace datathingies.Data
                 case DataModes.Deaths: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewDeaths ?? 0) };
                 case DataModes.Cases7DayAverage: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewCases7DayAverage ?? 0) };
                 case DataModes.Deaths7DayAverage: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewDeaths7DayAverage ?? 0) };
-                case DataModes.Vaccinations: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewVaccinations ?? 0) };
-                case DataModes.Vaccinations7DayAverage: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewVaccinations7DayAverage ?? 0) };
+                case DataModes.Vaccinations: return output with { MinValue = 1, MaxValue = data.Max(x => x.NewVaccinations ?? 0) };
+                case DataModes.Vaccinations7DayAverage: return output with { MinValue = 1, MaxValue = data.Max(x => x.NewVaccinations7DayAverage ?? 0) };
                 default: return output with { MinValue = 0, MaxValue = 0 };
             }
         }

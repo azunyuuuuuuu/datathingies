@@ -4,13 +4,13 @@
 
     <td>@Data?.Month</td>
 
-    <HeatmapDataField Value=@(Data?.Monday ?? 0) Date=@(Data.Date + TimeSpan.FromDays(0)) />
-    <HeatmapDataField Value=@(Data?.Tuesday ?? 0) Date=@(Data.Date + TimeSpan.FromDays(1)) />
-    <HeatmapDataField Value=@(Data?.Wednesday ?? 0) Date=@(Data.Date + TimeSpan.FromDays(2)) />
-    <HeatmapDataField Value=@(Data?.Thursday ?? 0) Date=@(Data.Date + TimeSpan.FromDays(3)) />
-    <HeatmapDataField Value=@(Data?.Friday ?? 0) Date=@(Data.Date + TimeSpan.FromDays(4)) />
-    <HeatmapDataField Value=@(Data?.Saturday ?? 0) Date=@(Data.Date + TimeSpan.FromDays(5))/>
-    <HeatmapDataField Value=@(Data?.Sunday ?? 0) Date=@(Data.Date + TimeSpan.FromDays(6)) />
+    <HeatmapDataField Value=@Data?.Monday Date=@(Data.Date + TimeSpan.FromDays(0)) />
+    <HeatmapDataField Value=@Data?.Tuesday Date=@(Data.Date + TimeSpan.FromDays(1)) />
+    <HeatmapDataField Value=@Data?.Wednesday Date=@(Data.Date + TimeSpan.FromDays(2)) />
+    <HeatmapDataField Value=@Data?.Thursday Date=@(Data.Date + TimeSpan.FromDays(3)) />
+    <HeatmapDataField Value=@Data?.Friday Date=@(Data.Date + TimeSpan.FromDays(4)) />
+    <HeatmapDataField Value=@Data?.Saturday Date=@(Data.Date + TimeSpan.FromDays(5))/>
+    <HeatmapDataField Value=@Data?.Sunday Date=@(Data.Date + TimeSpan.FromDays(6)) />
 
     <td class="text-right" data-color="">
         @Data?.Weekly?.ToString("#,##0")
