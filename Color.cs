@@ -1,15 +1,18 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace datathingies
 {
     public record Color
     {
-        public float Red { get; init; }
-        public float Green { get; init; }
-        public float Blue { get; init; }
+        public double Red { get; init; }
+        public double Green { get; init; }
+        public double Blue { get; init; }
+        public double Alpha { get; init; } = 1;
 
-        public static Color Lerp(Color start, Color end, float amount)
+        public static Color Lerp(Color start, Color end, double amount)
             => new Color
             {
                 Red = Lerp(start.Red, end.Red, amount),
@@ -17,7 +20,7 @@ namespace datathingies
                 Blue = Lerp(start.Blue, end.Blue, amount)
             };
 
-        public static Color Lerp(Color start, Color middle, Color end, float amount)
+        public static Color Lerp(Color start, Color middle, Color end, double amount)
             => new Color
             {
                 Red = Lerp(start.Red, middle.Red, end.Red, amount),
@@ -25,11 +28,38 @@ namespace datathingies
                 Blue = Lerp(start.Blue, middle.Blue, end.Blue, amount)
             };
 
-        public static float Lerp(float start, float end, float amount)
+        public static double Lerp(double start, double end, double amount)
             => (1f - amount) * start + amount * end;
 
-        public static float Lerp(float start, float middle, float end, float amount)
+        public static double Lerp(double start, double middle, double end, double amount)
             => amount <= 0.5f ? Lerp(start, middle, amount * 2f) : Lerp(middle, end, (amount - .5f) * 2f);
+    }
+
+    public record ColorGradient
+    {
+        public List<Color> Colors { get; init; } = new List<Color>();
+
+        public Color GetColorAt(double value)
+        {
+            if (value < 0 || value > 1)
+                throw new ArgumentOutOfRangeException($"Parameter '{nameof(value)}' needs to be between 0 and 1");
+
+            if (Colors.Count == 0)
+                throw new Exception("Not enough colors specified.");
+
+            if (Colors.Count == 1)
+                return Colors.First();
+
+            var tempvalue = value * (Colors.Count - 1);
+
+            var floor = (int)Math.Floor(tempvalue);
+            var ceiling = (int)Math.Ceiling(tempvalue);
+
+            var colorlower = Colors[floor];
+            var colorhigher = Colors[ceiling];
+
+            return Color.Lerp(colorlower, colorhigher, tempvalue - floor);
+        }
     }
 
     public static class ColorExtensionMethods
@@ -52,7 +82,8 @@ namespace datathingies
             var r = ((int)(color.Red * 255)).ToString("X2");
             var g = ((int)(color.Green * 255)).ToString("X2");
             var b = ((int)(color.Blue * 255)).ToString("X2");
-            return $"#{r}{g}{b}";
+            var a = ((int)(color.Alpha * 255)).ToString("X2");
+            return $"#{r}{g}{b}{a}";
         }
 
         public static Color LerpWith(this double value, double max = 100)

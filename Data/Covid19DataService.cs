@@ -83,6 +83,60 @@ namespace datathingies.Data
             return colored.OrderByDescending(x => x.Week);
         }
 
+        public HeatmapMetadata GetHeatmapMetadataForCountryMode(string country, DataModes mode)
+        {
+            var data = GetDataForCountry(country);
+
+            var output = new HeatmapMetadata();
+
+            switch (mode)
+            {
+                default:
+                case DataModes.Cases:
+                case DataModes.Deaths:
+                case DataModes.Cases7DayAverage:
+                case DataModes.Deaths7DayAverage:
+                    output = output with
+                    {
+                        Gradient = new ColorGradient
+                        {
+                            Colors = new List<Color>{
+                                @"#63BE7B".ToColor(),
+                                @"#FFEB84".ToColor(),
+                                @"#F8696B".ToColor(),
+                            }
+                        }
+                    };
+                    break;
+
+                case DataModes.Vaccinations:
+                case DataModes.Vaccinations7DayAverage:
+                    output = output with
+                    {
+                        Gradient = new ColorGradient
+                        {
+                            Colors = new List<Color>{
+                                @"#F8696B".ToColor(),
+                                @"#FFEB84".ToColor(),
+                                @"#63BE7B".ToColor(),
+                            }
+                        }
+                    };
+                    break;
+            };
+
+            switch (mode)
+            {
+                case DataModes.Cases: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewCases ?? 0) };
+                case DataModes.Deaths: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewDeaths ?? 0) };
+                case DataModes.Cases7DayAverage: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewCases7DayAverage ?? 0) };
+                case DataModes.Deaths7DayAverage: return output with { MinValue = 0, MaxValue = data.Max(x => x.NewDeaths7DayAverage ?? 0) };
+                case DataModes.Vaccinations: return output with { MinValue = 1, MaxValue = data.Max(x => x.NewVaccinations ?? 0) };
+                case DataModes.Vaccinations7DayAverage: return output with { MinValue = 1, MaxValue = data.Max(x => x.NewVaccinations7DayAverage ?? 0) };
+                default: return output with { MinValue = 0, MaxValue = 0 };
+            }
+        }
+
         internal IEnumerable<Covid19CondensedData> GetCovid19CondensedData()
             => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
                 .GroupBy(x => x.Location)
