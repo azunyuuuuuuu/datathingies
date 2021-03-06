@@ -12,21 +12,27 @@ on:
     - cron:  '30 6 * * *'
 
 jobs:
-  deploy-to-github-pages:
+  setup-node:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.103
-
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+
+  setup-dotnet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.103
+
+  prepare:
+    runs-on: ubuntu-latest
+    needs: [setup-node, setup-dotnet]
+    steps:
+      - uses: actions/checkout@v2
 
       - name: Prepare csv files
         run: |
@@ -40,17 +46,32 @@ jobs:
           for f in *; do mv "$f" "$f.tmp"; mv "$f.tmp" "`echo $f | tr "[:upper:]" "[:lower:]"`"; done
 
       - name: Change base-tag in index.html from / to datathingies
-        run: sed -i 's/<base href="\/" \/>/<base href="\/datathingies\/" \/>/g' release/wwwroot/index.html
+        run: sed -i 's/<base href="\/" \/>/<base href="\/datathingies\/" \/>/g' wwwroot/index.html
       
       - name: Copy index.html to 404.html
-        run: cp release/wwwroot/index.html release/wwwroot/404.html
+        run: cp wwwroot/index.html wwwroot/404.html
       
+  build:
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - run: dotnet restore datathingies.csproj
+      - run: dotnet build datathingies.csproj -c Release --nologo
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Publish .NET Core Project
         run: dotnet publish datathingies.csproj -c Release -o release --nologo
       
+  deploy:
+    runs-on: ubuntu-latest
+    needs: publish
+    steps:
       - name: Add .nojekyll file
         run: touch release/wwwroot/.nojekyll
-        
+
       - name: Commit wwwroot to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
