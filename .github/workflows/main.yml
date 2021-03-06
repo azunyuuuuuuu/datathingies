@@ -28,7 +28,7 @@ jobs:
         with:
           dotnet-version: 5.0.103
 
-  prepare:
+  build-and-publish:
     runs-on: ubuntu-latest
     needs: [setup-node, setup-dotnet]
     steps:
@@ -51,24 +51,12 @@ jobs:
       - name: Copy index.html to 404.html
         run: cp wwwroot/index.html wwwroot/404.html
       
-  build:
-    runs-on: ubuntu-latest
-    needs: prepare
-    steps:
       - run: dotnet restore datathingies.csproj
       - run: dotnet build datathingies.csproj -c Release --nologo
 
-  publish:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Publish .NET Core Project
         run: dotnet publish datathingies.csproj -c Release -o release --nologo
       
-  deploy:
-    runs-on: ubuntu-latest
-    needs: publish
-    steps:
       - name: Add .nojekyll file
         run: touch release/wwwroot/.nojekyll
 
