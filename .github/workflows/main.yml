@@ -73,4 +73,4 @@ jobs:
           branch: gh-pages
           folder: release/wwwroot
           silent: true
-          single-commit: true
+          # single-commit: true
