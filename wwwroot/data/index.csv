@@ -1,2 +1,2 @@
-iso_code,location
-TEST,Test Data
+iso_code,continent,location
+TEST,Test Continent,Test Data
