@@ -1,6 +1,10 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
+      "hash": "sha256-94iDrJMjkBKcF0BR5kBRvGmCVGhdqfDYCMVCIxdsuZU=",
+      "url": "404.html"
+    },
+    {
       "hash": "sha256-YufCayhRhDhUm7axyvixcoIkX9RIXXrNvJz0q7\/z008=",
       "url": "css\/main.css"
     },
@@ -885,7 +889,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-naKTaBy5DOdHRYgi3qGF5CouRUkA9uFqHqK1vCH1uRs=",
+      "hash": "sha256-94iDrJMjkBKcF0BR5kBRvGmCVGhdqfDYCMVCIxdsuZU=",
       "url": "index.html"
     },
     {
@@ -997,7 +1001,7 @@
       "url": "_framework\/System.IO.Pipelines.dll"
     },
     {
-      "hash": "sha256-3mnpGSbIGzpmi2GfT4wuycT2Sf1dEuBPRRq2YYp8QBE=",
+      "hash": "sha256-+aFh+k8gmS9tN9advcOGQqhb9a84Mv7mMC0fGKfkR6w=",
       "url": "_framework\/datathingies.dll"
     },
     {
@@ -1305,7 +1309,7 @@
       "url": "_framework\/zh-Hant\/Humanizer.resources.dll"
     },
     {
-      "hash": "sha256-UVDLMZtaclY05ek95B4kDE9jeNx4++VXtf7sg\/meAq0=",
+      "hash": "sha256-kJuZc2XADgYxh2XTRbsxuxsynEcanfvBA0ewTtVzTP8=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -1313,5 +1317,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "SHqtG+e8"
+  "version": "8i9OHe62"
 };
