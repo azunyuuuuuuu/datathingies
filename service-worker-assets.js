@@ -553,7 +553,7 @@
       "url": "data\/mys.csv"
     },
     {
-      "hash": "sha256-ELHUVOz7hYGGCjErzRLdgLtOXS+dRbzoGjb4ABKYHTc=",
+      "hash": "sha256-D422H6x5Thhbk7cncHY3Q5li7ANKrhF9+llmJsZLN\/0=",
       "url": "data\/nam.csv"
     },
     {
@@ -589,7 +589,7 @@
       "url": "data\/omn.csv"
     },
     {
-      "hash": "sha256-LV3+SKnT6EJdIV\/D+umGHI7I1mrsSFZfzJCOY5cQt0I=",
+      "hash": "sha256-S\/fliQkTng1Y+1UQ+vvXL5bWV9RR0hbebwpicKBqSKk=",
       "url": "data\/owid-covid-data.csv"
     },
     {
@@ -617,7 +617,7 @@
       "url": "data\/owid_kos.csv"
     },
     {
-      "hash": "sha256-020gOZNPIVjgl3ulY4ZaEs7I9IDJ+p192D50fc6Jaoo=",
+      "hash": "sha256-75IWwi\/GJQliENiXE4cSeh+ADvKkoyVF7QpZiRAbGG0=",
       "url": "data\/owid_nam.csv"
     },
     {
@@ -633,7 +633,7 @@
       "url": "data\/owid_sam.csv"
     },
     {
-      "hash": "sha256-sYaiUEBaXX6DT6vT7LDBAw\/FCl2kcZZLdBseX7h3yrA=",
+      "hash": "sha256-6fMblvm7rofGlpR9b28sIGeLY+Bw1WLM37FIA91Obek=",
       "url": "data\/owid_wrl.csv"
     },
     {
@@ -829,7 +829,7 @@
       "url": "data\/ury.csv"
     },
     {
-      "hash": "sha256-d8kSEvkkZIGXuLAus3wgzLFkst3heWSuSGLZLOxWnm0=",
+      "hash": "sha256-UQRt1O9wYXoyQ118jbHHmN6mt38jiD6Q5GZTrD0A7Pk=",
       "url": "data\/usa.csv"
     },
     {
@@ -1313,5 +1313,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "sBKaKxIM"
+  "version": "SHqtG+e8"
 };
