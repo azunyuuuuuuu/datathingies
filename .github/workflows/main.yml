@@ -45,6 +45,7 @@ jobs:
             cat owid-covid-data.csv | grep $country >> $country.csv;
           done
           cat owid-covid-data.csv | cut -d',' -f1,2,3 | uniq > index.csv
+          for f in *; do mv "$f" "$f.tmp"; mv "$f.tmp" "`echo $f | tr "[:upper:]" "[:lower:]"`"; done
 
       # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
