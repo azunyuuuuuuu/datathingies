@@ -22,4 +22,7 @@
 
   <Import Project="StaticAssets\StaticAssets.targets" />
 
+  <ItemGroup>
+    <Content Remove="wwwroot\data\*" />
+  </ItemGroup>
 </Project>
