@@ -6,5 +6,5 @@ for country in `tail -n +2 owid-covid-data.csv | cut -d',' -f1 | sort | uniq`; d
     head -n1 owid-covid-data.csv > $country.csv;
     cat owid-covid-data.csv | grep $country >> $country.csv;
 done
-cat owid-covid-data.csv | cut -d',' -f1,3 | uniq > index.csv
+cat owid-covid-data.csv | cut -d',' -f1,2,3 | uniq > index.csv
 ```
