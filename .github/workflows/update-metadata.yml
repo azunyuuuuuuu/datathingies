@@ -1,48 +1,48 @@
-# This is a basic workflow to help you get started with Actions
+# # This is a basic workflow to help you get started with Actions
 
-name: Update Metadata
+# name: Update Metadata
 
-# Controls when the action will run. 
-on:
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-  workflow_run:
-    workflows: ["Deploy to GitHub Pages"]
-    branches: [main]
-    types: 
-      - completed
+# # Controls when the action will run. 
+# on:
+#   # Allows you to run this workflow manually from the Actions tab
+#   workflow_dispatch:
+#   workflow_run:
+#     workflows: ["Deploy to GitHub Pages"]
+#     branches: [main]
+#     types: 
+#       - completed
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  process_data:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# jobs:
+#   # This workflow contains a single job called "build"
+#   process_data:
+#     # The type of runner that the job will run on
+#     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        with:
-          ref: gh-pages
+#     # Steps represent a sequence of tasks that will be executed as part of the job
+#     steps:
+#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       - uses: actions/checkout@v2
+#         with:
+#           ref: gh-pages
       
-      # Runs a set of commands using the runners shell
-      - name: Prepare csv files
-        run: |
-          mkdir data && cd data
-          wget -nv https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv
-          for country in `tail -n +2 owid-covid-data.csv | cut -d',' -f1 | sort | uniq`; do
-            head -n1 owid-covid-data.csv > $country.csv;
-            cat owid-covid-data.csv | grep $country >> $country.csv;
-          done
-          cat owid-covid-data.csv | cut -d',' -f1,2,3 | uniq > index.csv
+#       # Runs a set of commands using the runners shell
+#       - name: Prepare csv files
+#         run: |
+#           mkdir data && cd data
+#           wget -nv https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv
+#           for country in `tail -n +2 owid-covid-data.csv | cut -d',' -f1 | sort | uniq`; do
+#             head -n1 owid-covid-data.csv > $country.csv;
+#             cat owid-covid-data.csv | grep $country >> $country.csv;
+#           done
+#           cat owid-covid-data.csv | cut -d',' -f1,2,3 | uniq > index.csv
 
-      - name: Commit csv files to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          git-config-name: "azunyuuuuuuu"
-          git-config-email: "azunyuuuuuuu@users.noreply.github.com"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          folder: "data"
-          target-folder: "data"
+#       - name: Commit csv files to GitHub Pages
+#         uses: JamesIves/github-pages-deploy-action@4.1.0
+#         with:
+#           git-config-name: "azunyuuuuuuu"
+#           git-config-email: "azunyuuuuuuu@users.noreply.github.com"
+#           token: ${{ secrets.GITHUB_TOKEN }}
+#           branch: gh-pages
+#           folder: "data"
+#           target-folder: "data"
