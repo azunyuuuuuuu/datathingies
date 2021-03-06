@@ -397,4 +397,4 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,aspnetcore
 _data/*
-wwwroot/data/owid-covid-data.csv
+wwwroot/data/*
