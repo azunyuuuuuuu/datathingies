@@ -1,9 +1,17 @@
 ﻿@using Data
+@using Humanizer
+
 <td class="text-right @(Value > 0 ? "text-gray-800" : "text-gray-600" )"
     style="background-color: @_heatmapmetadata.GetColorAtAsHex(Value)" 
     title=@(Date.ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
 
-    @Value?.ToString("#,##0")
+    <span class="hidden md:inline">
+        @Value?.ToString("#,##0")
+    </span>
+
+    <span class="inline md:hidden">
+        @Value?.ToMetric(decimals: 1)
+    </span>
 
 </td>
 
