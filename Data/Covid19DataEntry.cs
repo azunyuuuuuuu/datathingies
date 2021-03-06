@@ -25,4 +25,11 @@ namespace datathingies.Data
         [Name("people_fully_vaccinated_per_hundred")] public double? PeopleFullyVaccinatedPerHundred { get; init; }
         [Name("new_vaccinations_smoothed_per_million")] public double? NewVaccinations7DayAveragePerMillion { get; init; }
     }
+
+    public record Covid19IndexData
+    {
+        [Name("iso_code")] public string IsoCode { get; init; }
+        [Name("continent")] public string Continent { get; init; }
+        [Name("location")] public string Location { get; init; }
+    }
 }
