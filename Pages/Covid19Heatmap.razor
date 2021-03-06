@@ -1,6 +1,6 @@
 ﻿@page "/covid19/heatmap"
-@page "/covid19/heatmap/{country}"
-@page "/covid19/heatmap/{country}/{datamode}"
+@page "/covid19/heatmap/{isocode}"
+@page "/covid19/heatmap/{isocode}/{datamode}"
 
 @using System.Collections.ObjectModel
 @using datathingies.Data
@@ -22,11 +22,11 @@
         <p>
             <label>
                 Country:
-                <select class="dark:bg-gray-800 dark:text-gray-100 px-2 py-1" value="@Country" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
+                <select class="dark:bg-gray-800 dark:text-gray-100 px-2 py-1" value="@IsoCode" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
                     <option value="">Select a country ...</option>
                     @foreach (var item in countries)
                     {
-                        <option value="@item.ToLower()">@item</option>
+                        <option value="@item.IsoCode.ToLower()">@item.Location</option>
                     }
                 </select>
             </label>
@@ -84,10 +84,10 @@
 </div>
 
 @code {
-    private IEnumerable<string> countries;
+    private IEnumerable<Covid19IndexData> countries;
 
     [Parameter]
-    public string Country { get; set; } = string.Empty;
+    public string IsoCode { get; set; } = string.Empty;
     [Parameter]
     public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
 
@@ -97,17 +97,17 @@
     protected override async Task OnInitializedAsync()
     {
         await _covid.InitializeData();
-        countries = _covid.GetCountries();
+        countries = await _covid.GetCountries();
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        if (!string.IsNullOrWhiteSpace(Country) && countries.Select(x => x.ToLower()).Contains(Country.ToLower()))
+        if (!string.IsNullOrWhiteSpace(IsoCode) && countries.Select(x => x.IsoCode.ToLower()).Contains(IsoCode.ToLower()))
         {
             var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true);
-            heatmapcases = new Collection<Covid19WeeklyData>(_covid.GetHeatmapForCountryMode(Country, datamode).ToList());
+            heatmapcases = new Collection<Covid19WeeklyData>((await _covid.GetHeatmapForCountryMode(IsoCode, datamode)).ToList());
 
-            heatmapMetadata= _covid.GetHeatmapMetadataForCountryMode(Country,datamode);
+            heatmapMetadata = await _covid.GetHeatmapMetadataForCountryMode(IsoCode,datamode);
             heatmapMetadata = heatmapMetadata with {
                 MinWeeklyValue=0,
                 MaxWeeklyValue=heatmapcases.Max(x=>x.Weekly??0)
@@ -117,16 +117,16 @@
 
     private void CountrySelectionChanged(ChangeEventArgs e)
     {
-        var country = ((string)e.Value).ToLower();
+        var isocode = ((string)e.Value).ToLower();
         var mode = (DataMode ?? Covid19DataService.DataModes.Cases.ToString()).ToLower();
-        _nav.NavigateTo($"covid19/heatmap/{country}/{mode}");
+        _nav.NavigateTo($"covid19/heatmap/{isocode}/{mode}");
     }
 
     private void DataModeSelectionChanged(ChangeEventArgs e)
     {
-        var country = Country.ToLower();
+        var isocode = IsoCode.ToLower();
         var mode = ((string)e.Value).ToLower();
-        _nav.NavigateTo($"covid19/heatmap/{country}/{mode}");
+        _nav.NavigateTo($"covid19/heatmap/{isocode}/{mode}");
     }
 
 }

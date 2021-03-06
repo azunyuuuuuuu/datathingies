@@ -12,33 +12,70 @@ namespace datathingies.Data
     public class Covid19DataService
     {
         private readonly HttpClient _http;
-        private static readonly string _datafile = Path.Combine("_data", "covid19.csv");
-        private List<Covid19DataEntry> rawdata;
+        private List<Covid19DataEntry> _rawdata = new List<Covid19DataEntry>();
+        private List<Covid19IndexData> _index = new List<Covid19IndexData>();
 
         public Covid19DataService(HttpClient http)
         {
             _http = http;
         }
 
+        public async Task InitializeIndex()
+            => await EnsureIndexIsLoaded();
+
+        private async Task EnsureIndexIsLoaded()
+        {
+            if (_index.Count > 0)
+                return;
+
+            using var stream = await _http.GetStreamAsync("data/index.csv");
+            using var reader = new StreamReader(stream);
+            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+            await foreach (var item in csv.GetRecordsAsync<Covid19IndexData>())
+                _index.Add(item);
+        }
+
+        private async Task EnsureDataForCountryIsLoaded(string isocode)
+        {
+            if (_rawdata.Where(x => x.IsoCode == isocode).Count() > 0)
+                return;
+
+            using var stream = await _http.GetStreamAsync($"data/{isocode}.csv");
+            using var reader = new StreamReader(stream);
+            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
+            await foreach (var item in csv.GetRecordsAsync<Covid19DataEntry>())
+                _rawdata.Add(item);
+        }
+
         public async Task InitializeData()
             => await EnsureCsvFileIsLoaded();
 
         public IEnumerable<Covid19DataEntry> GetAllDataAsync()
-            => rawdata;
+            => _rawdata;
 
-        public IEnumerable<string> GetCountries()
-            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-                .GroupBy(x => x.Location)
-                .Select(x => x.Key)
-                .OrderBy(x => x);
-
-        public IEnumerable<Covid19DataEntry> GetDataForCountry(string country)
-            => rawdata.Where(x => x.Location.ToLower() == country.ToLower())
-                .OrderByDescending(x => x.Date);
-
-        public IEnumerable<Covid19WeeklyData> GetHeatmapForCountryMode(string country, DataModes mode)
+        public async Task<IEnumerable<Covid19IndexData>> GetCountries()
         {
-            var data = GetDataForCountry(country)
+            await EnsureIndexIsLoaded();
+
+            return _index.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+                .OrderBy(x => x.Location);
+        }
+
+        public async Task<IEnumerable<Covid19DataEntry>> GetDataForCountry(string isocode)
+        {
+            await EnsureDataForCountryIsLoaded(isocode);
+
+            return _rawdata.Where(x => x.IsoCode.ToLower() == isocode.ToLower())
+                .OrderByDescending(x => x.Date);
+        }
+
+        public async Task<IEnumerable<Covid19WeeklyData>> GetHeatmapForCountryMode(string isocode, DataModes mode)
+        {
+            await EnsureDataForCountryIsLoaded(isocode);
+
+            var data = (await GetDataForCountry(isocode))
                .Select(x => mode switch
                {
                    DataModes.Cases => new TableData(x.Date, x.NewCases ?? 0),
@@ -83,9 +120,9 @@ namespace datathingies.Data
             return colored.OrderByDescending(x => x.Week);
         }
 
-        public HeatmapMetadata GetHeatmapMetadataForCountryMode(string country, DataModes mode)
+        public async Task<HeatmapMetadata> GetHeatmapMetadataForCountryMode(string isocode, DataModes mode)
         {
-            var data = GetDataForCountry(country);
+            var data = await GetDataForCountry(isocode);
 
             var output = new HeatmapMetadata();
 
@@ -138,7 +175,7 @@ namespace datathingies.Data
         }
 
         internal IEnumerable<Covid19CondensedData> GetCovid19CondensedData()
-            => rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
+            => _rawdata.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
                 .GroupBy(x => x.Location)
                 .Select(x => new Covid19CondensedData
                 {
@@ -165,17 +202,15 @@ namespace datathingies.Data
 
         private async Task EnsureCsvFileIsLoaded()
         {
-            if (rawdata != null)
+            if (_rawdata != null)
                 return;
-
-            rawdata = new List<Covid19DataEntry>();
 
             using var stream = await _http.GetStreamAsync("https://covid.ourworldindata.org/data/owid-covid-data.csv");
             using var reader = new StreamReader(stream);
             using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
             await foreach (var item in csv.GetRecordsAsync<Covid19DataEntry>())
-                rawdata.Add(item);
+                _rawdata.Add(item);
         }
 
         public record TableData(DateTime date, double value = 0);
