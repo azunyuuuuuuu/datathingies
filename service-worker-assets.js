@@ -29,7 +29,7 @@
       "url": "data\/and.csv"
     },
     {
-      "hash": "sha256-8g9C49ozNKcQBDLk2dZelxFtdtWhSrt9BtBgnchYKoc=",
+      "hash": "sha256-TJGb+RhKH4QrPknBMwn4DEjqVBLUMtIhJrftaguOqFY=",
       "url": "data\/are.csv"
     },
     {
@@ -45,11 +45,11 @@
       "url": "data\/atg.csv"
     },
     {
-      "hash": "sha256-BpAtlhH41N2O57vExlOXmfbDdxcx0Vycs3hyDXSv0i0=",
+      "hash": "sha256-yrw5gc3wJUCudBlO3sv96dhnI5vSOenrqpulbeZ9iqQ=",
       "url": "data\/aus.csv"
     },
     {
-      "hash": "sha256-LjHXZFvB0s2XHWGck+uEe77ydkqIPEXcmJavcqFOWV4=",
+      "hash": "sha256-ssP+M9XZ5wLUxFt5e80Z12\/sJEd87wCM3AVqUn+JWVM=",
       "url": "data\/aut.csv"
     },
     {
@@ -61,7 +61,7 @@
       "url": "data\/bdi.csv"
     },
     {
-      "hash": "sha256-2Xoxt+LdHDOZOc8+\/4seYFShE0SKOgFv24nUwANlHQs=",
+      "hash": "sha256-dMWPwp+\/GCnACjQOjeLrsNsv6ZPaYOKdw\/D+KTDZD1g=",
       "url": "data\/bel.csv"
     },
     {
@@ -77,11 +77,11 @@
       "url": "data\/bgd.csv"
     },
     {
-      "hash": "sha256-s\/I\/832xB9038NYMO1jPzi9FtypuJMYBpV2fTyaL104=",
+      "hash": "sha256-trwjj+ZZGpjfHfhrkZz3SILaTxEAdBNMiti3DmdfEk8=",
       "url": "data\/bgr.csv"
     },
     {
-      "hash": "sha256-1URKuFJMC5JepnGGpHrXJH1UZ8Hm35hrqMa7nPsBU80=",
+      "hash": "sha256-GyAuOBtCBEdx4w1QdLg9Z6a5UbTjwG0HnLxpS\/pqIHk=",
       "url": "data\/bhr.csv"
     },
     {
@@ -105,11 +105,11 @@
       "url": "data\/bmu.csv"
     },
     {
-      "hash": "sha256-VOzTBYKgm52tHuzMi\/eZqdlX5CKRpNBCq9k1EWUdDcA=",
+      "hash": "sha256-UY1k77yUPC6bkDrqB8S+LiOXGOQ20+VVR3pJbOwtVaU=",
       "url": "data\/bol.csv"
     },
     {
-      "hash": "sha256-LwhlYzcDnh9VkQMEUleeWlpqiSI0G5TeFYVpNOvQHdY=",
+      "hash": "sha256-f5uLnK2cvjWMjzeFPKIQ3s8AOUc7NyfyWIMW0wDXooQ=",
       "url": "data\/bra.csv"
     },
     {
@@ -133,7 +133,7 @@
       "url": "data\/caf.csv"
     },
     {
-      "hash": "sha256-hitZNvlq963+x7ZP4D+i\/RzoowA96RPBXR9Wd3ShrhM=",
+      "hash": "sha256-p4eC5NRtrqpmWGkIEmQF\/AQle748+4DcXrvF69ltvbg=",
       "url": "data\/can.csv"
     },
     {
@@ -141,7 +141,7 @@
       "url": "data\/che.csv"
     },
     {
-      "hash": "sha256-tS0z+RmeVG6\/NAf+0AkVxmo3SbD1MnlqyO1\/cSjtXbM=",
+      "hash": "sha256-UkZKQXbrSMGwdB27Xy3OOWuAqiKbUWC\/dJ5p\/x88oqw=",
       "url": "data\/chl.csv"
     },
     {
@@ -165,7 +165,7 @@
       "url": "data\/cog.csv"
     },
     {
-      "hash": "sha256-eGm\/bzuQzw4cXAyN9MDufWpSGVgbLc3juRtXTx7eKc0=",
+      "hash": "sha256-611F8WQ2B4pM0YRaafT\/WDH7oYAXFdJerDUlKOSBmEo=",
       "url": "data\/col.csv"
     },
     {
@@ -177,7 +177,7 @@
       "url": "data\/cpv.csv"
     },
     {
-      "hash": "sha256-RG\/rA5y5d\/+TFxmoXTe77kASr8Zew6J0mtF7o4JyKNs=",
+      "hash": "sha256-O+Ync6RLzNYg+8dY7PdDikEa24lDJu9cLzfzbm\/GgMA=",
       "url": "data\/cri.csv"
     },
     {
@@ -193,11 +193,11 @@
       "url": "data\/cyp.csv"
     },
     {
-      "hash": "sha256-d0vgB70iPJgujVVoxWnbEpS\/Lk+tLleczJhig0uERBI=",
+      "hash": "sha256-Gw6lo8ySzGETNaW1VICf1+cwp29ATaG1AjOsyPlg9ZA=",
       "url": "data\/cze.csv"
     },
     {
-      "hash": "sha256-rzW44EV\/rEzmM4fxbo8doei3kSYwha4GJSNbhGa80XM=",
+      "hash": "sha256-a5hr1B1CTECFcs7VUDz5I7Of7GgkiJqf\/n5FlC6GclY=",
       "url": "data\/deu.csv"
     },
     {
@@ -209,11 +209,11 @@
       "url": "data\/dma.csv"
     },
     {
-      "hash": "sha256-g6GOfyPN0uvpSWWxiMyZ7WkyrJ1LF8eCY22nz\/iR6u0=",
+      "hash": "sha256-nKT5K5TkzOEBQVesgFUdFEvRXzbeBhINXKCFlcMvfxg=",
       "url": "data\/dnk.csv"
     },
     {
-      "hash": "sha256-vzKZb4OPpLwm5sA3GMntHVKnkfDlp4X5gADE+QINKnQ=",
+      "hash": "sha256-afOulVBKNcAbtEwtOWqRcwEj6mNJ4CN6InZBPSHjIfc=",
       "url": "data\/dom.csv"
     },
     {
@@ -245,7 +245,7 @@
       "url": "data\/eth.csv"
     },
     {
-      "hash": "sha256-pOAmI4O4kntQj3VAJ\/zIPWuUT7vn4P5I6DqkL4lpkPg=",
+      "hash": "sha256-4TBlom\/sJEXJjRR7PPTDtnaHZEWH0MFhL0VfqmP+9kM=",
       "url": "data\/fin.csv"
     },
     {
@@ -257,11 +257,11 @@
       "url": "data\/flk.csv"
     },
     {
-      "hash": "sha256-gggHrcoxaY306fhBzHdP32Tb2DcBHra04+kb8WmZNyo=",
+      "hash": "sha256-Dyw74\/EffZ9kdEfHZJNexC8VH515BZGOK9Or5iicafI=",
       "url": "data\/fra.csv"
     },
     {
-      "hash": "sha256-GKuMxol7Uw9sR99pONvATRmD7BtLNmjpHZqhnMJZbvQ=",
+      "hash": "sha256-3dZ9ZfWBMyjvztXBHzNzTR\/yP3ncXUhmsq9qjg\/34x4=",
       "url": "data\/fro.csv"
     },
     {
@@ -273,7 +273,7 @@
       "url": "data\/gab.csv"
     },
     {
-      "hash": "sha256-qGPpWD4A6EDEV2Nm8jxIFqlSUzb6Y44MXSNNWEzS1KQ=",
+      "hash": "sha256-ao4fL3LKvuA4TjT6rKJDenBO8xuQy9Z38jcHdL8POMk=",
       "url": "data\/gbr.csv"
     },
     {
@@ -289,7 +289,7 @@
       "url": "data\/gha.csv"
     },
     {
-      "hash": "sha256-X8IrkB7WV14crUjDbZ9Nu\/CmNYw9r2txvbYMXy6u0+Y=",
+      "hash": "sha256-p+9jKQvyTCqSRhzs0swEOSUhI2XH\/uZFPppm0loDMF8=",
       "url": "data\/gib.csv"
     },
     {
@@ -309,7 +309,7 @@
       "url": "data\/gnq.csv"
     },
     {
-      "hash": "sha256-WYYuSZdkdPNhlCpNOW8fRALLPMu2W9DahG\/w06wEAcM=",
+      "hash": "sha256-UD50vWFRzCAEOM3XejwYUi\/lslQjysY1MVrO3jqAbA0=",
       "url": "data\/grc.csv"
     },
     {
@@ -345,7 +345,7 @@
       "url": "data\/hti.csv"
     },
     {
-      "hash": "sha256-zHPL4+8gJlIy3XMdMtXKKJn\/T1dAFEfoOpkTdtZcOnY=",
+      "hash": "sha256-s+epnmfhncy1eNfmc2uSNCgUY7WxwitpW\/hZc+nakOY=",
       "url": "data\/hun.csv"
     },
     {
@@ -353,11 +353,11 @@
       "url": "data\/idn.csv"
     },
     {
-      "hash": "sha256-cAz\/jRJDaZ2t+2CXbdLp8U1K\/VMI76i1HxtwPHlyS1M=",
+      "hash": "sha256-GxVqm9bkQog81cSE2ad7e\/vkmzx7HhR5aHhZlTdrF+Q=",
       "url": "data\/imn.csv"
     },
     {
-      "hash": "sha256-AMi0TBDwTZBPyS7e9vKLlh6R7sHUBOX7xPCbuhuJuFc=",
+      "hash": "sha256-GahlO5Kl1jug1uusFUJ9tBghNE5m\/9GSoniNZAFuvUA=",
       "url": "data\/ind.csv"
     },
     {
@@ -365,7 +365,7 @@
       "url": "data\/index.csv"
     },
     {
-      "hash": "sha256-n\/QVo5IMHhLj6rKIjqoKswsE7UT3HLt5gi\/5dVyz0TI=",
+      "hash": "sha256-dU9evHAubWes9KlQtlaL72m14gGREwjJ1U+rs+y7Dbc=",
       "url": "data\/irl.csv"
     },
     {
@@ -381,11 +381,11 @@
       "url": "data\/isl.csv"
     },
     {
-      "hash": "sha256-VZxOOFaXTKKBsszX+2VE10u0JXnOhi9ExLzwe6V20Bc=",
+      "hash": "sha256-EjMdjDoYGMOvxUPHt7qFL\/OiDX6624LI856W+vAzR0E=",
       "url": "data\/isr.csv"
     },
     {
-      "hash": "sha256-n1WcNx1Jj\/Om4ePGIFOWOJLYQARcTpxY5NgWpRZU1gA=",
+      "hash": "sha256-XPiHssx6sPRW4ZYQBrxF58p0ABLxooBJbn358VeWD8Y=",
       "url": "data\/ita.csv"
     },
     {
@@ -417,7 +417,7 @@
       "url": "data\/kgz.csv"
     },
     {
-      "hash": "sha256-ThNFpxLMsQTa0YX2NAMzgEcrMRLEmUd1jhO30\/Bf05g=",
+      "hash": "sha256-uqG4T9mgrcdXoohF8lu\/6KVD3uTqzQowuZtiUjQ2hNE=",
       "url": "data\/khm.csv"
     },
     {
@@ -425,7 +425,7 @@
       "url": "data\/kna.csv"
     },
     {
-      "hash": "sha256-s3uHv6Xfk+4F5EzlTaIvCy3snV6ceEGMrPBBVfirz3o=",
+      "hash": "sha256-tuo9MXS88aHSAp9mgSTYSQbkIzT09aa9b88wfDN0v44=",
       "url": "data\/kor.csv"
     },
     {
@@ -437,7 +437,7 @@
       "url": "data\/lao.csv"
     },
     {
-      "hash": "sha256-UvXl9WY2XMBhNW66cfQRGgfozlmU6h0JWJuARy7uitk=",
+      "hash": "sha256-imAzqSgvQGjJmIEVCtSktw0owPQvd5SvuhCCtpxRWf8=",
       "url": "data\/lbn.csv"
     },
     {
@@ -457,7 +457,7 @@
       "url": "data\/lie.csv"
     },
     {
-      "hash": "sha256-3iMApS2z\/lsdA\/XWakxnBJLCRf9S+vaf8IlST8nfPQY=",
+      "hash": "sha256-QNivKV0Kl\/y5J\/4Brg1pFGwJ382FhSPcgKT8txbNaaY=",
       "url": "data\/lka.csv"
     },
     {
@@ -465,7 +465,7 @@
       "url": "data\/lso.csv"
     },
     {
-      "hash": "sha256-rJaIsOnD7ExiVcs+oDe1v7AG5XRkt88F8hVJ1soFCqo=",
+      "hash": "sha256-BMcR6qELNZxRdbRExxNR8om147sxNzr43bVQFrnh1Z4=",
       "url": "data\/ltu.csv"
     },
     {
@@ -473,7 +473,7 @@
       "url": "data\/lux.csv"
     },
     {
-      "hash": "sha256-H3Nf4wAIrMaj5JXvRtCwqQhAwVNYlgwoIpoOlP73N6o=",
+      "hash": "sha256-tTXCObA65KwyTkY5OS0ZU+jcoqjHVJv\/LKddclOs9ks=",
       "url": "data\/lva.csv"
     },
     {
@@ -481,7 +481,7 @@
       "url": "data\/mac.csv"
     },
     {
-      "hash": "sha256-KppEKTEUJEVBOfj0C87uBiiE+zfX5z+\/M3qZF07M2Ik=",
+      "hash": "sha256-5IzA+Hzu3Lq9Fa55uZd9MBmzeHA+iJpKIRTgByfJcCY=",
       "url": "data\/mar.csv"
     },
     {
@@ -497,11 +497,11 @@
       "url": "data\/mdg.csv"
     },
     {
-      "hash": "sha256-HpZmcS\/7uoYIKA17Yl9uRi1dW1Dk8AEWhjVAvM8Wih8=",
+      "hash": "sha256-0epzGU+arjR6+CgQoNLGRkehJ3SHka3yQ6jIH5RK6N4=",
       "url": "data\/mdv.csv"
     },
     {
-      "hash": "sha256-VZZoLD30fOSMwNuoT5NoKSrBWXYnhCZIqYjaEHv2SZc=",
+      "hash": "sha256-JpS7TjpQD1fxEJ6f\/DcK1Rfi\/HmyiUX5Nx7vAhBIElQ=",
       "url": "data\/mex.csv"
     },
     {
@@ -517,7 +517,7 @@
       "url": "data\/mli.csv"
     },
     {
-      "hash": "sha256-5XFF0UnQcZUTU4HkjQc7QwSHV\/irzbGJBl9FdmnOdao=",
+      "hash": "sha256-tnmvUygyBQspsC\/PwOP5JXxvpfDUlMxZHsedo7LVFvg=",
       "url": "data\/mlt.csv"
     },
     {
@@ -525,7 +525,7 @@
       "url": "data\/mmr.csv"
     },
     {
-      "hash": "sha256-5uh\/pb32lvESC8XQ3f5YxDiPTCrF6YY7k4DhAmifQ0o=",
+      "hash": "sha256-LYgapWqlhChAF++9H1MbunT7rc\/rnxnhtAFBgVOrMWU=",
       "url": "data\/mne.csv"
     },
     {
@@ -557,7 +557,7 @@
       "url": "data\/mys.csv"
     },
     {
-      "hash": "sha256-fTyYyRisk1s0Ktc0EX0XUdSiYsGLgSxNVgWoymngXjU=",
+      "hash": "sha256-jk6hAcO6CCPtMGD4zD9PFZ0683Fu8aJn91g85StN1Nk=",
       "url": "data\/nam.csv"
     },
     {
@@ -593,7 +593,7 @@
       "url": "data\/omn.csv"
     },
     {
-      "hash": "sha256-+H3zaGD3hejzsDB9AJqU1zq0dqHUdT7FBBuExb0C1Mg=",
+      "hash": "sha256-oWKV0uzVX8nRSVXlog1FsB6qWZKJvqzw3o4PFr+ob\/Y=",
       "url": "data\/owid-covid-data.csv"
     },
     {
@@ -605,7 +605,7 @@
       "url": "data\/owid_asi.csv"
     },
     {
-      "hash": "sha256-3dQMBIRvXsT+MbaVNf\/7tTI5Ln5Q8T34tyir9yHMGs0=",
+      "hash": "sha256-pKskQioNys+CzKTUiq0cjYQCOWsLSq1a1D2oBJR1uIk=",
       "url": "data\/owid_eun.csv"
     },
     {
@@ -621,7 +621,7 @@
       "url": "data\/owid_kos.csv"
     },
     {
-      "hash": "sha256-Jagc+LxAGRDP9ZHMgBCKx+7n\/7wDVDW7As9+tPzPcbw=",
+      "hash": "sha256-cDmMIF00vZp1qkoQVk+UWRB5Z16QIEL4wa4ySlfaz5o=",
       "url": "data\/owid_nam.csv"
     },
     {
@@ -637,7 +637,7 @@
       "url": "data\/owid_sam.csv"
     },
     {
-      "hash": "sha256-JDo\/bvokc8NoO6PAHVcZN5i5D2eD3ZcQ0t95lv6grw4=",
+      "hash": "sha256-\/v3YVlIjdxUiOX6h3kch8oSl2Vl2DUE8fk9004art7Q=",
       "url": "data\/owid_wrl.csv"
     },
     {
@@ -645,11 +645,11 @@
       "url": "data\/pak.csv"
     },
     {
-      "hash": "sha256-oCihH6ZCxwOKQMFXRr3\/aqUH2t\/kzd2gOPWQ09E41+M=",
+      "hash": "sha256-ivR2wCxb\/wTDj6dafTd3GrJOPBbTpb1jTI\/Qk6\/jo18=",
       "url": "data\/pan.csv"
     },
     {
-      "hash": "sha256-Ww9QEwXtsNa3Mbl2Kjf7tVF9SBDUHcwZuW\/JNvZdMmY=",
+      "hash": "sha256-DbCBnFaVSBR4zTQfGVP0i+wmpok2p4YGnYtk3N\/roas=",
       "url": "data\/per.csv"
     },
     {
@@ -661,11 +661,11 @@
       "url": "data\/png.csv"
     },
     {
-      "hash": "sha256-Mblhv6siqydUgQZZiLvvPPAAX6hqohU7qCdgTuZstG8=",
+      "hash": "sha256-dtikA1Gt4vzdHDf4lBf473xWhtg8BH8MgVThI467D0g=",
       "url": "data\/pol.csv"
     },
     {
-      "hash": "sha256-z8+ELIR6H1sXPX84K917H+dO4LPnMiAJ+Ot\/NFdazfU=",
+      "hash": "sha256-SMvcAMsGiEeCXj62IQz7dlowWXfUBEXYROFv6jZVv2w=",
       "url": "data\/prt.csv"
     },
     {
@@ -681,19 +681,19 @@
       "url": "data\/qat.csv"
     },
     {
-      "hash": "sha256-vkCibBWW6gOY9xZTVWW8t2jfwNtjgXfVQk7pOmh2RJ8=",
+      "hash": "sha256-HfnWHJhXm\/aD8HRGI9UhgK8yPKr\/G8KKww8HKycfUiY=",
       "url": "data\/rou.csv"
     },
     {
-      "hash": "sha256-fKVPyGDvrzjDDaxjD5w0M3f2GhMtxis0noJ5VKZMbGU=",
+      "hash": "sha256-xOkv4wuudcQO104lLnq+USZ91pEBDXWz4Lep73oCe54=",
       "url": "data\/rus.csv"
     },
     {
-      "hash": "sha256-yDJgbsoZ7J\/uWMiXaqHrufXKdtUBlR2IeV+6Cvhj\/EE=",
+      "hash": "sha256-tWejfoxF1vEglBlcdksGz2try6\/BYc7eCfa\/eLFtV+k=",
       "url": "data\/rwa.csv"
     },
     {
-      "hash": "sha256-sRI3AmBP4FciXGBC1uT2jEjipBqm0hI04u6MVFErQGQ=",
+      "hash": "sha256-88oL7Xs5mv3+sx+XyB1pGh2W0UVVWNCnsjVsO4j6h1Q=",
       "url": "data\/sau.csv"
     },
     {
@@ -701,7 +701,7 @@
       "url": "data\/sdn.csv"
     },
     {
-      "hash": "sha256-uqzcpxwP0jImysg0huqx\/Mz2u4drCJOb9ttAx6M+fdU=",
+      "hash": "sha256-cdB5HU5R83tJOLAg3\/1UlVk0X6lQG94C7jsMosDe7pc=",
       "url": "data\/sen.csv"
     },
     {
@@ -725,7 +725,7 @@
       "url": "data\/slv.csv"
     },
     {
-      "hash": "sha256-ifEoe7B4CD1x+6Jk6KEoPZE7aJ8LGsgquIy3vB25ojg=",
+      "hash": "sha256-T76HMQ3gc50WS6qK1RXRVAEHUp8RHtjG6zMgvBZ1Bbs=",
       "url": "data\/smr.csv"
     },
     {
@@ -733,7 +733,7 @@
       "url": "data\/som.csv"
     },
     {
-      "hash": "sha256-cp+RoOwC1x4wKGkuJh6SRUM4ecDcNhYk8HoGnEcxtOY=",
+      "hash": "sha256-lDzqJ00\/GOMYcw1pjrhDr7nvDaaLgflpGkvr8WiPP0E=",
       "url": "data\/srb.csv"
     },
     {
@@ -749,11 +749,11 @@
       "url": "data\/sur.csv"
     },
     {
-      "hash": "sha256-QOh758XzqUDD0O4Dq1YDgC\/6F6bx9tedemoVWPMUreA=",
+      "hash": "sha256-5f+DD97hXPp3oiixXdmoh\/mJynM0l30VS0Ik9vzGOAk=",
       "url": "data\/svk.csv"
     },
     {
-      "hash": "sha256-s4rkMBwN0AuqJ8FZnwPi9sQuVxBIsgv\/jHWIdrxTMQU=",
+      "hash": "sha256-0uxo59DxlBfr1GInh5DuW5mF0iqGIx4a4tw3i2hEIg4=",
       "url": "data\/svn.csv"
     },
     {
@@ -809,7 +809,7 @@
       "url": "data\/tun.csv"
     },
     {
-      "hash": "sha256-NUiegF7Qq9X2ZUWKB5n66dbxGvgYkS+Lvpgad6wSWZE=",
+      "hash": "sha256-DJhZt7HJp0xxtNws72AwuBvGnxitzNntw9ILdFg605o=",
       "url": "data\/tur.csv"
     },
     {
@@ -825,7 +825,7 @@
       "url": "data\/uga.csv"
     },
     {
-      "hash": "sha256-vdKa4vhgEm5ghu0h4u2E+f87K\/IV+c70QyX1oEDCxGY=",
+      "hash": "sha256-fGpuAmF2gTnjFl2BzCiI\/0kA3pwLxzZzqMvFIxAnFtE=",
       "url": "data\/ukr.csv"
     },
     {
@@ -833,7 +833,7 @@
       "url": "data\/ury.csv"
     },
     {
-      "hash": "sha256-s2CAIFd80ToVjmTM2ib6TEtrS7HoXq\/gZrgEVA+LhJo=",
+      "hash": "sha256-CiLEQncUtmRA7TeMphmw8SaZBIaU7\/n1uyttbVOLDnM=",
       "url": "data\/usa.csv"
     },
     {
@@ -849,7 +849,7 @@
       "url": "data\/vct.csv"
     },
     {
-      "hash": "sha256-xLGzBVvaoJueYisKdaThvbTYzTf\/W9bQEEK5RlAps90=",
+      "hash": "sha256-32D3we6fj8zI5jeo\/cwc4QdK3fLM0wnk0323ChX7FSc=",
       "url": "data\/ven.csv"
     },
     {
@@ -877,7 +877,7 @@
       "url": "data\/zmb.csv"
     },
     {
-      "hash": "sha256-gozm4uM2gONJ2RJqpL9kpKY1JGMsR0Fr57pNFrIEJRM=",
+      "hash": "sha256-qzEE8d6r9MnTNmKVkPhliGaZaOK1kd1B29KYhjZCxSM=",
       "url": "data\/zwe.csv"
     },
     {
@@ -1317,5 +1317,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "qo8GxowJ"
+  "version": "FjTjHybS"
 };
