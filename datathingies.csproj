@@ -22,4 +22,7 @@
 
   <Import Project="StaticAssets\StaticAssets.targets" />
 
+  <ItemGroup>
+    <Content Update="wwwroot\data\**\*.*" CopyToPublishDirectory="Never" />
+  </ItemGroup>
 </Project>
