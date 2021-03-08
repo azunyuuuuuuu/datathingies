@@ -9,14 +9,6 @@
       "url": "css\/main.css"
     },
     {
-      "hash": "sha256-oYmozydPWCFpqq4uY+qs8g6xivPuKLTkdL7YNB5i1A8=",
-      "url": "data\/index.csv"
-    },
-    {
-      "hash": "sha256-lXUhbbtK7zKl0Eeuk6REcKQbwGGZgwVG9FNG2OLU0Sg=",
-      "url": "data\/TEST.csv"
-    },
-    {
       "hash": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
       "url": "favicon.ico"
     },
@@ -453,5 +445,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "q1h045mX"
+  "version": "fmgIlgfb"
 };
