@@ -1,0 +1,42 @@
+name: Refresh data
+
+on:
+  schedule:
+    - cron:  '30 6 * * *'
+
+  workflow_dispatch:
+
+  workflow_run:
+    workflows: ["Deploy to GitHub Pages"]
+    branches: [main]
+    types: 
+      - completed
+
+jobs:
+  build-data:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+
+      - name: Prepare csv files
+        run: |
+          mkdir -p data && cd data
+          wget -nv https://covid.ourworldindata.org/data/owid-covid-data.csv
+          for country in `tail -n +2 owid-covid-data.csv | cut -d',' -f1 | sort | uniq`; do
+            head -n1 owid-covid-data.csv > $country.csv;
+            cat owid-covid-data.csv | grep $country >> $country.csv;
+          done
+          cat owid-covid-data.csv | cut -d',' -f1,2,3 | uniq > index.csv
+          for f in *; do mv "$f" "$f.tmp"; mv "$f.tmp" "`echo $f | tr "[:upper:]" "[:lower:]"`"; done
+
+      - name: Commit wwwroot to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: data
+          target-folder: data
+          silent: true
