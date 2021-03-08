@@ -1,0 +1,70 @@
+name: Refresh data
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+  schedule:
+    - cron:  '30 6 * * *'
+
+jobs:
+  setup-node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+  setup-dotnet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.103
+
+  build-and-publish:
+    runs-on: ubuntu-latest
+    needs: [setup-node, setup-dotnet]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare csv files
+        run: |
+          cd wwwroot && mkdir -p data && cd data
+          wget -nv https://covid.ourworldindata.org/data/owid-covid-data.csv
+          for country in `tail -n +2 owid-covid-data.csv | cut -d',' -f1 | sort | uniq`; do
+            head -n1 owid-covid-data.csv > $country.csv;
+            cat owid-covid-data.csv | grep $country >> $country.csv;
+          done
+          cat owid-covid-data.csv | cut -d',' -f1,2,3 | uniq > index.csv
+          for f in *; do mv "$f" "$f.tmp"; mv "$f.tmp" "`echo $f | tr "[:upper:]" "[:lower:]"`"; done
+
+      - name: Change base-tag in index.html from / to datathingies
+        run: sed -i 's/<base href="\/" \/>/<base href="\/datathingies\/" \/>/g' wwwroot/index.html
+      
+      - name: Copy index.html to 404.html
+        run: cp wwwroot/index.html wwwroot/404.html
+      
+      - run: dotnet restore datathingies.csproj
+      - run: dotnet build datathingies.csproj -c Release --nologo
+
+      - name: Publish .NET Core Project
+        run: dotnet publish datathingies.csproj -c Release -o release --nologo
+      
+      - name: Add .nojekyll file
+        run: touch release/wwwroot/.nojekyll
+
+      - name: Commit wwwroot to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: release/wwwroot
+          silent: true
+          # single-commit: true
