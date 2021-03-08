@@ -8,3 +8,33 @@ for country in `tail -n +2 owid-covid-data.csv | cut -d',' -f1 | sort | uniq`; d
 done
 cat owid-covid-data.csv | cut -d',' -f1,2,3 | uniq > index.csv
 ```
+
+## Generate `index.json` with jq
+
+```bash
+cat owid-covid-data.json | jq '[ to_entries | map_values(.value + { iso_code: .key }) | .[] | { iso_code, continent, location, file: "\(.iso_code).json" } ]' > index.json
+```
+
+sample output:
+```json
+[
+  {
+    "iso_code": "AFG",
+    "continent": "Asia",
+    "location": "Afghanistan",
+    "file": "AFG.json"
+  },
+  {
+    "iso_code": "DEU",
+    "continent": "Europe",
+    "location": "Germany",
+    "file": "DEU.json"
+  }
+]
+```
+
+## Generate all country data with jq
+
+```bash
+for country in `cat index.json | jq --raw-output '.[].iso_code'`; do  cat owid-covid-data.json | jq .$country > $country.json; done
+```
