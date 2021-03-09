@@ -73,7 +73,7 @@
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
-      "hash": "sha256-BJLoq+mjSAuoZfargdrwWuecwQ4ezBOhul8w5Ox3oJU=",
+      "hash": "sha256-5j1OYWxfLEo\/pYX3bf69tWGIl3QUNVKEEJtxscd2iu0=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.dll"
     },
     {
@@ -129,7 +129,7 @@
       "url": "_framework\/System.IO.Pipelines.dll"
     },
     {
-      "hash": "sha256-yIADU\/cF4Q1kf+01UAP8f02nzGE9iQ\/3SRZPDDhj9jI=",
+      "hash": "sha256-XTKeuXqnTncLJ7dH8ygWfCn3xM8Mo5h5sktAW2PWBvo=",
       "url": "_framework\/datathingies.dll"
     },
     {
@@ -201,7 +201,7 @@
       "url": "_framework\/System.Memory.dll"
     },
     {
-      "hash": "sha256-NvmHTMxICGi4TkGdlEQyzyvF\/+CIEF4D6PvrYmXC4yc=",
+      "hash": "sha256-u8y26VmtMWZXmd8rPwrZANIfauGiNf2jsc+kg7sZPsg=",
       "url": "_framework\/System.Net.Http.dll"
     },
     {
@@ -257,7 +257,7 @@
       "url": "_framework\/System.Text.RegularExpressions.dll"
     },
     {
-      "hash": "sha256-sLdobhEJrxVOZCWo8fTOFsjOWBh8cB+bSEOTFPM4k1g=",
+      "hash": "sha256-WiNB01S3sBqbW5FU10xP+56Q9w8cdd4eE7nL7TbYXb0=",
       "url": "_framework\/System.Private.CoreLib.dll"
     },
     {
@@ -437,7 +437,7 @@
       "url": "_framework\/zh-Hant\/Humanizer.resources.dll"
     },
     {
-      "hash": "sha256-5DWmCmBDm2eyucQ4a3htOGq6f4sfAynnPygyuhp8daY=",
+      "hash": "sha256-lW+1PukKrR\/HdwnaZRYogzpEMgleVR+WTj+5J\/E\/Lv8=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -445,5 +445,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "8Rv0EkKd"
+  "version": "c5FLIDGX"
 };
