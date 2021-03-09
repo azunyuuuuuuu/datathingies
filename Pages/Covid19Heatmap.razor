@@ -69,9 +69,10 @@
                             </thead>
                             <tbody>
                                 <CascadingValue Value="heatmapMetadata">
-                                    <Virtualize Items="@heatmapcases" Context="entry" TItem="Covid19WeeklyData">
+                                    @foreach (var entry in heatmapcases)
+                                    {
                                         <HeatmapDataRow Data="@entry" />
-                                    </Virtualize>
+                                    }
                                 </CascadingValue>
                             </tbody>
                         </table>
