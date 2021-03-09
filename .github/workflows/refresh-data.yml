@@ -37,6 +37,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
+          commit-message: Data refresh commit
           folder: data
           target-folder: data
           silent: true
