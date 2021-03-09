@@ -38,15 +38,13 @@ namespace datathingies.Data
 
         private async Task EnsureDataForCountryIsLoaded(string isocode)
         {
-            if (_rawdata.Where(x => x.IsoCode == isocode).Count() > 0)
-                return;
-
             using var stream = await _http.GetStreamAsync($"data/{isocode}.csv");
             using var reader = new StreamReader(stream);
             using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
             await foreach (var item in csv.GetRecordsAsync<Covid19DataEntry>())
-                _rawdata.Add(item);
+                if (_rawdata.Count(x => x.Date == item.Date) == 0)
+                    _rawdata.Add(item);
         }
 
         public async Task InitializeData()
