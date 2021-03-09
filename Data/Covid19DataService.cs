@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using CsvHelper;
 
@@ -18,6 +19,10 @@ namespace datathingies.Data
         public Covid19DataService(HttpClient http)
         {
             _http = http;
+            _http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
+            {
+                NoCache = true
+            };
         }
 
         public async Task InitializeIndex()
