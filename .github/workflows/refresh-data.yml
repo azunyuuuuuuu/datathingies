@@ -24,7 +24,7 @@ jobs:
       - name: Prepare csv files
         run: |
           mkdir -p data && cd data
-          wget -nv https://covid.ourworldindata.org/data/owid-covid-data.csv
+          wget -nv -O owid-covid-data.csv https://covid.ourworldindata.org/data/owid-covid-data.csv
           for country in `tail -n +2 owid-covid-data.csv | cut -d',' -f1 | sort | uniq`; do
             head -n1 owid-covid-data.csv > $country.csv;
             cat owid-covid-data.csv | grep $country >> $country.csv;
