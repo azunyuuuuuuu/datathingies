@@ -105,19 +105,7 @@ namespace datathingies.Data
                     Weekly = x.Sum(x => x.value),
                 });
 
-            var colored = grouped
-                .Select(x => x with
-                {
-                    ColorMonday = x.Monday?.LerpWith(highest).ToHexString(),
-                    ColorTuesday = x.Tuesday?.LerpWith(highest).ToHexString(),
-                    ColorWednesday = x.Wednesday?.LerpWith(highest).ToHexString(),
-                    ColorThursday = x.Thursday?.LerpWith(highest).ToHexString(),
-                    ColorFriday = x.Friday?.LerpWith(highest).ToHexString(),
-                    ColorSaturday = x.Saturday?.LerpWith(highest).ToHexString(),
-                    ColorSunday = x.Sunday?.LerpWith(highest).ToHexString(),
-                });
-
-            return colored.OrderByDescending(x => x.Week);
+            return grouped.OrderByDescending(x => x.Week);
         }
 
         public async Task<HeatmapMetadata> GetHeatmapMetadataForCountryMode(string isocode, DataModes mode)

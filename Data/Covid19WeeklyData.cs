@@ -14,13 +14,6 @@ namespace datathingies.Data
         public double? Saturday { get; init; }
         public double? Sunday { get; init; }
         public double? Weekly { get; init; }
-        public string ColorMonday { get; init; }
-        public string ColorTuesday { get; init; }
-        public string ColorWednesday { get; init; }
-        public string ColorThursday { get; init; }
-        public string ColorFriday { get; init; }
-        public string ColorSaturday { get; init; }
-        public string ColorSunday { get; init; }
         public DateTime Date { get; internal set; }
     }
 }
