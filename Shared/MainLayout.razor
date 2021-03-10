@@ -1,10 +1,14 @@
 @inherits LayoutComponentBase
 
 <div class="container lg:max-w-screen-lg mx-auto">
-    <header class="py-4 mx-4">
-        <NavLink class="text-dark font-extralight" href="">dashboardthingy</NavLink>
-        <NavLink class="text-dark font-extralight" href="covid19/highest25">covid19highest25</NavLink>
-        <NavLink class="text-dark font-extralight" href="covid19/heatmap">covid19heatmap</NavLink>
+    <header class="py-4 mx-4 flex space-x-1">
+        <NavLink class="text-gray-600 dark:text-gray-400 font-extralight" href="">dashboardthingy</NavLink>
+        <NavLink class="text-gray-600 dark:text-gray-400 font-extralight" href="covid19/highest25">covid19highest25</NavLink>
+        <NavLink class="text-gray-600 dark:text-gray-400 font-extralight" href="covid19/heatmap">covid19heatmap</NavLink>
+
+        <div class="flex-grow"></div>
+
+        <div class="text-gray-300 dark:text-gray-700 font-extralight">v @ThisAssembly.AssemblyInformationalVersion</div>
     </header>
 
     <article class="mx-4">
