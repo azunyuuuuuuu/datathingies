@@ -1,4 +1,4 @@
-﻿@page "/covid19/heatmap"
+@page "/covid19/heatmap"
 @page "/covid19/heatmap/{isocode}"
 @page "/covid19/heatmap/{isocode}/{datamode}"
 
@@ -57,7 +57,7 @@
                 <div class="lg:grid lg:grid-flow-col lg:space-x-8 w-full">
 
                     <div>
-                        <h3>Cases</h3>
+                            <h3>@GetCurrentModeAsHumanizedString()</h3>
                         <table class="table-fixed w-full">
                             <thead>
                                 <th class="w-1/6 sm:w-auto">Week</th>
@@ -140,4 +140,6 @@
         _nav.NavigateTo($"covid19/heatmap/{isocode}/{mode}");
     }
 
+    private string GetCurrentModeAsHumanizedString()
+        => Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true).Humanize();
 }
