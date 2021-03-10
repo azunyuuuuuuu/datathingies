@@ -41,7 +41,11 @@
             </label>
         </p>
 
-        @if (heatmapcases == null)
+        @if (isloading)
+        {
+            <LoadingSpinner/>
+        }
+        else if (heatmapcases == null)
         {
             <p><em>Choose a country to show the heatmap data...</em></p>
         }
@@ -95,6 +99,7 @@
     private ICollection<Covid19WeeklyData> heatmapcases;
     private HeatmapMetadata heatmapMetadata = new HeatmapMetadata();
 
+    private bool isloading = false;
     protected override async Task OnInitializedAsync()
     {
         await _covid.InitializeData();
@@ -105,6 +110,9 @@
     {
         if (!string.IsNullOrWhiteSpace(IsoCode) && countries.Select(x => x.IsoCode.ToLower()).Contains(IsoCode.ToLower()))
         {
+            isloading = true;
+            StateHasChanged();
+
             var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true);
             heatmapcases = new Collection<Covid19WeeklyData>((await _covid.GetHeatmapForCountryMode(IsoCode, datamode)).ToList());
 
@@ -113,6 +121,8 @@
                 MinWeeklyValue=0,
                 MaxWeeklyValue=heatmapcases.Max(x=>x.Weekly??0)
             };
+
+            isloading=false;
         }
     }
 
