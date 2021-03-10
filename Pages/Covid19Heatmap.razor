@@ -1,4 +1,4 @@
-@page "/covid19/heatmap"
+﻿@page "/covid19/heatmap"
 @page "/covid19/heatmap/{isocode}"
 @page "/covid19/heatmap/{isocode}/{datamode}"
 
@@ -14,7 +14,7 @@
 
     @if (countries == null)
     {
-        <LoadingSpinner/>
+        <LoadingSpinner></LoadingSpinner>
     }
     else
     {
@@ -43,48 +43,50 @@
 
         @if (isloading)
         {
-            <LoadingSpinner/>
-        }
-        else if (heatmapcases == null)
-        {
-            <p><em>Choose a country to show the heatmap data...</em></p>
+            <LoadingSpinner></LoadingSpinner>
         }
         else
         {
-            <h2> Heatmap </h2>
+            @if (heatmapcases == null)
+            {
+                <p><em>Choose a country to show the heatmap data...</em></p>
+            }
+            else
+            {
+                <h2> Heatmap </h2>
 
-            <div class="container">
-                <div class="lg:grid lg:grid-flow-col lg:space-x-8 w-full">
+                <div class="container">
+                    <div class="lg:grid lg:grid-flow-col lg:space-x-8 w-full">
 
-                    <div>
+                        <div>
                             <h3>@GetCurrentModeAsHumanizedString()</h3>
-                        <table class="table-fixed w-full">
-                            <thead>
-                                <th class="w-1/6 sm:w-auto">Week</th>
-                                <th class="hidden lg:inline"></th>
-                                <th class="text-right w-1/8">Mo</th>
-                                <th class="text-right w-1/8">Tu</th>
-                                <th class="text-right w-1/8">We</th>
-                                <th class="text-right w-1/8">Th</th>
-                                <th class="text-right w-1/8">Fr</th>
-                                <th class="text-right w-1/8">Sa</th>
-                                <th class="text-right w-1/8">Su</th>
-                                <th class="hidden lg:inline text-right w-1/8">sum</th>
-                            </thead>
-                            <tbody>
-                                <CascadingValue Value="heatmapMetadata">
-                                    @foreach (var entry in heatmapcases)
-                                    {
-                                        <HeatmapDataRow Data="@entry" />
-                                    }
-                                </CascadingValue>
-                            </tbody>
-                        </table>
+                            <table class="table-fixed w-full">
+                                <thead>
+                                    <th class="w-1/6 sm:w-auto">Week</th>
+                                    <th class="hidden lg:inline"></th>
+                                    <th class="text-right w-1/8">Mo</th>
+                                    <th class="text-right w-1/8">Tu</th>
+                                    <th class="text-right w-1/8">We</th>
+                                    <th class="text-right w-1/8">Th</th>
+                                    <th class="text-right w-1/8">Fr</th>
+                                    <th class="text-right w-1/8">Sa</th>
+                                    <th class="text-right w-1/8">Su</th>
+                                    <th class="hidden lg:inline text-right w-1/8">sum</th>
+                                </thead>
+                                <tbody>
+                                    <CascadingValue Value="heatmapMetadata">
+                                        @foreach (var entry in heatmapcases)
+                                        {
+                                            <HeatmapDataRow Data="@entry" />
+                                        }
+                                    </CascadingValue>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
-
     }
 </div>
 
@@ -123,6 +125,10 @@
             };
 
             isloading=false;
+        }
+        else
+        {
+            heatmapcases = null;
         }
     }
 
