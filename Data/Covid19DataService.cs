@@ -66,8 +66,7 @@ namespace datathingies.Data
         {
             await EnsureIndexIsLoaded();
 
-            return _index.Where(x => !string.IsNullOrWhiteSpace(x.Continent))
-                .OrderBy(x => x.Location);
+            return _index.OrderBy(x => x.Location);
         }
 
         public async Task<IEnumerable<Covid19DataEntry>> GetDataForCountry(string isocode)
