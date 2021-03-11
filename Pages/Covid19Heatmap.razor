@@ -24,9 +24,14 @@
                 Country:
                 <select class="dark:bg-gray-800 dark:text-gray-100 px-2 py-1" value="@IsoCode" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
                     <option value="">Select a country ...</option>
-                    @foreach (var item in countries)
+                    @foreach (var group in countries.GroupBy(x=>x.Continent))
                     {
-                        <option value="@item.IsoCode.ToLower()">@item.Location</option>
+                        <optgroup label=@group.Key>
+                            @foreach (var item in group)
+                            {
+                                <option value="@item.IsoCode.ToLower()">@item.Location</option>
+                            }
+                        </optgroup>
                     }
                 </select>
             </label>
