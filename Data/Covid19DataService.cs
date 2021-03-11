@@ -43,12 +43,16 @@ namespace datathingies.Data
 
         private async Task EnsureDataForCountryIsLoaded(string isocode)
         {
-            using var stream = await _http.GetStreamAsync($"data/{isocode}.csv");
-            using var reader = new StreamReader(stream);
+            var contents = await _http.GetStringAsync($"data/{isocode}.csv");
+            using var reader = new StringReader(contents);
             using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
-            await foreach (var item in csv.GetRecordsAsync<Covid19DataEntry>())
-                if (_rawdata.Count(x => x.Date == item.Date) == 0)
+            var items = csv.GetRecords<Covid19DataEntry>().ToList();
+
+            foreach (var item in items)
+                if (_rawdata.Where(x => x.IsoCode.ToLower() == isocode.ToLower())
+                    .Where(x => x.Date == item.Date)
+                    .Count() == 0)
                     _rawdata.Add(item);
         }
 
@@ -88,7 +92,8 @@ namespace datathingies.Data
                    DataModes.Vaccinations => new TableData(x.Date, x.NewVaccinations ?? 0),
                    DataModes.Vaccinations7DayAverage => new TableData(x.Date, x.NewVaccinations7DayAverage ?? 0),
                    _ => new TableData(x.Date, 0)
-               });
+               })
+               .ToList();
 
             var highest = data.Max(x => x.value);
 
