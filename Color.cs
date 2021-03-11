@@ -55,8 +55,8 @@ namespace datathingies
             var floor = (int)Math.Floor(tempvalue);
             var ceiling = (int)Math.Ceiling(tempvalue);
 
-            var colorlower = Colors[floor];
-            var colorhigher = Colors[ceiling];
+            var colorlower = Colors[Math.Clamp(floor, 0, Colors.Count - 1)];
+            var colorhigher = Colors[Math.Clamp(ceiling, 0, Colors.Count - 1)];
 
             return Color.Lerp(colorlower, colorhigher, tempvalue - floor);
         }
