@@ -7,3 +7,8 @@
 @import "blazor.css";
 
 @import "markdown.css";
+
+body {
+  @apply bg-gray-100 text-gray-800;
+  @apply dark:bg-gray-900 dark:text-gray-300;
+}
