@@ -5,11 +5,11 @@
     style="background-color: @_heatmapmetadata.GetColorAtAsHex(Value)" 
     title=@(Date.ToString("yyyy-MM-dd")) title:format="yyyy-MM-dd">
 
-    <span class="hidden md:inline">
+    <span class="hidden md:block">
         @Value?.ToString("#,##0")
     </span>
 
-    <span class="inline md:hidden">
+    <span class="block md:hidden">
         @Value?.ToMetric(decimals: 1)
     </span>
 

@@ -2,7 +2,7 @@
 <tr>
     <td class="whitespace-nowrap">@Data?.Week</td>
 
-    <td class="hidden lg:inline">@Data?.Month</td>
+    <td class="hidden lg:block">@Data?.Month</td>
 
     <HeatmapDataField Value=@Data?.Monday Date=@(Data.Date + TimeSpan.FromDays(0)) />
     <HeatmapDataField Value=@Data?.Tuesday Date=@(Data.Date + TimeSpan.FromDays(1)) />
@@ -12,7 +12,7 @@
     <HeatmapDataField Value=@Data?.Saturday Date=@(Data.Date + TimeSpan.FromDays(5))/>
     <HeatmapDataField Value=@Data?.Sunday Date=@(Data.Date + TimeSpan.FromDays(6)) />
 
-    <td class="text-right hidden lg:inline" data-color="">
+    <td class="text-right hidden lg:block" data-color="">
         @Data?.Weekly?.ToString("#,##0")
     </td>
 </tr>
