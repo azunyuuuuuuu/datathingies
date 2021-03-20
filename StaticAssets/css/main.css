@@ -1,12 +1,10 @@
-@tailwind base;
-
-@tailwind components;
-
-@tailwind utilities;
-
+@import "tailwindcss/base";
 @import "blazor.css";
 
+@import "tailwindcss/components";
 @import "markdown.css";
+
+@import "tailwindcss/utilities";
 
 body {
   @apply bg-gray-100 text-gray-800;
