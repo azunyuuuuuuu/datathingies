@@ -37,7 +37,7 @@ jobs:
       run: cp wwwroot/index.html wwwroot/404.html
     
     - run: dotnet restore datathingies.csproj
-    - run: dotnet build datathingies.csproj -c Release --nologo
+    # - run: dotnet build datathingies.csproj -c Release --nologo
 
     - name: Publish .NET Core Project
       run: dotnet publish datathingies.csproj -c Release -o release --nologo
