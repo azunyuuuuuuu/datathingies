@@ -12,42 +12,46 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.103
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+        include-prerelease: true
 
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+    - name: install the Blazor WASM AOT workload
+      run: dotnet workload install microsoft-net-sdk-blazorwebassembly-aot
 
-      - name: Change base-tag in index.html from / to datathingies
-        run: sed -i 's/<base href="\/" \/>/<base href="\/datathingies\/" \/>/g' wwwroot/index.html
-      
-      - name: Copy index.html to 404.html
-        run: cp wwwroot/index.html wwwroot/404.html
-      
-      - run: dotnet restore datathingies.csproj
-      - run: dotnet build datathingies.csproj -c Release --nologo
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
-      - name: Publish .NET Core Project
-        run: dotnet publish datathingies.csproj -c Release -o release --nologo
-      
-      - name: Add .nojekyll file
-        run: touch release/wwwroot/.nojekyll
+    - name: Change base-tag in index.html from / to datathingies
+      run: sed -i 's/<base href="\/" \/>/<base href="\/datathingies\/" \/>/g' wwwroot/index.html
+    
+    - name: Copy index.html to 404.html
+      run: cp wwwroot/index.html wwwroot/404.html
+    
+    - run: dotnet restore datathingies.csproj
+    - run: dotnet build datathingies.csproj -c Release --nologo
 
-      - name: Commit wwwroot to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          folder: release/wwwroot
-          silent: true
-          clean: true
-          clean-exclude: |
-            data/*.csv
+    - name: Publish .NET Core Project
+      run: dotnet publish datathingies.csproj -c Release -o release --nologo
+    
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+
+    - name: Commit wwwroot to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        folder: release/wwwroot
+        silent: true
+        clean: true
+        clean-exclude: |
+          data/*.csv
