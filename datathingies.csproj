@@ -26,4 +26,10 @@
   <ItemGroup>
     <Content Update="wwwroot\data\**\*.*" CopyToPublishDirectory="Never" />
   </ItemGroup>
+
+  <Target Name="RemoveSatelliteAssemblies" BeforeTargets="WasmBuildApp">
+    <ItemGroup>
+      <WasmAssembliesToBundle Remove="@(WasmAssembliesToBundle)" Condition="$([System.String]::Copy('%(Identity)').EndsWith('.resources.dll'))" />
+    </ItemGroup>
+  </Target>
 </Project>
