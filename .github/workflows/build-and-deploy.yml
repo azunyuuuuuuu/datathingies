@@ -24,7 +24,7 @@ jobs:
         include-prerelease: true
 
     - name: install the Blazor WASM AOT workload
-      run: dotnet workload install microsoft-net-sdk-blazorwebassembly-aot
+      run: dotnet workload install wasm-tools
 
     - uses: actions/checkout@v2
       with:
