@@ -50,6 +50,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: gh-pages
+        commit-message: Update application on `gh-pages`
         folder: release/wwwroot
         silent: true
         clean: true
