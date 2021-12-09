@@ -1,20 +1,5 @@
 {
-  "name": "staticassets",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "TAILWIND_MODE=watch NODE_ENV=development postcss tailwind.css -o ./dist/tailwind.css -w",
-    "build:dev": "TAILWIND_MODE=build NODE_ENV=development postcss tailwind.css -o ./dist/tailwind.css",
-    "build:prod": "TAILWIND_MODE=build NODE_ENV=production postcss tailwind.css -o ./dist/tailwind.css"
-  },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^10.2.5",
-    "postcss": "^8.2.9",
-    "postcss-cli": "^8.3.1",
-    "postcss-import": "^14.0.1",
-    "tailwindcss": "^2.1.1"
+    "tailwindcss": "^3.0.0"
   }
 }

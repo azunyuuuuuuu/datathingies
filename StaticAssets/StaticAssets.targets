@@ -19,7 +19,7 @@
   <!-- If any source file in this dir or below has changed, perform a Webpack build -->
   <Target Name="BuildStaticAssets" DependsOnTargets="NpmInstall" BeforeTargets="CoreBuild" Inputs="@(StaticAssets)" Outputs="$(MSBuildThisFileDirectory)..\wwwroot\$(StaticCSSPath)">
     <Message Importance="high" Text="Building static assets..." />
-    <Exec Command="npx postcss css\main.css -o $(MSBuildThisFileDirectory)..\wwwroot\css\main.css" EnvironmentVariables="TAILWIND_MODE=build;NODE_ENV=development" WorkingDirectory="$(MSBuildThisFileDirectory)" />
+    <Exec Command="npx tailwindcss -i ./css/main.css -o $(MSBuildThisFileDirectory)../wwwroot/css/main.css" WorkingDirectory="$(MSBuildThisFileDirectory)" />
     <Touch Files="$(MSBuildThisFileDirectory)..\wwwroot\$(StaticCSSPath)" />
   </Target>
 
