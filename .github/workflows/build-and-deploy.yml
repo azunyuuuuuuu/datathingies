@@ -34,7 +34,7 @@ jobs:
       run: sed -i 's/<base href="\/" \/>/<base href="\/datathingies\/" \/>/g' wwwroot/index.html
 
     - name: Change stylesheet to production
-      run: sed -i 's/<script src="https://cdn.tailwindcss.com"><\/script>/<link href="css\/tailwind.css" rel="stylesheet" \/>/g' wwwroot/index.html
+      run: sed -i 's/<script src="https:\/\/cdn.tailwindcss.com"><\/script>/<link href="css\/tailwind.css" rel="stylesheet" \/>/g' wwwroot/index.html
     
     - name: Copy index.html to 404.html
       run: cp wwwroot/index.html wwwroot/404.html
