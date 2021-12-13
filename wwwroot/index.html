@@ -9,8 +9,159 @@
 
     <link href="css/app.css" rel="stylesheet" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- <link href="css/tailwind.css" rel="stylesheet" /> -->
+    <script src="https://cdn.tailwindcss.com/3.0.0?plugins=typography@0.5.0"></script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .markdown {
+                @apply py-4 space-y-4;
+            }
+
+            .markdown h1 {
+                @apply text-3xl font-bold;
+            }
+            .markdown h2 {
+                @apply text-2xl font-bold;
+            }
+            .markdown h3 {
+                @apply text-xl font-bold;
+            }
+            .markdown h4 {
+                @apply text-lg font-bold;
+            }
+            .markdown h5 {
+                @apply text-sm font-bold;
+            }
+            .markdown h6 {
+                @apply text-xs font-bold;
+            }
+
+            .markdown img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .markdown a {
+                text-decoration: none;
+            }
+
+            .markdown a:hover {
+                text-decoration: underline;
+            }
+
+            .markdown a:focus,
+            .markdown input:focus,
+            .markdown select:focus,
+            .markdown textarea:focus {
+                outline: 1px solid -webkit-focus-ring-color;
+                outline-offset: -1px;
+            }
+
+            .markdown p {
+                margin-bottom: 0.7em;
+            }
+
+            .markdown ul,
+            .markdown ol {
+                margin-bottom: 0.7em;
+            }
+
+            .markdown hr {
+                border: 0;
+                height: 2px;
+                border-bottom: 2px solid;
+            }
+
+            .markdown h1 {
+                padding-bottom: 0.3em;
+                line-height: 1.2;
+                border-bottom-width: 1px;
+                border-bottom-style: solid;
+                font-weight: normal;
+            }
+
+            .markdown table {
+                border-collapse: collapse;
+            }
+
+            .markdown blockquote {
+                @apply mx-1 px-3;
+                @apply border-l-4 border-solid;
+                @apply bg-gray-500 bg-opacity-10;
+                @apply border-blue-700 border-opacity-50;
+            }
+
+            .markdown code {
+                font-family: var(
+                --vscode-editor-font-family,
+                "SF Mono",
+                Monaco,
+                Menlo,
+                Consolas,
+                "Ubuntu Mono",
+                "Liberation Mono",
+                "DejaVu Sans Mono",
+                "Courier New",
+                monospace
+                );
+                font-size: 1em;
+                line-height: 1.357em;
+            }
+
+            .markdown body.wordWrap pre {
+                white-space: pre-wrap;
+            }
+
+            .markdown pre:not(.hljs),
+            .markdown pre.hljs code > div {
+                padding: 16px;
+                border-radius: 3px;
+                overflow: auto;
+            }
+
+            .markdown pre code {
+                color: var(--vscode-editor-foreground);
+                tab-size: 4;
+            }
+
+            /** Theming */
+
+            /* .vscode-light pre {
+            background-color: rgba(220, 220, 220, 0.4);
+            }
+            .vscode-dark pre {
+            background-color: rgba(10, 10, 10, 0.4);
+            }
+            .vscode-high-contrast pre {
+            background-color: rgb(0, 0, 0);
+            } */
+
+            /* .vscode-high-contrast h1 {
+            border-color: rgb(0, 0, 0);
+            } */
+
+            .markdown table > thead {
+                @apply border-b border-black dark:border-white border-opacity-100;
+                @apply text-left;
+            }
+
+            .markdown table > tbody {
+                @apply divide-y divide-black dark:divide-white divide-opacity-20;
+            }
+
+            .markdown table th,
+            .markdown table td {
+                @apply px-2 py-1;
+            }
+
+            .markdown ol > li {
+                @apply list-decimal;
+            }
+
+            .markdown ul > li {
+                @apply list-disc;
+            }
+            }
+    </style>
 
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
