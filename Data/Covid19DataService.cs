@@ -112,7 +112,7 @@ namespace datathingies.Data
                     Weekly = x.Sum(x => x.value),
                 });
 
-            return grouped.OrderByDescending(x => x.Week);
+            return grouped;
         }
 
         public async Task<HeatmapMetadata> GetHeatmapMetadataForCountryMode(string isocode, DataModes mode)
