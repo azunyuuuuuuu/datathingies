@@ -1,0 +1,90 @@
+﻿@using Data
+@using Humanizer
+
+@if (Cases == null)
+{
+    <p>no data ☹️</p>
+}
+else
+{
+    <svg viewBox="0 0 @(Cases.Count * 12) 82">
+        <g transform="translate(0, 0)">
+            @foreach (var week in Cases)
+            {
+                <g transform="translate(@(Cases.IndexOf(week) * 12), 0)">
+                    @if (week.Monday != null)
+                    {
+                        <rect transform="translate(0, 0)" width="10" height="10"
+                style="fill: @Metadata.GetColorAtAsHex(week.Monday)">
+                            <title>
+                                @week.Monday?.ToMetric(decimals: 1)
+                            </title>
+                        </rect>
+                    }
+                    @if (week.Tuesday != null)
+                    {
+                        <rect transform="translate(0, 12)" width="10" height="10"
+                style="fill: @Metadata.GetColorAtAsHex(week.Tuesday)">
+                            <title>
+                                @week.Tuesday?.ToMetric(decimals: 1)
+                            </title>
+                        </rect>
+                    }
+                    @if (week.Wednesday != null)
+                    {
+                        <rect transform=" translate(0, 24)" width="10" height="10"
+                style="fill: @Metadata.GetColorAtAsHex(week.Wednesday)">
+                            <title>
+                                @week.Wednesday?.ToMetric(decimals: 1)
+                            </title>
+                        </rect>
+                    }
+                    @if (week.Thursday != null)
+                    {
+                        <rect transform="translate(0, 36)" width="10" height="10"
+                style="fill: @Metadata.GetColorAtAsHex(week.Thursday)">
+                            <title>
+                                @week.Thursday?.ToMetric(decimals: 1)
+                            </title>
+                        </rect>
+                    }
+                    @if (week.Friday != null)
+                    {
+                        <rect transform="translate(0, 48)" width="10" height="10"
+                style="fill: @Metadata.GetColorAtAsHex(week.Friday)">
+                            <title>
+                                @week.Friday?.ToMetric(decimals: 1)
+                            </title>
+                        </rect>
+                    }
+                    @if (week.Saturday != null)
+                    {
+                        <rect transform="translate(0, 60)" width="10" height="10"
+                style="fill: @Metadata.GetColorAtAsHex(week.Saturday)">
+                            <title>
+                                @week.Saturday?.ToMetric(decimals: 1)
+                            </title>
+                        </rect>
+                    }
+                    @if (week.Sunday != null)
+                    {
+                        <rect transform="translate(0, 72)" width="10" height="10"
+                style="fill: @Metadata.GetColorAtAsHex(week.Sunday)">
+                            <title>
+                                @week.Sunday?.ToMetric(decimals: 1)
+                            </title>
+                        </rect>
+                    }
+                </g>
+            }
+        </g>
+    </svg>
+}
+
+@code {
+    [Parameter]
+    public List<Covid19WeeklyData>? Cases { get; set; }
+
+    [Parameter]
+    public HeatmapMetadata Metadata { get; set; } = new HeatmapMetadata();
+}

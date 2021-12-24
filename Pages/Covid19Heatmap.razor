@@ -3,6 +3,7 @@
 @page "/covid19/heatmap/{isocode}/{datamode}"
 
 @using System.Collections.ObjectModel
+@using datathingies.Components
 @using datathingies.Data
 @using Humanizer
 @inject Covid19DataService _covid
@@ -22,9 +23,10 @@
         <p>
             <label>
                 Country:
-                <select class="dark:bg-zinc-700 dark:text-zinc-100 px-2 py-1" value="@IsoCode" @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
+                <select class="dark:bg-zinc-700 dark:text-zinc-100 px-2 py-1" value="@IsoCode"
+                @onchange="CountrySelectionChanged" @onkeypress:preventDefault>
                     <option value="">Select a country ...</option>
-                    @foreach (var group in countries.GroupBy(x=>x.Continent).OrderBy(x=>x.Key))
+                    @foreach (var group in countries.GroupBy(x => x.Continent).OrderBy(x => x.Key))
                     {
                         <optgroup label=@(string.IsNullOrWhiteSpace(group.Key)?"Global":group.Key)>
                             @foreach (var item in group)
@@ -37,7 +39,8 @@
             </label>
             <label>
                 Data Mode:
-                <select class="dark:bg-zinc-700 dark:text-zinc-100 px-2 py-1" value="@DataMode" @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
+                <select class="dark:bg-zinc-700 dark:text-zinc-100 px-2 py-1" value="@DataMode"
+                @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
                     @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataModes)))
                     {
                         <option value="@item.ToLower()">@item.Humanize()</option>
@@ -65,29 +68,9 @@
 
                         <div>
                             <h3>@GetCurrentModeAsHumanizedString()</h3>
-                            <table class="table-fixed w-full">
-                                <thead>
-                                    <th class="w-1/6 sm:w-auto">Week</th>
-                                    <th class="hidden lg:block"></th>
-                                    <th class="text-right w-1/8">Mo</th>
-                                    <th class="text-right w-1/8">Tu</th>
-                                    <th class="text-right w-1/8">We</th>
-                                    <th class="text-right w-1/8">Th</th>
-                                    <th class="text-right w-1/8">Fr</th>
-                                    <th class="text-right w-1/8">Sa</th>
-                                    <th class="text-right w-1/8">Su</th>
-                                    <th class="hidden lg:block text-right w-1/8">sum</th>
-                                </thead>
-                                <tbody>
-                                    <CascadingValue Value="heatmapMetadata">
-                                        @foreach (var entry in heatmapcases)
-                                        {
-                                            <HeatmapDataRow Data="@entry" />
-                                        }
-                                    </CascadingValue>
-                                </tbody>
-                            </table>
+                            <Heatmap Cases=heatmapcases Metadata=heatmapMetadata></Heatmap>
                         </div>
+
                     </div>
                 </div>
             }
@@ -96,7 +79,9 @@
 
     <div class="mx-16 text-center text-xs font-thin">
         <span>Data Source:</span>
-        <a href="https://ourworldindata.org/coronavirus">Max Roser, Hannah Ritchie, Esteban Ortiz-Ospina and Joe Hasell (2020) - "Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org. Retrieved from: 'https://ourworldindata.org/coronavirus' [Online Resource]</a>
+        <a href="https://ourworldindata.org/coronavirus">Max Roser, Hannah Ritchie, Esteban Ortiz-Ospina and Joe Hasell
+            (2020) - "Coronavirus Pandemic (COVID-19)". Published online at OurWorldInData.org. Retrieved from:
+            'https://ourworldindata.org/coronavirus' [Online Resource]</a>
     </div>
 </div>
 
@@ -108,7 +93,7 @@
     [Parameter]
     public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
 
-    private ICollection<Covid19WeeklyData> heatmapcases;
+    private List<Covid19WeeklyData> heatmapcases;
     private HeatmapMetadata heatmapMetadata = new HeatmapMetadata();
 
     private bool isloading = false;
@@ -125,16 +110,18 @@
             isloading = true;
             StateHasChanged();
 
-            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true);
-            heatmapcases = new Collection<Covid19WeeklyData>((await _covid.GetHeatmapForCountryMode(IsoCode, datamode)).ToList());
+            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(),
+            true);
+            heatmapcases = (await _covid.GetHeatmapForCountryMode(IsoCode, datamode)).ToList();
 
-            heatmapMetadata = await _covid.GetHeatmapMetadataForCountryMode(IsoCode,datamode);
-            heatmapMetadata = heatmapMetadata with {
-                MinWeeklyValue=0,
-                MaxWeeklyValue=heatmapcases.Max(x=>x.Weekly??0)
+            heatmapMetadata = await _covid.GetHeatmapMetadataForCountryMode(IsoCode, datamode);
+            heatmapMetadata = heatmapMetadata with
+            {
+                MinWeeklyValue = 0,
+                MaxWeeklyValue = heatmapcases.Max(x => x.Weekly ?? 0)
             };
 
-            isloading=false;
+            isloading = false;
         }
         else
         {
@@ -157,5 +144,5 @@
     }
 
     private string GetCurrentModeAsHumanizedString()
-        => Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true).Humanize();
+    => Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true).Humanize();
 }
