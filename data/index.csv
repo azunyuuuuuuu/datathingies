@@ -90,6 +90,7 @@ GIN,Africa,Guinea
 GNB,Africa,Guinea-Bissau
 GUY,South America,Guyana
 HTI,North America,Haiti
+OWID_HIC,,High income
 HND,North America,Honduras
 HKG,Asia,Hong Kong
 HUN,Europe,Hungary
@@ -121,6 +122,8 @@ LBR,Africa,Liberia
 LBY,Africa,Libya
 LIE,Europe,Liechtenstein
 LTU,Europe,Lithuania
+OWID_LIC,,Low income
+OWID_LMC,,Lower middle income
 LUX,Europe,Luxembourg
 MAC,Asia,Macao
 MDG,Africa,Madagascar
@@ -159,6 +162,7 @@ NOR,Europe,Norway
 OWID_OCE,,Oceania
 OMN,Asia,Oman
 PAK,Asia,Pakistan
+PLW,Oceania,Palau
 PSE,Asia,Palestine
 PAN,North America,Panama
 PNG,Oceania,Papua New Guinea
@@ -175,6 +179,7 @@ RWA,Africa,Rwanda
 SHN,Africa,Saint Helena
 KNA,North America,Saint Kitts and Nevis
 LCA,North America,Saint Lucia
+SPM,North America,Saint Pierre and Miquelon
 VCT,North America,Saint Vincent and the Grenadines
 WSM,Oceania,Samoa
 SMR,Europe,San Marino
@@ -220,6 +225,7 @@ UKR,Europe,Ukraine
 ARE,Asia,United Arab Emirates
 GBR,Europe,United Kingdom
 USA,North America,United States
+OWID_UMC,,Upper middle income
 URY,South America,Uruguay
 UZB,Asia,Uzbekistan
 VUT,Oceania,Vanuatu
