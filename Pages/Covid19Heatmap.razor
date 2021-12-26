@@ -112,7 +112,7 @@
 
             var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(),
             true);
-            heatmapcases = (await _covid.GetHeatmapForCountryMode(IsoCode, datamode)).ToList();
+            heatmapcases = (await _covid.GetHeatmapForCountryMode(IsoCode, datamode)).Take(51).Reverse().ToList();
 
             heatmapMetadata = await _covid.GetHeatmapMetadataForCountryMode(IsoCode, datamode);
             heatmapMetadata = heatmapMetadata with
