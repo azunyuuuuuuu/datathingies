@@ -27,7 +27,7 @@ else
                         <rect transform="translate(0, 0)" width="10" height="10"
                 style="fill: @Metadata.GetColorAtAsHex(week.Monday)">
                             <title>
-                                @week.Monday?.ToMetric(decimals: 1)
+                                @week.Date.AddDays(0).ToString("dd.MM.yyyy") @week.Monday?.ToMetric(decimals: 1)
                             </title>
                         </rect>
                     }
@@ -36,7 +36,7 @@ else
                         <rect transform="translate(0, 12)" width="10" height="10"
                 style="fill: @Metadata.GetColorAtAsHex(week.Tuesday)">
                             <title>
-                                @week.Tuesday?.ToMetric(decimals: 1)
+                                @week.Date.AddDays(1).ToString("dd.MM.yyyy") @week.Tuesday?.ToMetric(decimals: 1)
                             </title>
                         </rect>
                     }
@@ -45,7 +45,7 @@ else
                         <rect transform=" translate(0, 24)" width="10" height="10"
                 style="fill: @Metadata.GetColorAtAsHex(week.Wednesday)">
                             <title>
-                                @week.Wednesday?.ToMetric(decimals: 1)
+                                @week.Date.AddDays(2).ToString("dd.MM.yyyy") @week.Wednesday?.ToMetric(decimals: 1)
                             </title>
                         </rect>
                     }
@@ -54,7 +54,7 @@ else
                         <rect transform="translate(0, 36)" width="10" height="10"
                 style="fill: @Metadata.GetColorAtAsHex(week.Thursday)">
                             <title>
-                                @week.Thursday?.ToMetric(decimals: 1)
+                                @week.Date.AddDays(3).ToString("dd.MM.yyyy") @week.Thursday?.ToMetric(decimals: 1)
                             </title>
                         </rect>
                     }
@@ -63,7 +63,7 @@ else
                         <rect transform="translate(0, 48)" width="10" height="10"
                 style="fill: @Metadata.GetColorAtAsHex(week.Friday)">
                             <title>
-                                @week.Friday?.ToMetric(decimals: 1)
+                                @week.Date.AddDays(4).ToString("dd.MM.yyyy") @week.Friday?.ToMetric(decimals: 1)
                             </title>
                         </rect>
                     }
@@ -72,7 +72,7 @@ else
                         <rect transform="translate(0, 60)" width="10" height="10"
                 style="fill: @Metadata.GetColorAtAsHex(week.Saturday)">
                             <title>
-                                @week.Saturday?.ToMetric(decimals: 1)
+                                @week.Date.AddDays(5).ToString("dd.MM.yyyy") @week.Saturday?.ToMetric(decimals: 1)
                             </title>
                         </rect>
                     }
@@ -81,7 +81,7 @@ else
                         <rect transform="translate(0, 72)" width="10" height="10"
                 style="fill: @Metadata.GetColorAtAsHex(week.Sunday)">
                             <title>
-                                @week.Sunday?.ToMetric(decimals: 1)
+                                @week.Date.AddDays(6).ToString("dd.MM.yyyy") @week.Sunday?.ToMetric(decimals: 1)
                             </title>
                         </rect>
                     }
