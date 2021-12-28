@@ -7,6 +7,7 @@ using CsvHelper;
 public class MainCommand : ICommand
 {
     private const string _cacherootpath = @"cache";
+    private const string _outputpath = @"output";
 
     [CommandOption("cached", 'c', Description = "Use precached data to generate output data.")]
     public bool UseCachedData { get; set; } = true;
@@ -20,15 +21,22 @@ public class MainCommand : ICommand
         await LoadCachedDataAsync(console);
     }
 
-    private async Task LoadCachedDataAsync(IConsole console)
+    private async ValueTask LoadCachedDataAsync(IConsole console)
     {
+        Directory.CreateDirectory(_outputpath);
+        
         using var stream = File.OpenRead(Path.Combine(_cacherootpath, @"owid-covid-data.csv"));
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
 
-        await foreach (var item in csv.GetRecordsAsync<Covid19DataEntry>())
+        var groups = csv.GetRecords<CondensedDataEntry>().GroupBy(x => x.IsoCode);
+
+        foreach (var group in groups)
         {
-            await console.Output.WriteLineAsync(item.ToString());
+            using var writer = File.CreateText(Path.Combine(_outputpath, $"{group.Key}.csv"));
+            using var writecsv = new CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture);
+
+            await writecsv.WriteRecordsAsync<CondensedDataEntry>(group);
         }
     }
 

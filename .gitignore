@@ -399,3 +399,4 @@ dist
 _data/*
 wwwroot/data/*
 Generator/cache/*
+Generator/output/*
