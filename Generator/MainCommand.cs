@@ -1,6 +1,7 @@
 using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
+using CsvHelper;
 
 [Command]
 public class MainCommand : ICommand
@@ -19,9 +20,16 @@ public class MainCommand : ICommand
         await LoadCachedDataAsync(console);
     }
 
-    private Task LoadCachedDataAsync(IConsole console)
+    private async Task LoadCachedDataAsync(IConsole console)
     {
-        throw new NotImplementedException();
+        using var stream = File.OpenRead(Path.Combine(_cacherootpath, @"owid-covid-data.csv"));
+        using var reader = new StreamReader(stream);
+        using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
+
+        await foreach (var item in csv.GetRecordsAsync<Covid19DataEntry>())
+        {
+            await console.Output.WriteLineAsync(item.ToString());
+        }
     }
 
     private async ValueTask DownloadDataIntoCacheAsync(IConsole console)
@@ -30,7 +38,7 @@ public class MainCommand : ICommand
 
         using var client = new HttpClient();
         using var stream = await client.GetStreamAsync(@"https://covid.ourworldindata.org/data/owid-covid-data.csv");
-        using var filestream = File.Open(Path.Combine(_cacherootpath, @"data.csv"), FileMode.Create);
+        using var filestream = File.Open(Path.Combine(_cacherootpath, @"owid-covid-data.csv"), FileMode.Create);
 
         await stream.CopyToAsync(filestream);
         await filestream.FlushAsync();
