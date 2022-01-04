@@ -1,0 +1,113 @@
+<svg
+  class="fill-zinc-500 text-[0.5rem]"
+  viewBox="0 0 @(50 + (Cases.Count * 12)) 116"
+>
+  <g transform="translate(48, 30)">
+    <text text-anchor="end" x="0" y="12">Monday</text>
+    <text text-anchor="end" x="0" y="24">Tuesday</text>
+    <text text-anchor="end" x="0" y="36">Wednesday</text>
+    <text text-anchor="end" x="0" y="48">Thursday</text>
+    <text text-anchor="end" x="0" y="60">Friday</text>
+    <text text-anchor="end" x="0" y="72">Saturday</text>
+    <text text-anchor="end" x="0" y="84">Sunday</text>
+  </g>
+  <g transform="translate(50, 0)">
+    {{#weeks}}
+        <g transform="translate(@(Cases.IndexOf(week) * 12), 34)">
+    {{/weeks}}
+    @foreach (var week in Cases) {
+    <g transform="translate(@(Cases.IndexOf(week) * 12), 34)">
+      <text
+        class="translate-x-2 -translate-y-1 -rotate-90"
+        x="0"
+        y="0"
+      >@week.Week</text>
+      @if (week.Monday != null) {
+      <rect
+        transform="translate(0, 0)"
+        width="10"
+        height="10"
+        style="fill: @Metadata.GetColorAtAsHex(week.Monday)"
+      >
+        <title>
+          @week.Date.AddDays(0).ToString("dd.MM.yyyy")
+          @week.Monday?.ToMetric(decimals: 1)
+        </title>
+      </rect>
+      } @if (week.Tuesday != null) {
+      <rect
+        transform="translate(0, 12)"
+        width="10"
+        height="10"
+        style="fill: @Metadata.GetColorAtAsHex(week.Tuesday)"
+      >
+        <title>
+          @week.Date.AddDays(1).ToString("dd.MM.yyyy")
+          @week.Tuesday?.ToMetric(decimals: 1)
+        </title>
+      </rect>
+      } @if (week.Wednesday != null) {
+      <rect
+        transform=" translate(0, 24)"
+        width="10"
+        height="10"
+        style="fill: @Metadata.GetColorAtAsHex(week.Wednesday)"
+      >
+        <title>
+          @week.Date.AddDays(2).ToString("dd.MM.yyyy")
+          @week.Wednesday?.ToMetric(decimals: 1)
+        </title>
+      </rect>
+      } @if (week.Thursday != null) {
+      <rect
+        transform="translate(0, 36)"
+        width="10"
+        height="10"
+        style="fill: @Metadata.GetColorAtAsHex(week.Thursday)"
+      >
+        <title>
+          @week.Date.AddDays(3).ToString("dd.MM.yyyy")
+          @week.Thursday?.ToMetric(decimals: 1)
+        </title>
+      </rect>
+      } @if (week.Friday != null) {
+      <rect
+        transform="translate(0, 48)"
+        width="10"
+        height="10"
+        style="fill: @Metadata.GetColorAtAsHex(week.Friday)"
+      >
+        <title>
+          @week.Date.AddDays(4).ToString("dd.MM.yyyy")
+          @week.Friday?.ToMetric(decimals: 1)
+        </title>
+      </rect>
+      } @if (week.Saturday != null) {
+      <rect
+        transform="translate(0, 60)"
+        width="10"
+        height="10"
+        style="fill: @Metadata.GetColorAtAsHex(week.Saturday)"
+      >
+        <title>
+          @week.Date.AddDays(5).ToString("dd.MM.yyyy")
+          @week.Saturday?.ToMetric(decimals: 1)
+        </title>
+      </rect>
+      } @if (week.Sunday != null) {
+      <rect
+        transform="translate(0, 72)"
+        width="10"
+        height="10"
+        style="fill: @Metadata.GetColorAtAsHex(week.Sunday)"
+      >
+        <title>
+          @week.Date.AddDays(6).ToString("dd.MM.yyyy")
+          @week.Sunday?.ToMetric(decimals: 1)
+        </title>
+      </rect>
+      }
+    </g>
+    }
+  </g>
+</svg>

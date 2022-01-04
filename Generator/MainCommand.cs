@@ -1,3 +1,4 @@
+using System.Globalization;
 using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
@@ -18,13 +19,96 @@ public class MainCommand : ICommand
 
         await DownloadDataIntoCacheAsync(console);
 
-        await LoadCachedDataAsync(console);
+        // await LoadCachedDataAsync(console);
+
+        await GenerateSvgFilesAsync(console);
+    }
+
+    private async ValueTask GenerateSvgFilesAsync(IConsole console)
+    {
+        using var stream = File.OpenRead(Path.Combine(_cacherootpath, @"owid-covid-data.csv"));
+        using var reader = new StreamReader(stream);
+        using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
+
+        var groups = csv.GetRecords<RawDataEntry>().GroupBy(x => x.IsoCode);
+
+        foreach (var group in groups)
+        {
+            var outputpath = Path.Combine(_outputpath, group.Key.ToLowerInvariant());
+            Directory.CreateDirectory(outputpath);
+
+            var casesMax = group.Max(x => x.NewCases);
+            var deathsMax = group.Max(x => x.NewDeaths);
+            var vaccinationsMax = group.Max(x => x.NewVaccinations);
+            var casesSmoothedMax = group.Max(x => x.NewCasesSmoothed);
+            var deathsSmoothedMax = group.Max(x => x.NewDeathsSmoothed);
+            var vaccinationsSmoothedMax = group.Max(x => x.NewVaccinationsSmoothed);
+            var hospPatientsMax = group.Max(x => x.HospPatients);
+            var icuPatientsMax = group.Max(x => x.IcuPatients);
+
+            var output = group.Select(x => new
+            {
+                Date = x.Date,
+                DayOfWeek = ((int?)x.Date?.ToDateTime(TimeOnly.MinValue).DayOfWeek) - 1,
+                Week = ISOWeek.GetWeekOfYear(x.Date?.ToDateTime(TimeOnly.MinValue) ?? DateTime.MinValue),
+                Year = ISOWeek.GetYear(x.Date?.ToDateTime(TimeOnly.MinValue) ?? DateTime.MinValue),
+                Cases = x.NewCases,
+                Deaths = x.NewDeaths,
+                Vaccinations = x.NewVaccinations,
+                CasesSmoothed = x.NewCasesSmoothed,
+                DeathsSmoothed = x.NewDeathsSmoothed,
+                VaccinationsSmoothed = x.NewVaccinationsSmoothed,
+                HospitalPatients = x.HospPatients,
+                IcuPatients = x.IcuPatients,
+            }).Select(x => x with { DayOfWeek = x.DayOfWeek < 0 ? 6 : x.DayOfWeek });
+
+            var gradient = new ColorGradient
+            {
+                Colors = new List<Color> { @"#63BE7B".ToColor(), @"#FFEB84".ToColor(), @"#F8696B".ToColor(), }
+            };
+            var gradientreverse = new ColorGradient
+            {
+                Colors = new List<Color> { @"#F8696B".ToColor(), @"#FFEB84".ToColor(), @"#63BE7B".ToColor(), }
+            };
+
+            var dataCases = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Cases, gradient.GetColorAt(1 / casesMax * x.Cases)));
+            var dataDeaths = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Deaths, gradient.GetColorAt(1 / deathsMax * x.Deaths)));
+            var dataVaccinations = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Vaccinations, gradientreverse.GetColorAt(1 / vaccinationsMax * x.Vaccinations)));
+            var dataCasesSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.CasesSmoothed, gradient.GetColorAt(1 / casesSmoothedMax * x.CasesSmoothed)));
+            var dataDeathsSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.DeathsSmoothed, gradient.GetColorAt(1 / deathsSmoothedMax * x.DeathsSmoothed)));
+            var dataVaccinationsSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.VaccinationsSmoothed, gradientreverse.GetColorAt(1 / vaccinationsSmoothedMax * x.VaccinationsSmoothed)));
+            var dataHospitalPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.HospitalPatients, gradient.GetColorAt(1 / hospPatientsMax * x.HospitalPatients)));
+            var dataIcuPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.IcuPatients, gradient.GetColorAt(1 / icuPatientsMax * x.IcuPatients)));
+
+
+            var weeks = output.GroupBy(x => $"{x.Year} {x.Week}")
+                .OrderByDescending(x => x.Key).ToList();
+
+            var outputstring = string.Empty;
+
+            foreach (var week in weeks)
+            {
+                var svgWeekStart = $"<g transform=\"translate({weeks.IndexOf(week) * 12}, 0)\">";
+
+                var svgDays = string.Join(Environment.NewLine, week.OrderBy(x => x.DayOfWeek)
+                    .Select(x => $"<rect transform=\"translate(0, {x.DayOfWeek * 12})\" width=\"10\" height=\"10\" style=\"fill: @Metadata.GetColorAtAsHex(week.Monday)\">"));
+
+                var svgWeekEnd = $"</g>";
+
+                var svgWeek = string.Join(Environment.NewLine, svgWeekStart, svgDays, svgWeekEnd);
+
+                outputstring += svgWeek + Environment.NewLine;
+            }
+
+
+            await File.WriteAllTextAsync(Path.Combine(outputpath, "raw.txt"), outputstring, System.Text.Encoding.UTF8);
+        }
     }
 
     private async ValueTask LoadCachedDataAsync(IConsole console)
     {
         Directory.CreateDirectory(_outputpath);
-        
+
         using var stream = File.OpenRead(Path.Combine(_cacherootpath, @"owid-covid-data.csv"));
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
@@ -52,3 +136,5 @@ public class MainCommand : ICommand
         await filestream.FlushAsync();
     }
 }
+
+internal record OutputData(DateOnly? Date, int? DayOfWeek, int Week, int Year, double? Count, Color Colour);
