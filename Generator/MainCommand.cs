@@ -3,6 +3,7 @@ using CliFx;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
 using CsvHelper;
+using Scriban;
 
 [Command]
 public class MainCommand : ICommand
@@ -80,28 +81,30 @@ public class MainCommand : ICommand
             var dataHospitalPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.HospitalPatients, gradient.GetColorAt(1 / hospPatientsMax * x.HospitalPatients)));
             var dataIcuPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.IcuPatients, gradient.GetColorAt(1 / icuPatientsMax * x.IcuPatients)));
 
+            var template = Template.Parse(await File.ReadAllTextAsync("svg.template"));
+            var rendered = await template.RenderAsync(new { ProcessedData = dataCases });
+            await File.WriteAllTextAsync(Path.Combine(outputpath, "raw.txt"), rendered, System.Text.Encoding.UTF8);
 
-            var weeks = output.GroupBy(x => $"{x.Year} {x.Week}")
-                .OrderByDescending(x => x.Key).ToList();
+            // var weeks = output.GroupBy(x => $"{x.Year} {x.Week}")
+            //     .OrderByDescending(x => x.Key).ToList();
 
-            var outputstring = string.Empty;
+            // var outputstring = string.Empty;
 
-            foreach (var week in weeks)
-            {
-                var svgWeekStart = $"<g transform=\"translate({weeks.IndexOf(week) * 12}, 0)\">";
+            // foreach (var week in weeks)
+            // {
+            //     var svgWeekStart = $"<g transform=\"translate({weeks.IndexOf(week) * 12}, 0)\">";
 
-                var svgDays = string.Join(Environment.NewLine, week.OrderBy(x => x.DayOfWeek)
-                    .Select(x => $"<rect transform=\"translate(0, {x.DayOfWeek * 12})\" width=\"10\" height=\"10\" style=\"fill: @Metadata.GetColorAtAsHex(week.Monday)\">"));
+            //     var svgDays = string.Join(Environment.NewLine, week.OrderBy(x => x.DayOfWeek)
+            //         .Select(x => $"<rect transform=\"translate(0, {x.DayOfWeek * 12})\" width=\"10\" height=\"10\" style=\"fill: @Metadata.GetColorAtAsHex(week.Monday)\">"));
 
-                var svgWeekEnd = $"</g>";
+            //     var svgWeekEnd = $"</g>";
 
-                var svgWeek = string.Join(Environment.NewLine, svgWeekStart, svgDays, svgWeekEnd);
+            //     var svgWeek = string.Join(Environment.NewLine, svgWeekStart, svgDays, svgWeekEnd);
 
-                outputstring += svgWeek + Environment.NewLine;
-            }
+            //     outputstring += svgWeek + Environment.NewLine;
+            // }
 
 
-            await File.WriteAllTextAsync(Path.Combine(outputpath, "raw.txt"), outputstring, System.Text.Encoding.UTF8);
         }
     }
 

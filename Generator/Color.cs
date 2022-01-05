@@ -48,8 +48,9 @@ public record ColorGradient
 
     public Color GetColorAt(double? value)
     {
+        value = Math.Clamp(value ?? 0, 0, 1);
         if (value < 0 || value > 1)
-            throw new ArgumentOutOfRangeException($"Parameter '{nameof(value)}' needs to be between 0 and 1");
+            throw new ArgumentOutOfRangeException($"Parameter '{nameof(value)}' needs to be between 0 and 1 instead of {value}");
 
         if (Colors.Count == 0)
             throw new Exception("Not enough colors specified.");
