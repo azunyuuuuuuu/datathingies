@@ -61,7 +61,8 @@ public class MainCommand : ICommand
                 VaccinationsSmoothed = x.NewVaccinationsSmoothed,
                 HospitalPatients = x.HospPatients,
                 IcuPatients = x.IcuPatients,
-            }).Select(x => x with { DayOfWeek = x.DayOfWeek < 0 ? 6 : x.DayOfWeek });
+            }).Select(x => x with { DayOfWeek = x.DayOfWeek < 0 ? 6 : x.DayOfWeek })
+            .OrderBy(x => x.Date);
 
             var gradient = new ColorGradient
             {
@@ -82,8 +83,20 @@ public class MainCommand : ICommand
             var dataIcuPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.IcuPatients, gradient.GetColorAt(1 / icuPatientsMax * x.IcuPatients)));
 
             var template = Template.Parse(await File.ReadAllTextAsync("svg.template"));
-            var rendered = await template.RenderAsync(new { ProcessedData = dataCases });
-            await File.WriteAllTextAsync(Path.Combine(outputpath, "raw.txt"), rendered, System.Text.Encoding.UTF8);
+
+            var list = dataCases.GroupBy(x => $"{x.Year}{x.Week}")
+                .OrderBy(x => x.Key)
+                .ToList();
+
+            var model = new
+            {
+                ProcessedData = list,
+                Count = list.Count,
+                Size = 10,
+            };
+
+            var rendered = await template.RenderAsync(model);
+            await File.WriteAllTextAsync(Path.Combine(outputpath, "raw.svg"), rendered, System.Text.Encoding.UTF8);
 
             // var weeks = output.GroupBy(x => $"{x.Year} {x.Week}")
             //     .OrderByDescending(x => x.Key).ToList();

@@ -1,7 +1,35 @@
-henlos
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg class="fill-zinc-500 text-[0.5rem]" viewBox="0 0 {{ math.plus size 2 | math.times count | math.plus 12 }} 116">
 
-{{ for data in processed_data }}
-  {{ data.date }}
-{{ end }}
+  <g transform="translate(48, 30)">
+    <text text-anchor="end" x="0" y="12">Monday</text>
+    <text text-anchor="end" x="0" y="24">Tuesday</text>
+    <text text-anchor="end" x="0" y="36">Wednesday</text>
+    <text text-anchor="end" x="0" y="48">Thursday</text>
+    <text text-anchor="end" x="0" y="60">Friday</text>
+    <text text-anchor="end" x="0" y="72">Saturday</text>
+    <text text-anchor="end" x="0" y="84">Sunday</text>
+  </g>
 
-sss
+  <g transform="translate(50, 0)">
+
+    {{ for weekdata in processed_data }}
+    <g transform="translate({{ math.plus size 2 | math.times for.index }}, 34)">
+      <text class=" translate-x-2 -translate-y-1 -rotate-90" x="0" y="0">{{ weekdata.dayofweek }}</text>
+      {{ for daydata in weekdata }}
+      <rect transform="translate(0, {{ math.plus size 2 | math.times daydata.day_of_week }})" 
+      width="{{ size }}" 
+      height="{{ size }}" 
+      style="fill: {{ daydata.colour }}">
+        <title>
+          {{ daydata.date }} {{ daydata.count }}
+        </title>
+      </rect>
+      {{ end }}
+    </g>
+    {{ end }}
+
+  </g>
+
+</svg>
