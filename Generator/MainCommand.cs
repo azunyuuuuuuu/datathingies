@@ -18,7 +18,8 @@ public class MainCommand : ICommand
     {
         console.Output.WriteLine("Hello world!");
 
-        await DownloadDataIntoCacheAsync(console);
+        if (UseCachedData == false)
+            await DownloadDataIntoCacheAsync(console);
 
         // await LoadCachedDataAsync(console);
 
@@ -73,14 +74,14 @@ public class MainCommand : ICommand
                 Colors = new List<Color> { @"#F8696B".ToColor(), @"#FFEB84".ToColor(), @"#63BE7B".ToColor(), }
             };
 
-            var dataCases = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Cases, gradient.GetColorAt(1 / casesMax * x.Cases)));
-            var dataDeaths = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Deaths, gradient.GetColorAt(1 / deathsMax * x.Deaths)));
-            var dataVaccinations = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Vaccinations, gradientreverse.GetColorAt(1 / vaccinationsMax * x.Vaccinations)));
-            var dataCasesSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.CasesSmoothed, gradient.GetColorAt(1 / casesSmoothedMax * x.CasesSmoothed)));
-            var dataDeathsSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.DeathsSmoothed, gradient.GetColorAt(1 / deathsSmoothedMax * x.DeathsSmoothed)));
-            var dataVaccinationsSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.VaccinationsSmoothed, gradientreverse.GetColorAt(1 / vaccinationsSmoothedMax * x.VaccinationsSmoothed)));
-            var dataHospitalPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.HospitalPatients, gradient.GetColorAt(1 / hospPatientsMax * x.HospitalPatients)));
-            var dataIcuPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.IcuPatients, gradient.GetColorAt(1 / icuPatientsMax * x.IcuPatients)));
+            var dataCases = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Cases, gradient.GetColorAt(1 / casesMax * x.Cases).ToHexString()));
+            var dataDeaths = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Deaths, gradient.GetColorAt(1 / deathsMax * x.Deaths).ToHexString()));
+            var dataVaccinations = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.Vaccinations, gradientreverse.GetColorAt(1 / vaccinationsMax * x.Vaccinations).ToHexString()));
+            var dataCasesSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.CasesSmoothed, gradient.GetColorAt(1 / casesSmoothedMax * x.CasesSmoothed).ToHexString()));
+            var dataDeathsSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.DeathsSmoothed, gradient.GetColorAt(1 / deathsSmoothedMax * x.DeathsSmoothed).ToHexString()));
+            var dataVaccinationsSmoothed = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.VaccinationsSmoothed, gradientreverse.GetColorAt(1 / vaccinationsSmoothedMax * x.VaccinationsSmoothed).ToHexString()));
+            var dataHospitalPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.HospitalPatients, gradient.GetColorAt(1 / hospPatientsMax * x.HospitalPatients).ToHexString()));
+            var dataIcuPatients = output.Select(x => new OutputData(x.Date, x.DayOfWeek, x.Week, x.Year, x.IcuPatients, gradient.GetColorAt(1 / icuPatientsMax * x.IcuPatients).ToHexString()));
 
             var template = Template.Parse(await File.ReadAllTextAsync("svg.template"));
 
@@ -153,4 +154,4 @@ public class MainCommand : ICommand
     }
 }
 
-internal record OutputData(DateOnly? Date, int? DayOfWeek, int Week, int Year, double? Count, Color Colour);
+internal record OutputData(DateOnly? Date, int? DayOfWeek, int? Week, int? Year, double? Count, string Color);
