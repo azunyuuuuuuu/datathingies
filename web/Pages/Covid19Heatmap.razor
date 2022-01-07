@@ -1,6 +1,5 @@
 ﻿@page "/covid19/heatmap"
 @page "/covid19/heatmap/{isocode}"
-@page "/covid19/heatmap/{isocode}/{datamode}"
 
 @using System.Collections.ObjectModel
 @using datathingies.Components
@@ -19,7 +18,6 @@
     }
     else
     {
-
         <p>
             <label>
                 Country:
@@ -37,16 +35,6 @@
                     }
                 </select>
             </label>
-            <label>
-                Data Mode:
-                <select class="dark:bg-zinc-700 dark:text-zinc-100 px-2 py-1" value="@DataMode"
-                @onchange="DataModeSelectionChanged" @onkeypress:preventDefault>
-                    @foreach (var item in Enum.GetNames(typeof(Covid19DataService.DataModes)))
-                    {
-                        <option value="@item.ToLower()">@item.Humanize()</option>
-                    }
-                </select>
-            </label>
         </p>
 
         @if (isloading)
@@ -55,24 +43,27 @@
         }
         else
         {
-            @if (heatmapcases == null)
+            @if (string.IsNullOrWhiteSpace(IsoCode))
             {
                 <p><em>Choose a country to show the heatmap data...</em></p>
             }
             else
             {
-                <h2> Heatmap </h2>
+                <h2> Cases </h2> @((MarkupString)_svgCases)
 
-                <div class="container">
-                    <div class="lg:grid lg:grid-flow-col lg:space-x-8 w-full">
+                <h2> Deaths </h2> @((MarkupString)_svgDeaths)
 
-                        <div>
-                            <h3>@GetCurrentModeAsHumanizedString()</h3>
-                            <Heatmap Cases=heatmapcases Metadata=heatmapMetadata></Heatmap>
-                        </div>
+                <h2> Vaccinations </h2> @((MarkupString)_svgVaccinations)
 
-                    </div>
-                </div>
+                <h2> Cases Smoothed </h2> @((MarkupString)_svgCasesSmoothed)
+
+                <h2> Deaths Smoothed </h2> @((MarkupString)_svgDeathsSmoothed)
+
+                <h2> Vaccinations Smoothed </h2> @((MarkupString)_svgVaccinationsSmoothed)
+
+                <h2> Hospital Patients </h2> @((MarkupString)_svgHospitalPatients)
+
+                <h2> ICU Patients </h2> @((MarkupString)_svgIcuPatients)
             }
         }
     }
@@ -90,11 +81,15 @@
 
     [Parameter]
     public string IsoCode { get; set; } = string.Empty;
-    [Parameter]
-    public string DataMode { get; set; } = Covid19DataService.DataModes.Cases.ToString();
 
-    private List<Covid19WeeklyData> heatmapcases;
-    private HeatmapMetadata heatmapMetadata = new HeatmapMetadata();
+    private string _svgCases = string.Empty;
+    private string _svgDeaths = string.Empty;
+    private string _svgVaccinations = string.Empty;
+    private string _svgCasesSmoothed = string.Empty;
+    private string _svgDeathsSmoothed = string.Empty;
+    private string _svgVaccinationsSmoothed = string.Empty;
+    private string _svgHospitalPatients = string.Empty;
+    private string _svgIcuPatients = string.Empty;
 
     private bool isloading = false;
     protected override async Task OnInitializedAsync()
@@ -110,39 +105,26 @@
             isloading = true;
             StateHasChanged();
 
-            var datamode = Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(),
-            true);
-            heatmapcases = (await _covid.GetHeatmapForCountryMode(IsoCode, datamode)).Take(51).Reverse().ToList();
-
-            heatmapMetadata = await _covid.GetHeatmapMetadataForCountryMode(IsoCode, datamode);
-            heatmapMetadata = heatmapMetadata with
-            {
-                MinWeeklyValue = 0,
-                MaxWeeklyValue = heatmapcases.Max(x => x.Weekly ?? 0)
-            };
+            _svgCases = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "Cases");
+            _svgDeaths = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "Deaths");
+            _svgVaccinations = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "Vaccinations");
+            _svgCasesSmoothed = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "CasesSmoothed");
+            _svgDeathsSmoothed = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "DeathsSmoothed");
+            _svgVaccinationsSmoothed = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "VaccinationsSmoothed");
+            _svgHospitalPatients = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "HospitalPatients");
+            _svgIcuPatients = await _covid.GetHeatmapSvgForCountryMode(IsoCode, "IcuPatients");
 
             isloading = false;
         }
         else
         {
-            heatmapcases = null;
+            _svgCases = string.Empty;
         }
     }
 
     private void CountrySelectionChanged(ChangeEventArgs e)
     {
         var isocode = ((string)e.Value).ToLower();
-        var mode = (DataMode ?? Covid19DataService.DataModes.Cases.ToString()).ToLower();
-        _nav.NavigateTo($"covid19/heatmap/{isocode}/{mode}");
+        _nav.NavigateTo($"covid19/heatmap/{isocode}");
     }
-
-    private void DataModeSelectionChanged(ChangeEventArgs e)
-    {
-        var isocode = IsoCode.ToLower();
-        var mode = ((string)e.Value).ToLower();
-        _nav.NavigateTo($"covid19/heatmap/{isocode}/{mode}");
-    }
-
-    private string GetCurrentModeAsHumanizedString()
-    => Enum.Parse<Covid19DataService.DataModes>(DataMode ?? Covid19DataService.DataModes.Cases.ToString(), true).Humanize();
 }

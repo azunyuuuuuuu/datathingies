@@ -102,7 +102,7 @@ public class MainCommand : ICommand
 
     private static async Task GenerateSvgFile(string path, IEnumerable<OutputData> dataCases, Template template)
     {
-        var list = dataCases.GroupBy(x => $"{x.Year}{x.Week}")
+        var list = dataCases.GroupBy(x => $"{x.Year} {x.Week?.ToString("D2")}")
             .OrderBy(x => x.Key)
             .ToList();
 

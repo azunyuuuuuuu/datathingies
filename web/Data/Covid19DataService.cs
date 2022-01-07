@@ -77,6 +77,9 @@ namespace datathingies.Data
                 .OrderByDescending(x => x.Date);
         }
 
+        public async Task<string> GetHeatmapSvgForCountryMode(string isocode, string mode)
+            => await _http.GetStringAsync($"data/{isocode}/{mode}.svg");
+
         public async Task<IEnumerable<Covid19WeeklyData>> GetHeatmapForCountryMode(string isocode, DataModes mode)
         {
             await EnsureDataForCountryIsLoaded(isocode);
