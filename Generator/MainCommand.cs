@@ -12,7 +12,7 @@ public class MainCommand : ICommand
     private const string _outputpath = @"output";
 
     [CommandOption("cached", 'c', Description = "Use precached data to generate output data.")]
-    public bool UseCachedData { get; set; } = true;
+    public bool UseCachedData { get; set; } = false;
 
     public async ValueTask ExecuteAsync(IConsole console)
     {
@@ -20,8 +20,6 @@ public class MainCommand : ICommand
 
         if (UseCachedData == false)
             await DownloadDataIntoCacheAsync(console);
-
-        // await LoadCachedDataAsync(console);
 
         await GenerateSvgFilesAsync(console);
     }
@@ -34,8 +32,11 @@ public class MainCommand : ICommand
 
         var groups = csv.GetRecords<RawDataEntry>().GroupBy(x => x.IsoCode);
 
+        var index = new List<string> { "iso_code,continent,location" };
+
         foreach (var group in groups)
         {
+            index.Add($"{group.Key.ToLowerInvariant()},{group.First().Continent},{group.First().Location}");
             var outputpath = Path.Combine(_outputpath, group.Key.ToLowerInvariant());
             Directory.CreateDirectory(outputpath);
 
@@ -62,8 +63,9 @@ public class MainCommand : ICommand
                 VaccinationsSmoothed = x.NewVaccinationsSmoothed,
                 HospitalPatients = x.HospPatients,
                 IcuPatients = x.IcuPatients,
-            }).Select(x => x with { DayOfWeek = x.DayOfWeek < 0 ? 6 : x.DayOfWeek })
-            .OrderBy(x => x.Date);
+            })
+                .Select(x => x with { DayOfWeek = x.DayOfWeek < 0 ? 6 : x.DayOfWeek })
+                .OrderBy(x => x.Date);
 
             var gradient = new ColorGradient
             {
@@ -85,60 +87,34 @@ public class MainCommand : ICommand
 
             var template = Template.Parse(await File.ReadAllTextAsync("svg.template"));
 
-            var list = dataCases.GroupBy(x => $"{x.Year}{x.Week}")
-                .OrderBy(x => x.Key)
-                .ToList();
-
-            var model = new
-            {
-                ProcessedData = list,
-                Count = list.Count,
-                Size = 10,
-            };
-
-            var rendered = await template.RenderAsync(model);
-            await File.WriteAllTextAsync(Path.Combine(outputpath, "raw.svg"), rendered, System.Text.Encoding.UTF8);
-
-            // var weeks = output.GroupBy(x => $"{x.Year} {x.Week}")
-            //     .OrderByDescending(x => x.Key).ToList();
-
-            // var outputstring = string.Empty;
-
-            // foreach (var week in weeks)
-            // {
-            //     var svgWeekStart = $"<g transform=\"translate({weeks.IndexOf(week) * 12}, 0)\">";
-
-            //     var svgDays = string.Join(Environment.NewLine, week.OrderBy(x => x.DayOfWeek)
-            //         .Select(x => $"<rect transform=\"translate(0, {x.DayOfWeek * 12})\" width=\"10\" height=\"10\" style=\"fill: @Metadata.GetColorAtAsHex(week.Monday)\">"));
-
-            //     var svgWeekEnd = $"</g>";
-
-            //     var svgWeek = string.Join(Environment.NewLine, svgWeekStart, svgDays, svgWeekEnd);
-
-            //     outputstring += svgWeek + Environment.NewLine;
-            // }
-
-
+            await GenerateSvgFile(Path.Combine(outputpath, "Cases.svg"), dataCases, template);
+            await GenerateSvgFile(Path.Combine(outputpath, "Deaths.svg"), dataDeaths, template);
+            await GenerateSvgFile(Path.Combine(outputpath, "Vaccinations.svg"), dataVaccinations, template);
+            await GenerateSvgFile(Path.Combine(outputpath, "CasesSmoothed.svg"), dataCasesSmoothed, template);
+            await GenerateSvgFile(Path.Combine(outputpath, "DeathsSmoothed.svg"), dataDeathsSmoothed, template);
+            await GenerateSvgFile(Path.Combine(outputpath, "VaccinationsSmoothed.svg"), dataVaccinationsSmoothed, template);
+            await GenerateSvgFile(Path.Combine(outputpath, "HospitalPatients.svg"), dataHospitalPatients, template);
+            await GenerateSvgFile(Path.Combine(outputpath, "IcuPatients.svg"), dataIcuPatients, template);
         }
+
+        await File.WriteAllLinesAsync(Path.Combine(_outputpath, "index.csv"), index);
     }
 
-    private async ValueTask LoadCachedDataAsync(IConsole console)
+    private static async Task GenerateSvgFile(string path, IEnumerable<OutputData> dataCases, Template template)
     {
-        Directory.CreateDirectory(_outputpath);
+        var list = dataCases.GroupBy(x => $"{x.Year}{x.Week}")
+            .OrderBy(x => x.Key)
+            .ToList();
 
-        using var stream = File.OpenRead(Path.Combine(_cacherootpath, @"owid-covid-data.csv"));
-        using var reader = new StreamReader(stream);
-        using var csv = new CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
-
-        var groups = csv.GetRecords<CondensedDataEntry>().GroupBy(x => x.IsoCode);
-
-        foreach (var group in groups)
+        var model = new
         {
-            using var writer = File.CreateText(Path.Combine(_outputpath, $"{group.Key}.csv"));
-            using var writecsv = new CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture);
+            ProcessedData = list,
+            Count = list.Count,
+            Size = 10,
+        };
 
-            await writecsv.WriteRecordsAsync<CondensedDataEntry>(group);
-        }
+        var rendered = await template.RenderAsync(model);
+        await File.WriteAllTextAsync(path, rendered, System.Text.Encoding.UTF8);
     }
 
     private async ValueTask DownloadDataIntoCacheAsync(IConsole console)
